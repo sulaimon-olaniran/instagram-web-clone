@@ -1,0 +1,55 @@
+.location-modal-container{
+    width: 100%;
+    min-height: 100vh;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    outline: none;
+
+    .location-top-nav-container{
+        width: 100%;
+        height: 7vh;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-left: 15px;
+        border-bottom: 1px solid lightgray;
+
+        p{
+            width: 70%;
+            font-weight: 600;
+        }
+    }
+
+    .location-input-container{
+        width: 100%;
+        height: 7vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgb(247, 246, 246);
+        border-bottom: 1px solid lightgray;
+
+        form {
+            width: 95%;
+            height: 60%;
+            border: 1px solid lightgray;
+            background-color: white;
+            padding: 0 10px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+
+            input{
+                border: none;
+                outline: none;
+                background: none;
+                width: 90%;
+                padding-left: 5px;
+                color: rgba(var(--i1d,38,38,38),1);
+                font-size: 14px;
+            }
+        }
+    }
+}

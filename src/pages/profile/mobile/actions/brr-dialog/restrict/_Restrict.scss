@@ -1,0 +1,46 @@
+.restrict-drawer-container{
+    width: 100%;
+    min-height: 65vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+
+    .restrict-span{
+        width: 48px;
+        height: 4px;
+        background-color: grey;
+        border-radius: 2px;
+    }
+
+    h3{
+        text-align: center;
+        padding: 0 30px;
+    }
+
+    .restrict-drawer-description-container{
+        height: 30vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+
+        div{
+            width: 90%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            p{
+                width: 90%;
+                font-size: 0.9rem;
+                font-weight: 500;
+                color: rgb(150, 150, 150);
+            }
+        }
+    }
+
+    button{
+        text-transform: capitalize;
+    }
+}

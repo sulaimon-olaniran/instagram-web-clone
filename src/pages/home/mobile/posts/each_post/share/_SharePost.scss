@@ -1,0 +1,55 @@
+.share-options-container{
+    width: 100%;
+    height: 70vh;
+    border-radius: 20px;
+
+    .title-container{
+        width: 100%;
+        height: 10vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+        border-bottom: 1px solid lightgray;
+
+        span{
+            width: 48px;
+            height: 4px;
+            background-color: grey;
+            border-radius: 2px;
+        }
+
+        p{
+            font-weight: 600;
+        }
+    }
+
+    .contents-container{
+        width: 100%;
+        height: 60vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+
+        .each-content{
+            min-width: 90%;
+            height: 6.5vh;
+            display: flex;
+            align-items: center;
+
+            button{
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+            }
+
+            p{
+                margin-left: 15px;
+            }
+        }
+
+
+    }
+}

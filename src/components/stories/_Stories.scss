@@ -1,0 +1,9 @@
+.friends-stories-container{
+    height: 100%;
+    width: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    overflow-y: hidden;
+    overflow-x: auto;
+}

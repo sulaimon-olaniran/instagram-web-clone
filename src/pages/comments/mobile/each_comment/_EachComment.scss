@@ -1,0 +1,39 @@
+.every-comment-container{
+    min-height: 10vh;
+    width: 100%;
+   // padding: 15px;
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
+
+    .comment-details{
+        width: 80%;
+            min-height: 8vh;
+            display: flex;
+            flex-direction: column;
+            //justify-content: space-between;
+
+            .comment-text{
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+
+                p{
+                    width: 90%;
+                }
+
+                span{
+                    font-weight: 600;
+                }
+            }
+
+            .comment-time-likes{
+                margin-top: 10px;
+                small{
+                    color: rgb(194, 194, 194);
+                    margin-right: 8px;
+                }
+            }
+
+    }
+}

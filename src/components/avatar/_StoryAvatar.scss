@@ -1,0 +1,60 @@
+.story-avatar-container {
+	background-image: linear-gradient(
+		45deg,
+		#ffa95f 5%,
+		#f99c4a 15%,
+		#f47838 30%,
+		#e75157 45%,
+		#d92d7a 70%,
+		#cc2a92 80%,
+		#c32e92 95%
+    );
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin-left: 10px;
+    
+    .story-image-container{
+        width: 95%;
+        height: 95%;
+        border-radius: 50%;
+        background-color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        img{
+            width: 92%;
+            height: 92%;
+            //object-fit: cover;
+            border-radius: 50%;
+         }
+    }
+
+	// box-sizing: border-box;
+    // display: flex;
+    // height: 90px;
+    // width: 90px;
+	// justify-content: center;
+	// overflow: hidden;
+
+	// &,
+	// & > img {
+	// 	border: 5px solid var(--color-background, white);
+	// 	border-radius: 50%;
+	// }
+
+	// & > img {
+	// 	//border-width: calc(0.5 * var(--size-border));
+	// 	height: auto;
+	// 	margin: 0;
+	// 	transform: scale(1.1);
+	// 	transition: transform 0.6s ease-in-out;
+	// 	width: 100%;
+	// }
+
+	// &.has-story img {
+	// 	transform: scale(1);
+	// }
+}

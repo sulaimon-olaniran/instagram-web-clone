@@ -1,0 +1,9 @@
+.upload-modal-container{
+    width: 100%;
+    min-height: 100%;
+    background-color: white;
+    outline: none;
+}
+
+@import './style/FileStyle';
+@import './details/FileDetails';
