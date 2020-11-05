@@ -3,6 +3,7 @@ import CloseIcon from '@material-ui/icons/Close'
 import GetAppIcon from '@material-ui/icons/GetApp'
 import BorderColorIcon from '@material-ui/icons/BorderColor'
 import WidgetsIcon from '@material-ui/icons/Widgets'
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 
 
 import CanvasDrawComponent from './canvas_draw/CanvasDraw'
@@ -15,6 +16,7 @@ import IconCanvas from './add_icon/IconCanvas'
 const StoryBody = ({ handleCloseModal, filePreviewUrl }) => {
     const [iconDrawer, setIconDrawer] = useState(false)
     const [iconUrl, setIconUrl] = useState(null)
+    const [activeCanvas, setActiveCanvas] = useState('icons')
     const imageRef = useRef(null) // holds the displayed image
     const drawingRef = useRef(null) //used to draw lines over image
     const mainCanvasRef = useRef(null) //brings all ref together as one image
@@ -27,6 +29,7 @@ const StoryBody = ({ handleCloseModal, filePreviewUrl }) => {
 
     const handleOpenIconDrawer = () => {
         setIconDrawer(true)
+        setActiveCanvas('icons')
     }
 
     const handleCloseIconDrawer = () => {
@@ -40,7 +43,6 @@ const StoryBody = ({ handleCloseModal, filePreviewUrl }) => {
 
     useEffect(() => {
         const canvasContext = imageRef.current.getContext('2d')
-        const mainCanvasContext = mainCanvasRef.current.getContext('2d')
         const canvasImage = new Image()
 
         canvasContext.fillStyle = "rgb(99, 99, 99)"
@@ -53,9 +55,6 @@ const StoryBody = ({ handleCloseModal, filePreviewUrl }) => {
 
 
         canvasImage.onload = () => {
-            // drawingRef.current.width = canvasImage.width
-            // drawingRef.current.height = canvasImage.height
-
             const hRatio = imageRef.current.width / canvasImage.width
             const vRatio = imageRef.current.height / canvasImage.height
             const ratio = Math.min(hRatio, vRatio)
@@ -66,10 +65,12 @@ const StoryBody = ({ handleCloseModal, filePreviewUrl }) => {
             //canvasContext.clearRect(0, 0, imageRef.current.width, imageRef.current.height)
 
             canvasContext.drawImage(canvasImage, 0, 0, canvasImage.width, canvasImage.height,
-                centerShiftX, centerShiftY, canvasImage.width * ratio, canvasImage.height * ratio)
+            centerShiftX, centerShiftY, canvasImage.width * ratio, canvasImage.height * ratio)
 
-            canvasUrl.current = imageRef.current.toDataURL()
+            downloadRef.current = imageRef.current.toDataURL()
         }
+
+        canvasImage.setAttribute('crossorigin', 'anonymous')
 
         canvasImage.src = filePreviewUrl
 
@@ -84,48 +85,67 @@ const StoryBody = ({ handleCloseModal, filePreviewUrl }) => {
         const mainCanvasContext = mainCanvasRef.current.getContext('2d')
         const canvasContext = drawingRef.current.getContext('2d')
 
-        // canvasContext.fillStyle = "rgb(99, 99, 99)"
-        // canvasContext.fillRect(0, 0, window.innerWidth * 2, window.innerHeight * 2)
-
         mainCanvasRef.current.width = imageRef.current.width
         mainCanvasRef.current.height = imageRef.current.height
 
         mainCanvasContext.drawImage(imageRef.current, 0, 0, imageRef.current.width, imageRef.current.height)
         mainCanvasContext.drawImage(drawingRef.current, 0, 0, imageRef.current.width, imageRef.current.height)
+        mainCanvasContext.drawImage(iconRef.current, 0, 0, imageRef.current.width, imageRef.current.height)
 
         const image = mainCanvasRef.current.toDataURL()
+        //image.crossOrigin="anonymous"
         download.href = image
     }
 
     return (
         <React.Fragment>
 
-            <header>
-                <CloseIcon onClick={handleCloseModal} />
-                <div>
-                    <a href="#" ref={downloadRef} download='my-image.png' onClick={downloadImage} >
-                        <GetAppIcon />
-                    </a>
-                    <WidgetsIcon onClick={handleOpenIconDrawer} />
-                    <BorderColorIcon />
-                </div>
-            </header>
+            {   activeCanvas !== 'drawing' &&
+                <header>
+                    <CloseIcon onClick={handleCloseModal} />
+                    <div>
+                        <a href="#" ref={downloadRef} download='my-image.png' onClick={downloadImage} >
+                            <GetAppIcon />
+                        </a>
+                        <WidgetsIcon onClick={handleOpenIconDrawer} />
+                        <BorderColorIcon onClick={() => setActiveCanvas('drawing')}/>
+                    </div>
+                </header>
+            }
             
             <canvas ref={mainCanvasRef} style={{ visibility: 'hidden' }} />
-            <canvas ref={imageRef} />
-            <CanvasDrawComponent canvasRef={drawingRef} imageRef={imageRef} />
 
-            {/* <IconCanvas canvasRef={iconRef} imageUrl={iconUrl} /> */}
-            {/* <canvas ref={textRef} /> */}
+            <canvas ref={imageRef} />
+
+            <CanvasDrawComponent 
+                canvasRef={drawingRef} 
+                imageRef={imageRef} 
+                activeCanvas={activeCanvas}
+                setActiveCanvas={setActiveCanvas}
+            />
+
+            <IconCanvas 
+                canvasRef={iconRef} 
+                imageUrl={iconUrl} 
+                activeCanvas={activeCanvas}
+                setActiveCanvas={setActiveCanvas}
+            />
+            
             <AddIconDrawer
                 openDrawer={iconDrawer}
                 handleCloseDrawer={handleCloseIconDrawer}
                 handleSetIconUrl={handleSetIconUrl}
             />
+
+            { activeCanvas !== 'drawing' &&
+                <button className='add-story-button'>
+                    <AddCircleIcon />
+                    <p>Add to story</p>
+                </button>
+            }
         </React.Fragment>
     )
 }
 
 
 export default StoryBody
-

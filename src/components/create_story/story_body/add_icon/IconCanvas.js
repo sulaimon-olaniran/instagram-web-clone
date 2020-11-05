@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react'
 
 
 
-const IconCanvas = ({ canvasRef, imageUrl }) =>{
+const IconCanvas = ({ canvasRef, imageUrl, activeCanvas }) =>{
     const [currentX, setCurrentX] = useState(window.innerWidth/2)
     const [currentY, setCurrentY] = useState(window.innerHeight/2)
 
@@ -36,8 +36,8 @@ const IconCanvas = ({ canvasRef, imageUrl }) =>{
         
 
         canvasImage.onload = () => {
-            imageWidth.current = canvasImage.width/4
-            imageHeight.current = canvasImage.width/4
+            imageWidth.current = canvasImage.width/3
+            imageHeight.current = canvasImage.width/3
             drawImageOnCanvas()
         }
 
@@ -72,8 +72,8 @@ const IconCanvas = ({ canvasRef, imageUrl }) =>{
         const mouseX = parseInt(e.pageX - offsetX)
         const mouseY = parseInt(e.pageY - offsetY)
 
-        console.log(mouseX)
-        console.log(mouseY)
+        // console.log(mouseX)
+        // console.log(mouseY)
 
         //const canvasImage = imageRef.current
 
@@ -132,9 +132,11 @@ const IconCanvas = ({ canvasRef, imageUrl }) =>{
         const canvas = canvasRef.current
         const context = contextRef.current
         const canvasImage = imageRef.current
+        const width = imageWidth.current
+        const height = imageHeight.current
 
         context.clearRect(0, 0, canvas.width, canvas.height)
-        context.drawImage(canvasImage, currentX-(150/2), currentY-(60/2), imageWidth.current, imageHeight.current)
+        context.drawImage(canvasImage, currentX-(width/2), currentY-(height/2), width, height)
     }
 
 
@@ -145,6 +147,10 @@ const IconCanvas = ({ canvasRef, imageUrl }) =>{
            onPointerUp={handleMouseUp}
            onPointerOut={handleMouseOut}
            onPointerMove={handleMouseMove}
+
+           style={{
+                zIndex : activeCanvas === 'icons' ? 999 : 1
+            }}
         />
     )
 }

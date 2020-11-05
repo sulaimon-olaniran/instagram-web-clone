@@ -9,6 +9,10 @@
     justify-content: space-between;
     padding: 0 15px;
 
+    button{
+        outline: none;
+    }
+
     .canvas-draw-icon-container{
         width: 30%;
         display: flex;
@@ -34,7 +38,7 @@
     z-index: 9999;
     position: absolute;
     right: 2%;
-    top : 10%;
+    top : 13%;
     display: flex;
     flex-direction: column;
 
@@ -45,3 +49,62 @@
         outline: none;
     }
 }
+
+
+.stroke-size-container {
+    margin: auto;
+    width: 60px;
+    height: 200px;
+    z-index: 9999;
+    position: absolute;
+    left: 0%;
+    top: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .MuiSlider-root {
+        color: white;
+        .MuiSlider-rail{
+            width: 8px;
+            background-color: transparent;
+            border: 4px solid white;
+        }
+    
+        .MuiSlider-track{
+            width: 8px;
+            background-color: transparent;
+            border: 2px solid white;
+        }
+
+        
+        .MuiSlider-thumb{
+            width: 24px;
+            height: 24px;
+            margin-left: -8px;
+            margin-bottom: -12px;
+        }
+    }
+    
+
+}
+
+.add-story-button{
+    width: 120px;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: absolute;
+    bottom: 3%;
+    left: 31%;
+    z-index: 999;
+    outline: none;
+    border: none;
+    background: none;
+    p{
+        color: white;
+    }
+}
+  
+  

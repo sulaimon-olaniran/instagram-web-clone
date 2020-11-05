@@ -4,22 +4,23 @@ import BrushIcon from '@material-ui/icons/Brush'
 
 
 import SelectColor from './SelectColor'
+import StrokeSize from './StrokeSize'
 
 
 
 
 
 
-const CanvasDrawComponent = ({ canvasRef, imageRef }) => {
+const CanvasDrawComponent = ({ canvasRef, activeCanvas, setActiveCanvas }) => {
     const [strokeStyle, setStrokeStyle] = useState('white')
     const [drawOrErase, setDrawOrErase] = useState('draw')
-
+    const [strokeSize, setStrokeSize] = useState(50)
     //const canvasRef = useRef(null)
     const contextRef = useRef(null)
     const [isDrawing, setIsDrawing] = useState(false)
 
 
-    const handleStrokeStyle = (style) =>{
+    const handleStrokeStyle = (style) => {
         setStrokeStyle(style)
     }
 
@@ -35,16 +36,15 @@ const CanvasDrawComponent = ({ canvasRef, imageRef }) => {
 
         context.scale(2, 2)
         context.lineCap = "round"
-        //context.strokeStyle = strokeStyle
-        context.lineWidth = 5
 
         contextRef.current = context
     }, [])
 
     const startDrawing = ({ nativeEvent }) => {
-        //const stroke = drawOrErase === 'draw' ? strokeStyle : '#00000000'
         contextRef.current.strokeStyle = strokeStyle
-        const operation = drawOrErase === 'draw' ? 'source-over': 'destination-out'
+        const actualStrokeSize = drawOrErase === 'draw' ? strokeSize/10 : strokeSize/5
+        contextRef.current.lineWidth = actualStrokeSize
+        const operation = drawOrErase === 'draw' ? 'source-over' : 'destination-out'
         contextRef.current.globalCompositeOperation = operation
         const { offsetX, offsetY } = nativeEvent;
         contextRef.current.beginPath()
@@ -69,40 +69,48 @@ const CanvasDrawComponent = ({ canvasRef, imageRef }) => {
         contextRef.current.stroke()
     }
 
+    const clearDrawing = () =>{
+        const canvas = canvasRef.current
+        const context = contextRef.current
+        context.clearRect(0, 0, canvas.width, canvas.height)
+    }
+
 
     return (
         <React.Fragment>
-            { !isDrawing &&
-                                      
-            <div className='canvas-draw-header-container'>
-                <button>
-                    Undo
-                </button>
+            { !isDrawing && activeCanvas === 'drawing' &&
 
-                <div className='canvas-draw-icon-container'>
+                <div className='canvas-draw-header-container'>
+                    <button onClick={clearDrawing} >
+                        Clear
+                    </button>
 
-                    <div 
-                        onClick={ () => setDrawOrErase('draw')}
-                        style={{ backgroundColor : drawOrErase === 'draw' ? 'lightgray' : 'transparent'}}
-                    >
-                        <BrushIcon />
+                    <div className='canvas-draw-icon-container'>
+
+                        <div
+                            onClick={() => setDrawOrErase('draw')}
+                            style={{ backgroundColor: drawOrErase === 'draw' ? 'lightgray' : 'transparent' }}
+                        >
+                            <BrushIcon />
+                        </div>
+
+                        <div
+                            onClick={() => setDrawOrErase('erase')}
+                            style={{ backgroundColor: drawOrErase === 'erase' ? 'lightgray' : 'transparent' }}
+                        >
+                            <img src="https://img.icons8.com/material/24/ffffff/eraser--v1.png" />
+                        </div>
                     </div>
 
-                    <div 
-                        onClick={ () => setDrawOrErase('erase')} 
-                        style={{ backgroundColor : drawOrErase === 'erase' ? 'lightgray' : 'transparent'}}
-                    >
-                        <img src="https://img.icons8.com/material/24/ffffff/eraser--v1.png" />
-                    </div>
-                </div>
+                    <button onClick={()=> setActiveCanvas('icons')}>
+                        Done
+                    </button>
 
-                <button>
-                    Done
-                </button>
+                </div>}
 
-            </div>}
+            { !isDrawing && activeCanvas === 'drawing' && <StrokeSize strokeSize={strokeSize} setStrokeSize={setStrokeSize} />}
 
-           { !isDrawing && <SelectColor handleStrokeStyle={handleStrokeStyle} />}
+            { !isDrawing && activeCanvas === 'drawing' && <SelectColor handleStrokeStyle={handleStrokeStyle} />}
 
             <canvas
                 onMouseDown={startDrawing}
@@ -114,6 +122,10 @@ const CanvasDrawComponent = ({ canvasRef, imageRef }) => {
                 onPointerDown={startDrawing}
 
                 ref={canvasRef}
+
+                style={{
+                    zIndex : activeCanvas === 'drawing' ? 999 : 1
+                }}
             />
         </React.Fragment>
     );
