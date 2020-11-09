@@ -9,7 +9,7 @@ import FileUploadStyle from './style/FileStyle'
 
 
 
-const UploadModal = ({ openModal, handleCloseModal, fileUrl, filePreviewUrl }) => {
+const UploadModal = ({ openModal, handleCloseModal, type, filePreviewUrl }) => {
     const [activeStep, setActiveStep] = useState(0)
     const [canvasUrl, setCanvasUrl] = useState('')
 
@@ -37,9 +37,11 @@ const UploadModal = ({ openModal, handleCloseModal, fileUrl, filePreviewUrl }) =
         switch (stepIndex) {
             case 0:
                 return <FileUploadStyle 
-                    goToNextStep={goToNextStep} 
+                    action={goToNextStep} 
+                    actionText='Next'
                     filePreviewUrl={filePreviewUrl} 
                     handleCloseModal={handleCloseModal}
+                    title='New Photo Post'
                 />;
             case 1:
                 return <FileDetails goToPreviousStep={goToPreviousStep} filePreviewUrl={canvasUrl}/>;
@@ -61,7 +63,17 @@ const UploadModal = ({ openModal, handleCloseModal, fileUrl, filePreviewUrl }) =
             closeAfterTransition
         >
             <div className='upload-modal-container'>
-                {getStepContent(activeStep)}
+                {
+                    type === 'feed-post' ?
+                    getStepContent(activeStep)
+                    :
+                    <FileUploadStyle 
+                        filePreviewUrl={filePreviewUrl} 
+                        handleCloseModal={handleCloseModal}
+                        title='Profile Photo'
+                        actionText='Save'
+                    />
+                }
             </div>
 
         </Modal>

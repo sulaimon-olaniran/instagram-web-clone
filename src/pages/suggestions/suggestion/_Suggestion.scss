@@ -9,13 +9,13 @@
 
     .profile-container{
         height: 100%;
-        width: 60%;
+        width: 70%;
         display: flex;
         align-items: center;
         justify-content: space-between;
 
         .personal-details{
-            width: 75%;
+            width: 70%;
             display: flex;
             flex-direction: column;
             justify-content: space-around;
@@ -27,5 +27,10 @@
                 letter-spacing: -3;
             }
         }
+    }
+
+    button{
+        background-color: #0095f6;
+        text-transform: capitalize;
     }
 }

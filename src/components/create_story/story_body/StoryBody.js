@@ -9,6 +9,7 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import CanvasDrawComponent from './canvas_draw/CanvasDraw'
 import AddIconDrawer from './add_icon/AddIcon'
 import IconCanvas from './add_icon/IconCanvas'
+import DiscardDialog from './discard_dialog/DiscardDialog'
 
 
 
@@ -17,6 +18,7 @@ const StoryBody = ({ handleCloseModal, filePreviewUrl }) => {
     const [iconDrawer, setIconDrawer] = useState(false)
     const [iconUrl, setIconUrl] = useState(null)
     const [activeCanvas, setActiveCanvas] = useState('icons')
+    const [discardDialog, setDiscardDialog] = useState(false)
     const imageRef = useRef(null) // holds the displayed image
     const drawingRef = useRef(null) //used to draw lines over image
     const mainCanvasRef = useRef(null) //brings all ref together as one image
@@ -39,6 +41,14 @@ const StoryBody = ({ handleCloseModal, filePreviewUrl }) => {
     const handleSetIconUrl = (url) => {
         setIconUrl(url)
         setIconDrawer(false)
+    }
+
+    const handleOpenDiscardDialog = () =>{
+        setDiscardDialog(true)
+    }
+
+    const handleCloseDiscardDialog = () =>{
+        setDiscardDialog(false)
     }
 
     useEffect(() => {
@@ -102,7 +112,7 @@ const StoryBody = ({ handleCloseModal, filePreviewUrl }) => {
 
             {   activeCanvas !== 'drawing' &&
                 <header>
-                    <CloseIcon onClick={handleCloseModal} />
+                    <CloseIcon onClick={handleOpenDiscardDialog} />
                     <div>
                         <a href="#" ref={downloadRef} download='my-image.png' onClick={downloadImage} >
                             <GetAppIcon />
@@ -135,6 +145,12 @@ const StoryBody = ({ handleCloseModal, filePreviewUrl }) => {
                 openDrawer={iconDrawer}
                 handleCloseDrawer={handleCloseIconDrawer}
                 handleSetIconUrl={handleSetIconUrl}
+            />
+
+            <DiscardDialog 
+               openDialog={discardDialog}
+               handleCloseDialog={handleCloseDiscardDialog}
+               handleCloseModal={handleCloseModal}
             />
 
             { activeCanvas !== 'drawing' &&

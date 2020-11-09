@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
         width: theme.spacing(2),
         height: theme.spacing(2),
     },
-}));
+}))
 
 
 const MobileProfile = ({ match, history }) => {

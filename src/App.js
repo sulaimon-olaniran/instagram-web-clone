@@ -16,8 +16,9 @@ import Suggestions from './pages/suggestions/Suggestions'
 import ViewStory from './pages/story/ViewStory'
 import MobileProfile from './pages/profile/mobile/MobileProfile'
 import MobilePost from './pages/post/mobile/MobilePost'
-import GradientLoader from './components/loaders/gradient/GradientLoader'
-//import FileUploadStyle from './components/upload/style/FileStyle'
+import MobileUserAccount from './pages/user_account/mobile/MobileUserAccount'
+//import MobileWelcome from './pages/welcome/mobile/MobileWelcome'
+//import GradientLoader from './components/loaders/gradient/GradientLoader'
 
 
 
@@ -28,7 +29,7 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <GradientLoader />
+
         <Switch>
           <Route path='/signup' exact component={FormikSignUp} />
           <Route path='/reset_password' exact component={ResetPassword} />
@@ -41,7 +42,7 @@ function App() {
             <Route path='/explore/people/suggested/' exact component={Suggestions} />
             <Route path='/profile/:username/' exact component={MobileProfile} />
             <Route path='/post/:postId/' exact component={MobilePost} />
-            {/* <Route path='/upload/style' exact component={FileUploadStyle} /> */}
+            <Route path='/sulai_m0n/' exact component={MobileUserAccount} />
             <BottomNav />
           </React.Fragment>
         </Switch>

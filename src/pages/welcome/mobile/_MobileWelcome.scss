@@ -1,0 +1,20 @@
+.mobile-welcome-page-container{
+    width: 100%;
+    min-height: 100%;
+
+    h1{
+        text-align: center;
+        margin-top: 40px;
+        font-weight: 200;
+        font-size: 1.3rem;
+        color: rgb(63, 63, 63);
+    }
+
+    p{
+        text-align: center;
+        width: 80%;
+        margin: 20px auto 20px auto;
+        font-size: 0.9rem;
+        color: rgb(145, 145, 145);
+    }
+}

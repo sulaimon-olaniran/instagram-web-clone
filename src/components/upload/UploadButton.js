@@ -49,6 +49,7 @@ const UploadFiles = () => {
                handleCloseModal={handleCloseModal}
                fileUrl={fileUrl}
                filePreviewUrl={filePreviewUrl}
+               type='feed-post'
             />
         </React.Fragment>
     )

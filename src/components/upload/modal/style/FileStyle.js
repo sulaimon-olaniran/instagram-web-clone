@@ -22,7 +22,7 @@ import perpetua_filter from './assets/perpetua_filter.jpg'
 
 
 
-const FileUploadStyle = ({ goToNextStep, filePreviewUrl, handleCloseModal }) => {
+const FileUploadStyle = ({ action, filePreviewUrl, handleCloseModal, actionText, title }) => {
     const [filterStyle, setFilterStyle] = useState(() => {
         const value = localStorage.getItem('filterStyle')
         return value !== null ? JSON.parse(value) : ''
@@ -203,8 +203,8 @@ const FileUploadStyle = ({ goToNextStep, filePreviewUrl, handleCloseModal }) => 
 
             <div className='upload-file-nav-container'>
                 <CloseIcon onClick={handleCloseModal} />
-                <p>New Photo Post</p>
-                <Button onClick={() => goToNextStep(canvasUrl.current)} color='primary'>Next</Button>
+                <p>{title}</p>
+                <Button onClick={() => action(canvasUrl.current)} color='primary'>{actionText}</Button>
             </div>
 
 

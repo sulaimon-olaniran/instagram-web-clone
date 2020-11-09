@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import Avatar from '@material-ui/core/Avatar'
 import { makeStyles } from '@material-ui/core/styles'
 
-import { MyActiveHomeIcon, MyUnActiveSearchIcon, MyAddIcon, UnLikedIcon } from '../MyIcons'
+import { MyActiveHomeIcon, MyUnActiveSearchIcon, UnLikedIcon } from '../MyIcons'
 import UploadFiles from '../upload/UploadButton'
 
 const useStyles = makeStyles((theme) => ({
@@ -47,10 +47,12 @@ const BottomNav = () => {
                 width='24px'
             />
 
-            <Avatar
-                src={'null'}
-                className={classes.small}
-            />
+            <Link exact to='/sulai_m0n'>
+                <Avatar
+                    src={'null'}
+                    className={classes.small}
+                />
+            </Link>
 
         </nav>
     )

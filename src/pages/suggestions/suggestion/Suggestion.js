@@ -1,17 +1,33 @@
 import React from 'react'
 import Button from '@material-ui/core/Button'
 import Avatar from '@material-ui/core/Avatar'
+import { makeStyles } from '@material-ui/core/styles'
 
+
+
+
+const useStyles = makeStyles((theme) => ({
+    large: {
+        width: theme.spacing(8),
+        height: theme.spacing(8),
+    },
+
+    
+}))
 
 
 
 const Suggestion = ({ data }) =>{
-    //console.log(data)
+    const classes = useStyles()
+
     return(
         <div className='each-suggestion-container'>
 
             <div className='profile-container'>
-                <Avatar src={data.image} alt={data.name} />
+                <Avatar 
+                    src={data.image} alt={data.name} 
+                    className={classes.large}
+                />
 
                 <div className='personal-details'>
                     <h5>{data.name}</h5>

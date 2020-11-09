@@ -1,0 +1,35 @@
+.discard-dialog-container{
+    width: 250px;
+    height: 220px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    h4{
+        color: rgb(89, 89, 89);
+        margin-top: 20px;
+    }
+
+    p{
+        text-align: center;
+        width: 80%;
+        color: rgb(157, 157, 157);
+    }
+
+    .discard-dialog-buttons-container{
+        width: 100%;
+        height: 100px;
+
+        .each-dialog-button-container{
+            width: 100%;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-top: 1px solid lightgray;
+        }
+    }
+
+    
+}
