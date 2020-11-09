@@ -51,7 +51,7 @@ const ProfileInformation = () =>{
               toggleGenderValue={toggleGenderValue}
             />
 
-            <Form>
+            <Form className='profile-information-formik-form'>
                 <Field 
                     as={TextField} type="text" name="name" label="Name"
                     variant='outlined'

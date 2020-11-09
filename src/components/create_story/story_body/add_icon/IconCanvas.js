@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 
 
 
@@ -7,8 +7,8 @@ const IconCanvas = ({ canvasRef, imageUrl, activeCanvas }) =>{
     const [currentX, setCurrentX] = useState(window.innerWidth/2)
     const [currentY, setCurrentY] = useState(window.innerHeight/2)
 
-    const [startX, setStartX] = useState()
-    const [startY, setStartY] = useState()
+    // const [startX, setStartX] = useState()
+    // const [startY, setStartY] = useState()
     
     const [isDraggable, setIsDraggable] = useState(false)
 
@@ -20,6 +20,17 @@ const IconCanvas = ({ canvasRef, imageUrl, activeCanvas }) =>{
     const imageHeight = useRef(null)
 
     
+    const drawImageOnCanvas = useCallback( () =>{
+        const canvas = canvasRef.current
+        const context = contextRef.current
+        const canvasImage = imageRef.current
+        const width = imageWidth.current
+        const height = imageHeight.current
+
+        context.clearRect(0, 0, canvas.width, canvas.height)
+        context.drawImage(canvasImage, currentX-(width/2), currentY-(height/2), width, height)
+    }, [canvasRef, currentX, currentY])
+
 
     useEffect(() =>{
         const canvas = canvasRef.current
@@ -43,7 +54,7 @@ const IconCanvas = ({ canvasRef, imageUrl, activeCanvas }) =>{
 
         canvasImage.src = imageUrl
 
-    }, [ imageUrl ])
+    }, [ imageUrl, canvasRef, drawImageOnCanvas ])
 
 
     const CheckIfMouseInShape = (mx, my, x, y, width, height) => {
@@ -82,8 +93,8 @@ const IconCanvas = ({ canvasRef, imageUrl, activeCanvas }) =>{
             
         }
 
-        setStartX(mouseX)
-        setStartY(mouseY)
+        // setStartX(mouseX)
+        // setStartY(mouseY)
 
     }
 
@@ -115,29 +126,17 @@ const IconCanvas = ({ canvasRef, imageUrl, activeCanvas }) =>{
        
         const mouseX = parseInt(e.pageX - offsetX)
         const mouseY = parseInt(e.pageY - offsetY)
-        const dx = mouseX - startX
-        const dy = mouseY - startY
 
         setCurrentX(mouseX)
         setCurrentY(mouseY)
         
         drawImageOnCanvas()
 
-        setStartX(mouseX)
-        setStartY(mouseY)
+        // setStartX(mouseX)
+        // setStartY(mouseY)
     }
 
 
-    const drawImageOnCanvas = () =>{
-        const canvas = canvasRef.current
-        const context = contextRef.current
-        const canvasImage = imageRef.current
-        const width = imageWidth.current
-        const height = imageHeight.current
-
-        context.clearRect(0, 0, canvas.width, canvas.height)
-        context.drawImage(canvasImage, currentX-(width/2), currentY-(height/2), width, height)
-    }
 
 
     return(

@@ -17,6 +17,7 @@ import ViewStory from './pages/story/ViewStory'
 import MobileProfile from './pages/profile/mobile/MobileProfile'
 import MobilePost from './pages/post/mobile/MobilePost'
 import MobileUserAccount from './pages/user_account/mobile/MobileUserAccount'
+import FormikChangePassword from './pages/change_password/ChangePassoword'
 //import MobileWelcome from './pages/welcome/mobile/MobileWelcome'
 //import GradientLoader from './components/loaders/gradient/GradientLoader'
 
@@ -32,7 +33,7 @@ function App() {
 
         <Switch>
           <Route path='/signup' exact component={FormikSignUp} />
-          <Route path='/reset_password' exact component={ResetPassword} />
+          <Route path='/accounts/password/reset' exact component={ResetPassword} />
           <Route path='/stories/:name/:id' exact component={ViewStory} />
 
           <React.Fragment>
@@ -43,6 +44,7 @@ function App() {
             <Route path='/profile/:username/' exact component={MobileProfile} />
             <Route path='/post/:postId/' exact component={MobilePost} />
             <Route path='/sulai_m0n/' exact component={MobileUserAccount} />
+            <Route path='/accounts/password/change' exact component={FormikChangePassword} />
             <BottomNav />
           </React.Fragment>
         </Switch>

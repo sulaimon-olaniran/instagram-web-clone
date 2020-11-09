@@ -27,7 +27,7 @@ const StoryBody = ({ handleCloseModal, filePreviewUrl }) => {
 
     const downloadRef = useRef(null)
 
-    const canvasUrl = useRef(null)
+    //const canvasUrl = useRef(null)
 
     const handleOpenIconDrawer = () => {
         setIconDrawer(true)
@@ -87,13 +87,13 @@ const StoryBody = ({ handleCloseModal, filePreviewUrl }) => {
         canvasContext.fillStyle = "rgb(99, 99, 99)"
         canvasContext.fillRect(0, 0, window.innerWidth * 2, window.innerHeight * 2)
 
-    }, [])
+    }, [ filePreviewUrl ])
 
 
     const downloadImage = () => {
         const download = downloadRef.current
         const mainCanvasContext = mainCanvasRef.current.getContext('2d')
-        const canvasContext = drawingRef.current.getContext('2d')
+        //const canvasContext = drawingRef.current.getContext('2d')
 
         mainCanvasRef.current.width = imageRef.current.width
         mainCanvasRef.current.height = imageRef.current.height
@@ -114,7 +114,7 @@ const StoryBody = ({ handleCloseModal, filePreviewUrl }) => {
                 <header>
                     <CloseIcon onClick={handleOpenDiscardDialog} />
                     <div>
-                        <a href="#" ref={downloadRef} download='my-image.png' onClick={downloadImage} >
+                        <a href={downloadRef} ref={downloadRef} download='my-image.png' onClick={downloadImage} >
                             <GetAppIcon />
                         </a>
                         <WidgetsIcon onClick={handleOpenIconDrawer} />

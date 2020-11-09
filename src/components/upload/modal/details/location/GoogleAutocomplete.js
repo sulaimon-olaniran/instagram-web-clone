@@ -6,7 +6,6 @@ import { MyUnActiveSearchIcon } from '../../../../MyIcons'
 
 const GoogleAutocomplete = ({ handleCloseModal }) => {
     const inputRef = useRef(null)
-    const [location, setLocation] = useState(null)
     const [locationError, setLocationError] = useState(false)
 
     useEffect(() => {
@@ -27,9 +26,7 @@ const GoogleAutocomplete = ({ handleCloseModal }) => {
         });
     }, [ handleCloseModal ])
 
-    // const initPlaceAPI = () => {
-        
-    // };
+   
 
     return (
         <React.Fragment>
@@ -39,7 +36,7 @@ const GoogleAutocomplete = ({ handleCloseModal }) => {
             </div>
 
             <div className='location-input-container'>
-                <form onSubmit={e => e.preventDefault()}>
+                <form onSubmit={e => e.preventDefault()} className='google-location-form'>
                     <MyUnActiveSearchIcon width='8px' height='8px' />
                     <input type='text' ref={inputRef} />
                 </form>

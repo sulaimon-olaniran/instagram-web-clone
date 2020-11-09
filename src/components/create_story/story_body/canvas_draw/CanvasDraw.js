@@ -38,7 +38,7 @@ const CanvasDrawComponent = ({ canvasRef, activeCanvas, setActiveCanvas }) => {
         context.lineCap = "round"
 
         contextRef.current = context
-    }, [])
+    }, [canvasRef])
 
     const startDrawing = ({ nativeEvent }) => {
         contextRef.current.strokeStyle = strokeStyle
@@ -98,7 +98,7 @@ const CanvasDrawComponent = ({ canvasRef, activeCanvas, setActiveCanvas }) => {
                             onClick={() => setDrawOrErase('erase')}
                             style={{ backgroundColor: drawOrErase === 'erase' ? 'lightgray' : 'transparent' }}
                         >
-                            <img src="https://img.icons8.com/material/24/ffffff/eraser--v1.png" />
+                            <img src="https://img.icons8.com/material/24/ffffff/eraser--v1.png" alt='Eraser'/>
                         </div>
                     </div>
 

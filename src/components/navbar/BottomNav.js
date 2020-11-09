@@ -47,7 +47,7 @@ const BottomNav = () => {
                 width='24px'
             />
 
-            <Link exact to='/sulai_m0n'>
+            <Link to='/sulai_m0n'>
                 <Avatar
                     src={'null'}
                     className={classes.small}

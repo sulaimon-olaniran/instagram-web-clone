@@ -8,6 +8,9 @@ import { makeStyles } from '@material-ui/core/styles'
 import { SettingsIcon, DiscoverIcon } from '../../../components/MyIcons'
 import DashBoard from '../../profile/mobile/dashboard/DashBoard'
 import EditProfile from './edit_profile/EditProfile'
+import AccountOptions from './options/AccountOptions'
+import Followers from '../../profile/mobile/follow/Followers'
+import Following from '../../profile/mobile/follow/Following'
 
 
 
@@ -35,6 +38,9 @@ const useStyles = makeStyles((theme) => ({
 
 const MobileUserAccount = () => {
     const [editProfileModal, setEditProfileModal] = useState(false)
+    const [optionsModal, setOptionsModal] = useState(false)
+    const [followingModal, setFollowingModal] = useState(false)
+    const [followersModal, setFollowersModal] = useState(false)
 
     const openEditProfileModal = () =>{
         setEditProfileModal(true)
@@ -44,12 +50,25 @@ const MobileUserAccount = () => {
         setEditProfileModal(false)
     }
 
-    const openFollowersModal = () =>{
+    const openOpetionsMOdal = () =>{
+        setOptionsModal(true)
+    }
 
+    const closeOptionsModal = () =>{
+        setOptionsModal(false)
+    }
+
+    const openFollowersModal = () =>{
+        setFollowersModal(true)
     }
 
     const openFollowingModal = () =>{
+        setFollowingModal(true)
+    }
 
+    const handleCloseModal = () =>{
+        setFollowersModal(false)
+        setFollowingModal(false)
     }
 
     const classes = useStyles()
@@ -59,15 +78,34 @@ const MobileUserAccount = () => {
                 openModal={editProfileModal}
                 handleCloseModal={closeEditProfileModal}
             />
+
+            <AccountOptions 
+               openModal={optionsModal}
+               handleCloseModal={closeOptionsModal}
+               openEditProfileModal={openEditProfileModal}
+            />
+
+            <Followers 
+                handleCloseModal={handleCloseModal}
+                openModal={followersModal}
+            />
+
+            <Following 
+                handleCloseModal={handleCloseModal}
+                openModal={followingModal}
+            />
+
+
             <div className='mobile-user-account-nav-container'>
                 <SettingsIcon
                     height='24px'
                     width='24px'
+                    action={openOpetionsMOdal}
                 />
 
                 <p>Sulai_m0n</p>
 
-                <Link exact to='/explore/people/suggested/'>
+                <Link to='/explore/people/suggested/'>
                     <DiscoverIcon
                         height='24px'
                         width='24px'

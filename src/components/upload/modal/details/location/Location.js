@@ -1,6 +1,6 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Modal from '@material-ui/core/Modal'
-import CloseIcon from '@material-ui/icons/Close'
+//import CloseIcon from '@material-ui/icons/Close'
 //import GooglePlacesAutocomplete from 'react-google-places-autocomplete'
 
 //import { MyUnActiveSearchIcon } from '../../../../MyIcons'
