@@ -6,8 +6,9 @@ import Backdrop from '@material-ui/core/Backdrop'
 import CloseIcon from '@material-ui/icons/Close'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
 import Button from '@material-ui/core/Button'
+import { connect } from 'react-redux'
 
-
+import { signUserOut } from '../../../../store/actions/AuthActions'
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -18,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const AccountOptions = ({ openModal, handleCloseModal, openEditProfileModal }) => {
+const AccountOptions = ({ openModal, handleCloseModal, openEditProfileModal, signUserOut }) => {
     const classes = useStyles()
 
     const handleOpenEditProifle = () =>{
@@ -128,7 +129,12 @@ const AccountOptions = ({ openModal, handleCloseModal, openEditProfileModal }) =
                     </div>
 
                     <div className='each-action-button-container'>
-                        <Button color='secondary'>Log Out</Button>
+                        <Button 
+                            onClick={signUserOut}
+                            color='secondary'
+                        >
+                            Log Out
+                        </Button>
                         <ArrowForwardIosIcon />
                     </div>
 
@@ -139,6 +145,12 @@ const AccountOptions = ({ openModal, handleCloseModal, openEditProfileModal }) =
 }
 
 
+const matchDispatchToProps = (dispatch) =>{
+    return{
+        signUserOut: () => dispatch(signUserOut())
+    }
+}
 
 
-export default AccountOptions
+
+export default connect(null, matchDispatchToProps)(AccountOptions)

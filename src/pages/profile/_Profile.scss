@@ -1,0 +1,17 @@
+.pc-profile{
+    display: none;
+}
+
+@media(min-width : 960px) {
+    .pc-profile{
+        display: block;
+    }
+
+    .mobile-profile{
+        display: none;
+    }
+
+}
+
+
+@import './mobile/MobileProfile';

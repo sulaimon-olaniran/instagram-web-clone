@@ -253,3 +253,14 @@ export const feedPosts = [
         ]
     }
 ]
+
+
+
+export const id = {
+    davidbroooks : '33zxbgu4m5SIXFLZ7wxI',
+    sulaimon : '9G6R635DzajdJA0ht6Ng',
+    kelvin_frank : 's6dCxJHLbRMnlpgatrgQ',
+    ella_carl : 'ugOtcKBezhZlvvhc5SKF',
+    helen_howard : 'vcAFxA3Fo0bijaUYfXh6'
+}
+

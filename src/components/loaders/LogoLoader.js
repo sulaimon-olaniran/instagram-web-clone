@@ -1,6 +1,6 @@
 import React from 'react'
 
-import grey_logo from './assets/grey_logo.png'
+import grey_logo from '../assets/grey_logo.png'
 
 const LogoLoader = () => {
     return (
@@ -15,8 +15,8 @@ const LogoLoader = () => {
         >
             <div
                style={{
-                   width : '70px',
-                   height : '70px'
+                   width : '50px',
+                   height : '50px'
                }}
             >
                 <img 

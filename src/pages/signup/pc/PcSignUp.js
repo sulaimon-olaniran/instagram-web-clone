@@ -80,7 +80,7 @@ const PcSignUp = ({ setFieldValue, handleBlur, touched, errors }) => {
             </div>
 
             <div className='form-bottom-text'>
-                <p>Have an account ?<Link exact to='/'><Button color='primary'>Log In</Button></Link></p>
+                <p>Have an account ?<Link  to='/'><Button color='primary' id='login_button'>Log In</Button></Link></p>
             </div>
 
         </div>

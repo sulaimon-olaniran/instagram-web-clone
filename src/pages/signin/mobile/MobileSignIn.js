@@ -9,7 +9,7 @@ import MyPasswordField from '../../../components/PasswordField'
 
 
 
-const MobileSignIn = ({ setFieldValue, handleBlur, touched, errors }) => {
+const MobileSignIn = ({ setFieldValue, handleBlur, touched, errors, authError }) => {
     return (
         <div className="mobile-signin-container">
             <div className="text-logo-image-container">
@@ -23,35 +23,41 @@ const MobileSignIn = ({ setFieldValue, handleBlur, touched, errors }) => {
                     label='Email'
                     type="email"
                     variant='outlined'
-                    error={ touched.email && errors.email ? true : false}
+                    error={touched.email && errors.email ? true : false}
                     helperText={touched.email ? errors.email : null}
                 />
 
-                <MyPasswordField 
-                   setFieldValue={setFieldValue}
-                   handleBlur={handleBlur}
-                   error={touched.password && errors.password ? true : false}
-                   errorMessage={errors && errors.password}
+                <MyPasswordField
+                    setFieldValue={setFieldValue}
+                    handleBlur={handleBlur}
+                    error={touched.password && errors.password ? true : false}
+                    errorMessage={errors && errors.password}
                 />
 
+                {authError && !errors.email && !errors.password && 
+                    <small >
+                        {authError}
+                    </small>
+                }
+
                 <div className="forgot-password-text">
-                    <Button color='primary'>Forgot Password?</Button>
+                    <Button color='primary' id='forgot-password'>Forgot Password?</Button>
                 </div>
 
-                <Field 
-                  type='submit'
-                  as={Button}
-                  variant='contained'
-                  color='primary'
-                  id='button'
-                  name='button'
+                <Field
+                    type='submit'
+                    as={Button}
+                    variant='contained'
+                    color='primary'
+                    id='button'
+                    name='button'
                 >
-                  Log In
+                    Log In
                 </Field>
 
             </div>
 
-            <p>Don't have an account ? <Link exact to='/signup'><Button color='primary'>Sign Up</Button></Link></p>
+            <p>Don't have an account ? <Link to='/signup'><Button color='primary' id='go-sign-up'>Sign Up</Button></Link></p>
 
         </div>
     )

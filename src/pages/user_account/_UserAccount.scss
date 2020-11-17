@@ -1,0 +1,17 @@
+.pc-user-account{
+    display: none;
+}
+
+@media(min-width : 960px) {
+    .pc-user-account{
+        display: block;
+    }
+
+    .mobile-user-account{
+        display: none;
+    }
+
+}
+
+
+@import './mobile/MobileUserAccount';

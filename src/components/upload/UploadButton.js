@@ -2,12 +2,12 @@ import React, { useState } from 'react'
 //import { Redirect } from 'react-router-dom'
 
 
-import { MyAddIcon } from '../MyIcons'
+//import { MyAddIcon } from '../MyIcons'
 import UploadModal from './modal/UploadModal'
 
 
 
-const UploadFiles = () => {
+const UploadFiles = ({ component }) => {
     const [fileUrl, setFileUrl] = useState(null)
     const [filePreviewUrl, setFilePreviewUrl] = useState(null)
     const [openModal, setOpenModal] = useState(false)
@@ -40,8 +40,9 @@ const UploadFiles = () => {
                     onChange={handleInputChange}
                     accept="image/png, .jpeg, .jpg, image/gif"
                     style={{ display: 'none' }}
+                    id='post-upload'
                 />
-                <MyAddIcon height='24px' width='24px' />
+                {component}
             </label>
             
             <UploadModal 

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import Stepper from '@material-ui/core/Stepper'
@@ -47,15 +47,12 @@ function getSteps() {
 }
 
 
-const MobileSignUp = ({ setFieldValue, handleBlur, touched, errors }) => {
+const MobileSignUp = ({ setFieldValue, handleBlur, touched, errors, values, verificationCode, handleVerificationCode }) => {
     const classes = useStyles();
-    const [activeStep, setActiveStep] = React.useState(0);
+    const [activeStep, setActiveStep] = useState(0);
     const steps = getSteps();
 
-    const handleNext = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    };
-
+   
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
@@ -68,6 +65,9 @@ const MobileSignUp = ({ setFieldValue, handleBlur, touched, errors }) => {
                     <Email
                         touched={touched}
                         errors={errors}
+                        email={values.email}
+                        setActiveStep={setActiveStep}
+                        handleVerificationCode={handleVerificationCode}
                     />
                 );
             case 1:
@@ -75,6 +75,10 @@ const MobileSignUp = ({ setFieldValue, handleBlur, touched, errors }) => {
                     <Verification
                         touched={touched}
                         errors={errors}
+                        setActiveStep={setActiveStep}
+                        verificationCode={verificationCode}
+                        handleVerificationCode={handleVerificationCode}
+                        email={values.email}
                     />
                 );
             case 2:
@@ -82,6 +86,9 @@ const MobileSignUp = ({ setFieldValue, handleBlur, touched, errors }) => {
                     <Names
                         touched={touched}
                         errors={errors}
+                        setActiveStep={setActiveStep}
+                        full_name={values.full_name}
+                        username={values.username}
                     />
                 );
             case 3:
@@ -91,6 +98,8 @@ const MobileSignUp = ({ setFieldValue, handleBlur, touched, errors }) => {
                         handleBlur={handleBlur}
                         error={touched.password && errors.password ? true : false}
                         errorMessage={errors.password}
+                        setActiveStep={setActiveStep}
+                        password={values.password}
                     />
                 );
             default:
@@ -102,7 +111,7 @@ const MobileSignUp = ({ setFieldValue, handleBlur, touched, errors }) => {
         <div className='mobile-signup-container'>
 
             <div className='header-container'>
-                <Link exact to='/'>
+                <Link to='/'>
                     <ArrowBackIosIcon />
                 </Link>
                 <p>Register</p>
@@ -129,7 +138,7 @@ const MobileSignUp = ({ setFieldValue, handleBlur, touched, errors }) => {
                                 className={classes.backButton}
                             >
                                 Go Back
-                                </Button>
+                            </Button>
 
                             <Field
                                 type='submit'
@@ -149,18 +158,6 @@ const MobileSignUp = ({ setFieldValue, handleBlur, touched, errors }) => {
                 ) : (
                         <div className='each-content-container'>
                             {getStepContent(activeStep)}
-                            <div className='step-buttons-container'>
-                                <Button
-                                    disabled={activeStep === 0}
-                                    onClick={handleBack}
-                                    className={classes.backButton}
-                                >
-                                    Back
-                                </Button>
-                                <Button variant="contained" color="primary" onClick={handleNext}>
-                                    {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                                </Button>
-                            </div>
                         </div>
                     )}
             </div>
@@ -171,45 +168,3 @@ const MobileSignUp = ({ setFieldValue, handleBlur, touched, errors }) => {
 
 export default MobileSignUp
 
-
-
-
-
-/**
- *
- * return (
-        <div className={classes.root}>
-            <Stepper activeStep={activeStep} alternativeLabel>
-                {steps.map((label) => (
-                    <Step key={label}>
-                        <StepLabel>{label}</StepLabel>
-                    </Step>
-                ))}
-            </Stepper>
-            <div>
-                {activeStep === steps.length ? (
-                    <div>
-                        <Typography className={classes.instructions}>All steps completed</Typography>
-                        <Button onClick={handleReset}>Reset</Button>
-                    </div>
-                ) : (
-                        <div className={classes.stepBody}>
-                            {getStepContent(activeStep)}
-                            <div className={classes.buttonsContainer}>
-                                <Button
-                                    disabled={activeStep === 0}
-                                    onClick={handleBack}
-                                    className={classes.backButton}
-                                >
-                                    Back
-                                </Button>
-                                <Button variant="contained" color="primary" onClick={handleNext}>
-                                    {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                                </Button>
-                            </div>
-                        </div>
-                    )}
-            </div>
-        </div>
-    );
- */

@@ -1,30 +1,39 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 
 
-import { feedPosts } from '../../home/FakeData'
+//import { feedPosts } from '../../home/FakeData'
 import EachPostFeed from '../../../components/feed/each_feed/EachPostFeed'
+import { db } from '../../../firebase/Firebase'
+import LogoLoader from '../../../components/loaders/LogoLoader'
 
 
-const MobilePost = ({ match }) =>{
-    const [post, setPost] = useState(null)
+const MobilePost = ({ match, history }) =>{
+    const [fetching, setFetching] = useState(true)
+    const [post, setPost] = useState({})
+    const {postId, posterId} = match.params
     
-    //console.log(match)
+    const handleFetchPost = useCallback( () =>{
+        db.collection('users').doc(posterId)
+        .collection('posts').doc(postId)
+        .onSnapshot(snapshot =>{
+            setPost(snapshot.data())
+            setFetching(false)
+        })
+    }, [postId, posterId])
 
     useEffect(() =>{
-        feedPosts.forEach((post)=>{
-            if(match.params.postId === post.postId){
-                setPost(post)
-            }
-        })
-    }, [match.params.postId])
+        handleFetchPost()
+
+    }, [handleFetchPost])
 
 
+    if(fetching) return <LogoLoader />
     return(
         <div className='post-page-container'>
             
             <div className='post-nav-container'>
-                   <ArrowBackIosIcon />
+                   <ArrowBackIosIcon onClick={() => history.goBack()} />
                    <p>Photo</p>
             </div>
             <EachPostFeed post={post} />

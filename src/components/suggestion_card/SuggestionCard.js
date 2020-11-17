@@ -1,8 +1,13 @@
-import React from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import CloseIcon from '@material-ui/icons/Close';
 import { makeStyles } from '@material-ui/core/styles'
+
+
+import { db } from '../../firebase/Firebase'
+import { followUser, unFollowUser } from '../../store/actions/ProfileActions'
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -25,9 +30,28 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const SuggestionCard = ({ data, x }) => {
+const SuggestionCard = ({ user, x }) => {
+  const [userPosts, setUserPosts] = useState([])
   const classes = useStyles()
 
+
+  const fetchUserPosts = useCallback( () =>{
+    db.collection('users').doc(user.userId)
+    .collection('posts').onSnapshot(snapshot =>{
+      const posts = []
+      snapshot.forEach(snap =>{
+        posts.push(snap.data())
+      })
+
+      setUserPosts(posts)
+    })
+
+  }, [user])
+
+  useEffect(() =>{
+    fetchUserPosts()
+
+  }, [ fetchUserPosts ])
 
   return (
     <div 
@@ -36,7 +60,7 @@ const SuggestionCard = ({ data, x }) => {
     >
       <div className='suggestion-card-contents-container'>
         <Avatar
-          src={data.dp}
+          src={user.profilePhoto}
           className={classes.large}
         />
 
@@ -46,22 +70,22 @@ const SuggestionCard = ({ data, x }) => {
           />
         </div>
 
-        <p>{data.name}</p>
-        <small>{data.userName}</small>
+        <p>{user.fullName}</p>
+        <small>{user.userName}</small>
 
         <div className='top-three-posts-container'>
           {
-            data.topThree.map((image, i) => {
+            userPosts && userPosts.slice(0, 3).map((post, i) => {
               return (
                 <div key={i} className='each-suggestion-post-container'>
-                  <img src={image} alt='file' />
+                  <img src={post.fileUrl} alt='file' />
                 </div>
               )
             })
           }
         </div>
 
-        <small>{data.reason}</small>
+        <small>suggested for you</small>
 
         <Button
           variant='contained'

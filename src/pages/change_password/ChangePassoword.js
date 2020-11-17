@@ -1,5 +1,6 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
+import { connect } from 'react-redux'
 import TextField from '@material-ui/core/TextField'
 import { withFormik, Field, Form } from 'formik'
 import Button from '@material-ui/core/Button'
@@ -27,8 +28,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const ChangePassword = ({ history }) =>{
+const ChangePassword = ({ history , auth}) =>{
     const classes = useStyles()
+
+    if(!auth.uid) return <Redirect to='/' />
     return(
         <div className='change-password-container'>
             <div className='change-password-nav-container'>
@@ -96,5 +99,10 @@ const FormikChangePassword = withFormik({
 })(ChangePassword)
 
 
+const mapStateToProps = (state) =>{
+    return{
+        auth : state.firebase.auth
+    }
+}
 
-export default FormikChangePassword
+export default connect(mapStateToProps)(FormikChangePassword)

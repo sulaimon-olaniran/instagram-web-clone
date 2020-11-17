@@ -9,7 +9,7 @@ import FileUploadStyle from './style/FileStyle'
 
 
 
-const UploadModal = ({ openModal, handleCloseModal, type, filePreviewUrl }) => {
+const UploadModal = ({ openModal, handleCloseModal, type, filePreviewUrl, fileUrl }) => {
     const [activeStep, setActiveStep] = useState(0)
     const [canvasUrl, setCanvasUrl] = useState('')
 
@@ -44,7 +44,11 @@ const UploadModal = ({ openModal, handleCloseModal, type, filePreviewUrl }) => {
                     title='New Photo Post'
                 />;
             case 1:
-                return <FileDetails goToPreviousStep={goToPreviousStep} filePreviewUrl={canvasUrl}/>;
+                return <FileDetails 
+                            goToPreviousStep={goToPreviousStep} 
+                            filePreviewUrl={canvasUrl}
+                            fileUrl={fileUrl}
+                        />;
             default:
                 return 'Unknown stepIndex';
         }

@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const MobileComments = ({ post, openCommentModal, handleCloseModal }) => {
+const MobileComments = ({ post, posterProfile, openCommentModal, handleCloseModal }) => {
     const [textAreaHeight, setTextAreaHeight] = useState(0)
     const classes = useStyles()
 
@@ -48,7 +48,9 @@ const MobileComments = ({ post, openCommentModal, handleCloseModal }) => {
                     </div>
 
                     <div className='comment-input-container'>
-                        <Avatar />
+                        <Avatar 
+                            src={posterProfile.profilePhoto}
+                        />
                         <form>
                             <TextareaAutosize
                                 placeholder='Add a comment...'
@@ -67,7 +69,7 @@ const MobileComments = ({ post, openCommentModal, handleCloseModal }) => {
 
                     <div className='caption-text'>
                         <p>
-                            <span>{post && post.name}</span> {post && post.caption}
+                            <span>{posterProfile && posterProfile.userName}</span> {post && post.caption}
                         </p>
 
                         <small>{post && post.time}</small>

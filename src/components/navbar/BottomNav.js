@@ -2,8 +2,10 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import Avatar from '@material-ui/core/Avatar'
 import { makeStyles } from '@material-ui/core/styles'
+import { connect } from 'react-redux'
 
-import { MyActiveHomeIcon, MyUnActiveSearchIcon, UnLikedIcon } from '../MyIcons'
+
+import { MyActiveHomeIcon, MyUnActiveSearchIcon, UnLikedIcon, MyAddIcon } from '../MyIcons'
 import UploadFiles from '../upload/UploadButton'
 
 const useStyles = makeStyles((theme) => ({
@@ -18,10 +20,14 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const BottomNav = () => {
+const BottomNav = ({ auth, profile }) => {
+    //console.log(auth)
+    const showNavBar = auth.uid ? 'flex' : 'none'
     const classes = useStyles()
     return (
-        <nav>
+        <nav
+            style={{display : showNavBar}}
+        >
             <Link  to='/'>
                 <MyActiveHomeIcon
                     height='24px'
@@ -36,18 +42,16 @@ const BottomNav = () => {
                 />
             </Link>
 
-            {/* <MyAddIcon
-                height='24px'
-                width='24px'
-            /> */}
-            <UploadFiles />
+            <UploadFiles 
+                component={<MyAddIcon height='24px' width='24px' />}
+            />
 
             <UnLikedIcon
                 height='24px'
                 width='24px'
             />
 
-            <Link to='/sulai_m0n'>
+            <Link to={`/account/${profile.userName}/${profile.userId}`}>
                 <Avatar
                     src={'null'}
                     className={classes.small}
@@ -58,5 +62,12 @@ const BottomNav = () => {
     )
 }
 
+const mapStateToProps = (state) =>{
+    return{
+        auth : state.firebase.auth,
+        profile : state.firebase.profile
+    }
+}
 
-export default BottomNav
+
+export default connect(mapStateToProps)(BottomNav)

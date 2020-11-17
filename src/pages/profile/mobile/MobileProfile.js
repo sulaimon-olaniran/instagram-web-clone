@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
@@ -7,13 +7,15 @@ import { makeStyles } from '@material-ui/core/styles'
 import PersonIcon from '@material-ui/icons/Person'
 import CheckIcon from '@material-ui/icons/Check'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
+import { withRouter } from 'react-router-dom'
 
-
+import { db } from '../../../firebase/Firebase'
 import DashBoard from './dashboard/DashBoard'
 import Followers from './follow/Followers'
 import Following from './follow/Following'
 import UnFollowDialog from './actions/unfollow/UnFollow'
 import BlockReportRestrictDialog from './actions/brr-dialog/BRRDialog'
+import LogoLoader from '../../../components/loaders/LogoLoader'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -35,10 +37,40 @@ const useStyles = makeStyles((theme) => ({
 
 
 const MobileProfile = ({ match, history }) => {
+    const [userProfile, setUserProfile] = useState({})
+    const [fetchingData, setFetchingData] = useState(true)
+    const [userPosts, setUserPosts] = useState([])
     const [followingModal, setFollowingModal] = useState(false)
     const [followersModal, setFollowersModal] = useState(false)
     const [unfollowDialog, setUnfollowDialog] = useState(false)
     const [blockDialog, setBlockDialog] = useState(false)
+    //console.log(match.params.id)
+
+    const getUserProfileData = useCallback( () =>{
+        db.collection('users').doc(match.params.id)
+        .onSnapshot(snapshot =>{
+            setUserProfile(snapshot.data())
+            //console.log(snapshot.data())
+            
+            db.collection('users').doc(match.params.id)
+            .collection('posts').onSnapshot(snapshot =>{
+                const posts = []
+                snapshot.forEach((doc) =>{
+                    posts.push(doc.data())
+                })
+
+                setUserPosts(posts)
+                setFetchingData(false)
+            })
+        })
+    }, [match.params.id])
+    
+
+    useEffect(() =>{
+        getUserProfileData()
+    }, [getUserProfileData])
+
+    //console.log(userPosts)
 
     const openFollowingModal = () =>{
         setFollowingModal(true)
@@ -68,17 +100,21 @@ const MobileProfile = ({ match, history }) => {
 
     const classes = useStyles()
     //console.log(match)
+    if(fetchingData) return <LogoLoader />
     return (
         <div className='profile-page-container'>
 
-            <Followers 
+            { followersModal && <Followers 
                handleCloseModal={handleCloseModal}
                openModal={followersModal}
-            />
-            <Following 
+               followers={userProfile && userProfile.followers}
+            />}
+
+            {followingModal && <Following 
                 handleCloseModal={handleCloseModal}
                 openModal={followingModal}
-            />
+                following={userProfile && userProfile.following}
+            />}
 
             <UnFollowDialog 
                openDialog={unfollowDialog}
@@ -102,7 +138,10 @@ const MobileProfile = ({ match, history }) => {
             <div className='user-information-container'>
 
                 <div className='first-section-container'>
-                    <Avatar className={classes.large} src='https://source.unsplash.com/random/600x600/?woman' />
+                    <Avatar 
+                        className={classes.large} 
+                        src={userProfile && userProfile.profilePhoto} 
+                    />
 
                     <div className='name-message-follow-container'>
                         <p>{match.params.username}</p>
@@ -139,10 +178,10 @@ const MobileProfile = ({ match, history }) => {
                 </div>
 
                 <div className='second-section-container'>
-                    <h3>Olaniran Sulaimon</h3>
-                    <p>Web App Developer</p>
-                    <a href='https://www.instagram.com/manchesterunited/' target="_blank" rel="noopener noreferrer">
-                       instagram.com/manchesterunited/
+                    <h3>{userProfile && userProfile.fullName }</h3>
+                    <p>{userProfile && userProfile.bio}</p>
+                    <a href={userProfile && userProfile.website} target="_blank" rel="noopener noreferrer">
+                        {userProfile && userProfile.website}
                     </a>
                 </div>
 
@@ -150,21 +189,21 @@ const MobileProfile = ({ match, history }) => {
                 <div className='third-section-container'>
                     <Button>
                         <span>
-                            <p>64</p>
+                            <p>{userPosts && userPosts.length}</p>
                             <small>posts</small>
                         </span>
                     </Button>
 
                     <Button onClick={openFollowersModal}>
                         <span>
-                            <p>14,564</p>
+                            <p>{userProfile && userProfile.followers.length}</p>
                             <small>followers</small>
                         </span>
                     </Button>
 
                     <Button onClick={openFollowingModal}>
                         <span>
-                            <p>150</p>
+                            <p>{userProfile && userProfile.following.length}</p>
                             <small>following</small>
                         </span>
                     </Button>
@@ -175,7 +214,11 @@ const MobileProfile = ({ match, history }) => {
 
 
             <div className='user-medias-container'>
-                <DashBoard />
+                <DashBoard 
+                    posts={userPosts && userPosts}
+                    user={userProfile && userProfile}
+                    from='profile'
+                />
             </div>
 
         </div>
@@ -183,4 +226,4 @@ const MobileProfile = ({ match, history }) => {
 }
 
 
-export default MobileProfile
+export default withRouter(MobileProfile)

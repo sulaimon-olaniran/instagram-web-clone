@@ -1,20 +1,24 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
+import useDoubleClick from 'use-double-click'
 
 
 import { LikedIcon, UnLikedIcon, CommentIcon, ShareIcon, SavedIcon } from '../../MyIcons'
 import MoreOptions from './more_options/MoreOptions'
 import SharePost from './share/SharePost'
-import MobileComments from '../../../pages/comments/mobile/MobileComments';
+import MobileComments from '../../../pages/comments/mobile/MobileComments'
+import { db } from '../../../firebase/Firebase'
 
 
 const EachPostFeed = ({ post }) => {
     const [openDialog, setOpenDialog] = useState(false)
     const [openShareDrawer, setOpenShareDrawer] = useState(false)
     const [openComment, setOpenComment] = useState(false)
+    const [posterProfile, setPosterProfile] = useState({})
+    const buttonRef = useRef(null)
 
     const handleOpenComment = () =>{
         setOpenComment(true)
@@ -40,12 +44,35 @@ const EachPostFeed = ({ post }) => {
         setOpenShareDrawer(false)
     }
 
+    const getPosterProfile = useCallback( () =>{
+        db.collection('users').doc(post && post.userId)
+        .onSnapshot(snapshot =>{
+            setPosterProfile(snapshot.data())
+        })
+    }, [post])
+
+    useEffect(() =>{
+        getPosterProfile()
+    }, [ getPosterProfile ])
+
+    useDoubleClick({
+        onSingleClick: e => {
+          console.log(e, 'single click');
+        },
+        onDoubleClick: e => {
+          console.log(e, 'double click');
+        },
+        ref: buttonRef,
+        latency: 250
+      });
+
     return (
         <div className='each-post-feed-container'>
             <MobileComments 
               openCommentModal={openComment}
               handleCloseModal={handleCloseComment}
               post={post && post}
+              posterProfile={posterProfile && posterProfile}
             />
             <MoreOptions
                 openDialog={openDialog}
@@ -59,22 +86,24 @@ const EachPostFeed = ({ post }) => {
 
                 <div className='user-container'>
                     <Avatar
-                        src={post && post.imageUrl}
+                        src={posterProfile && posterProfile.profilePhoto}
                     />
 
-                    <Link to={`/profile/${post && post.name}/`}>
-                        <p>{post && post.name}</p>
+                    <Link 
+                        to={`/${posterProfile && posterProfile.userName}/${posterProfile && posterProfile.userId}`}
+                    >
+                        <p>{posterProfile && posterProfile.userName}</p>
                     </Link>
 
-                    {
-                        post && post.following &&
+                    {/* {
+                        post && post.following && */}
                     <Button 
                        variant='contained'
                        color='primary'
                        size='small'
                     >
                         Follow
-                    </Button>}
+                    </Button>
 
                 </div>
 
@@ -85,7 +114,10 @@ const EachPostFeed = ({ post }) => {
 
 
             <div className='post-media-container'>
-                <img src={post && post.image} alt='POST_FILE' />
+                <img 
+                    ref={buttonRef}
+                    src={post && post.fileUrl} alt='POST_FILE' 
+                />
             </div>
 
 
@@ -119,25 +151,27 @@ const EachPostFeed = ({ post }) => {
 
             <div className='post-information-container'>
                 <div className='likes-container' >
-                    <p>{post && post.likes} likes</p>
+                    <p>{post && post.likes.length} likes</p>
                 </div>
 
                 <div className='caption-container'>
-                    <p><span>{post && post.name}</span> {post && post.caption}</p>
+                    <p><span>{posterProfile && posterProfile.userName}</span> {post && post.caption}</p>
                 </div>
 
                 <div className='comments-container'>
                     
-                    <div className='comments-title'>
+                    { post && post.comments.length > 0 &&
+                        <div className='comments-title'>
                             <p onClick={handleOpenComment}>View all {post && post.comments.length} comments</p>
-                    </div>
+                        </div>
+                    }
 
                     {
-                        post && post.comments.map((comment, i) => {
+                        post && post.comments.length > 0 && post.comments.map((comment, i) => {
                             return (
                                 <div key={i} className='each-comment-container'>
                                     <div className='comment'>
-                                        <p><span>{comment.name} </span> {comment.comment}</p>
+                                        <p><span>{comment.userName} </span> {comment.comment}</p>
                                     </div>
                                     <UnLikedIcon
                                         height='12px'

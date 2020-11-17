@@ -31,7 +31,7 @@ const GoogleAutocomplete = ({ handleCloseModal }) => {
     return (
         <React.Fragment>
             <div className='location-top-nav-container'>
-                <CloseIcon onClick={handleCloseModal} />
+                <CloseIcon onClick={() => handleCloseModal(null)} />
                 <p>Add Location</p>
             </div>
 

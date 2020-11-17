@@ -1,10 +1,34 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import { firestoreConnect } from 'react-redux-firebase'
+import { connect } from 'react-redux'
+import { compose } from 'redux'
+
+
 import SuggestionsCarousel from '../../../components/sugestions_carousel/SuggestionsCarousel'
 
 
 
 
-const MobileWelcome = () =>{
+const MobileWelcome = ({ users, profile }) =>{
+    const [suggestedUsers, setSuggestedUsers] = useState([])
+    
+    const { following, userId } = profile && profile
+
+    useEffect(() =>{
+        const usersArray = []
+        users && users.forEach(user =>{
+            if( user.userId !== userId && !following.includes(user.userId)){
+                usersArray.push(user)
+                //console.log(usersArray)
+            }
+        })
+
+        setSuggestedUsers(usersArray)
+    }, [users, following, userId])
+
+
+    //console.log(suggestedUsers)
+
     return(
         <div className='mobile-welcome-page-container'>
             <h1>Welcome to Instagram</h1>
@@ -13,15 +37,28 @@ const MobileWelcome = () =>{
                 photos and videos they post here.
             </p>
             
-            <SuggestionsCarousel />
+            <SuggestionsCarousel 
+                users={suggestedUsers}
+            />
 
         </div>
     )
 }
 
 
+const mapStateToProps = (state) => {
+    //console.log(state.firestore)
+    return {
+        users: state.firestore.ordered.users,
+        profile: state.firebase.profile
+    }
+}
 
 
 
-
-export default MobileWelcome
+export default compose(
+    connect(mapStateToProps),
+    firestoreConnect([
+        { collection: 'users' }
+    ])
+)(MobileWelcome)

@@ -14,11 +14,12 @@ export const ValidationSchema = yup.object().shape({
     .required('Name is a required field')
     .min(2, 'Min of 2 Letters')
     .test('alphabets', 'Name must only contain alphabets', (value) => {
-        return /^[A-Za-z]+$/.test(value)}),
+        return /^[a-zA-Z\s]+$/.test(value)}),
 
     username : yup.string()
     .required("Username is Required")
     .min(4, 'Min of 4 letters')
-    .trim("Username can't contain spaces")
+    .test('spaces', 'No spaces allowed in username', (value) => {
+        return /^\S*$/.test(value)})
     .strict(true)
 })

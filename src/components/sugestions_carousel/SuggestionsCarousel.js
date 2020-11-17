@@ -187,8 +187,7 @@ const data = [
 
 
 
-const SuggestionsCarousel = () => {
-
+const SuggestionsCarousel = ({ users }) => {
     const [x, setX] = useState(0)
 
     const handleGoRight = () => {
@@ -215,6 +214,8 @@ const SuggestionsCarousel = () => {
     const leftButtonDisplay = x < 0 ? 'flex' : 'none'
     const rightButtonDisplay = x <= -100 * (data.length-1) ? 'none' : 'flex'
 
+    //console.log(users)
+
     return (
         <div 
             {...handlers}
@@ -229,9 +230,9 @@ const SuggestionsCarousel = () => {
             </div>
 
             {
-                data.map((data, i) => {
+                users && users.map((user, i) => {
                     return (
-                        <SuggestionCard data={data} key={i} x={x} />
+                        <SuggestionCard user={user} key={user.userId} x={x} />
                     )
                 })
             }

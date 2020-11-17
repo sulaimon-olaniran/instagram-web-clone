@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-const DashBoard = () => {
+const DashBoard = ({ user, posts, from }) => {
     const classes = useStyles()
     const [activeSection, setActiveSection] = useState('posts')
 
@@ -38,24 +38,33 @@ const DashBoard = () => {
 
     switch (activeSection) {
         case 'posts':
-            mainComponentDisplayed = <UserPosts />
-            //activeClassName = "profile"
+            mainComponentDisplayed = <UserPosts 
+                posts={posts}
+                from={from}
+                user={user}
+            />
             break;
+
         case 'feed':
-            mainComponentDisplayed = <UserFeed />
-            //activeClassName = "chats"
+            mainComponentDisplayed = <UserFeed 
+                posts={posts}
+                from={from}
+                user={user}
+            />
             break;
+
         case 'tagged':
             mainComponentDisplayed = <Tagged />
-            //activeClassName = "users"
             break;
+
         case 'channel':
             mainComponentDisplayed = <Channel />
-            //activeClassName = "favorites"
             break;
+
         default:
-            mainComponentDisplayed = <UserPosts />
-        //activeClassName = "chats"
+            mainComponentDisplayed = <UserPosts 
+                posts={posts}
+            />
 
     }
 

@@ -1,11 +1,17 @@
 import React from 'react'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
+import { Redirect } from 'react-router-dom'
+import { connect } from 'react-redux'
+
 
 import { suggestions } from './Fakedat'
 import Suggestion from './suggestion/Suggestion'
 
 
-const Suggestions = () => {
+const Suggestions = ({ auth }) => {
+
+    if(!auth.uid) return <Redirect to='/' />
+
     return (
         <div className='suggestions-container'>
             <div className='suggestions-nav-container'>
@@ -36,4 +42,11 @@ const Suggestions = () => {
 }
 
 
-export default Suggestions
+const mapStateToProps = (state) =>{
+    return{
+        auth : state.firebase.auth
+    }
+}
+
+
+export default connect(mapStateToProps)(Suggestions)

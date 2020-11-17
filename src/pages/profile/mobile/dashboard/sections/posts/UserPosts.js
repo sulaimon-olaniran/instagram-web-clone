@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import GridList from '@material-ui/core/GridList'
 import GridListTile from '@material-ui/core/GridListTile'
+import NoPost from './no_posts/NoPost'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -20,8 +21,39 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const UserPosts = () => {
+const UserPosts = ({ posts, from, user }) => {
     const classes = useStyles();
+    //console.log(posts)
+    if( !posts.length > 0) return <NoPost from={from} user={user}/>
+    return (
+        <div className='user-post-container'>
+            <GridList cellHeight={120} className={classes.gridList} cols={3}>
+                {
+                    posts && posts.map((post, i) => {
+                        //console.log(i)
+                        return (
+                            <GridListTile key={post.postId}  >
+                                <Link to={`/p/${post.postId}/${post.userId}`}>
+                                    <img src={post.fileUrl} alt='FILE' />
+                                </Link>
+                            </GridListTile>
+                        )
+                    })
+                }
+            </GridList>
+
+        </div>
+    )
+}
+
+
+export default UserPosts
+
+
+
+
+/*
+
     const userPostData = [
         {
             post: 'https://source.unsplash.com/random/600x600/?woman',
@@ -162,26 +194,4 @@ const UserPosts = () => {
         },
     ]
 
-    return (
-        <div className='user-post-container'>
-            <GridList cellHeight={120} className={classes.gridList} cols={3}>
-                {
-                    userPostData.map((post, i) => {
-                        //console.log(i)
-                        return (
-                            <GridListTile key={i}  >
-                                <Link to={`/post/${post.postId}`}>
-                                    <img src={post.post} alt='FILE' />
-                                </Link>
-                            </GridListTile>
-                        )
-                    })
-                }
-            </GridList>
-
-        </div>
-    )
-}
-
-
-export default UserPosts
+*/

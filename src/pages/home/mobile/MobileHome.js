@@ -4,7 +4,7 @@ import Avatar from '@material-ui/core/Avatar'
 import AddCircleIcon from '@material-ui/icons/AddCircle'
 import { makeStyles } from '@material-ui/core/styles'
 import HorizontalScroller from 'react-horizontal-scroll-container'
-
+import { connect } from 'react-redux'
 
 
 import instagram_text_logo from '../../assets/instagram_text_logo.png'
@@ -12,9 +12,10 @@ import { MyDirectIcon, MyCameraIcon } from '../../../components/MyIcons'
 //import Posts from './posts/Posts'
 //import StoryAvatar from '../../../components/avatar/StoryAvatar'
 import Stories from '../../../components/stories/Stories'
-import { feedPosts } from '../FakeData'
+//import { feedPosts } from '../FakeData'
 import PostsFeed from '../../../components/feed/PostsFeed'
 import CreateButton from '../../../components/create_story/CreateButton'
+import MobileWelcome from '../../welcome/mobile/MobileWelcome'
 
 const useStyles = makeStyles((theme) => ({
     small: {
@@ -25,13 +26,14 @@ const useStyles = makeStyles((theme) => ({
     large: {
         width: theme.spacing(8),
         height: theme.spacing(8),
-        marginLeft : '10px'
+        marginLeft: '10px'
     },
 }));
 
 
-const MobileHome = () => {
+const MobileHome = ({ feedPosts }) => {
     const classes = useStyles()
+    //console.log(users)
 
     return (
         <div className='mobile-home-container'>
@@ -47,36 +49,45 @@ const MobileHome = () => {
                     />
                 </Badge>
             </div>
+            { feedPosts.length > 0 ?
+                <React.Fragment>
+                    <div className='stories-container'>
+                        <HorizontalScroller>
+                            <Badge
+                                overlap="circle"
+                                anchorOrigin={{
+                                    vertical: 'bottom',
+                                    horizontal: 'right',
+                                }}
+                                badgeContent={<AddCircleIcon color='primary' fontSize='small' />}
+                            >
+                                <Avatar
+                                    src={'https://source.unsplash.com/random/600x600/?model'}
+                                    className={classes.large}
+                                />
+                            </Badge>
 
-            <div className='stories-container'>
-                <HorizontalScroller>
-                    <Badge
-                        overlap="circle"
-                        anchorOrigin={{
-                            vertical: 'bottom',
-                            horizontal: 'right',
-                        }}
-                        badgeContent={<AddCircleIcon color='primary' fontSize='small' />}
-                    >
-                        <Avatar
-                            src={'https://source.unsplash.com/random/600x600/?model'}
-                            className={classes.large}
-                        />
-                    </Badge>
+                            <Stories />
 
-                    <Stories />
+                        </HorizontalScroller>
+                    </div>
 
-                </HorizontalScroller>
-            </div>
-
-
-            <div className='main-contents-container'>
-                <PostsFeed feedPosts={feedPosts} />
-            </div>
-
+                    <div className='main-contents-container'>
+                        <PostsFeed feedPosts={feedPosts} />
+                    </div>
+                </React.Fragment>
+                :
+                <MobileWelcome />
+            }
 
         </div>
     )
 }
 
-export default MobileHome
+const mapStateToProps = (state) => {
+    return {
+        posts: state.posts.feedPosts
+    }
+}
+
+export default connect(mapStateToProps)(MobileHome)

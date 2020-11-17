@@ -2,12 +2,14 @@ import React from 'react'
 import FollowTheme from './follow_ui/FollowTheme'
 
 
-const Followers = ({ openModal, handleCloseModal }) =>{
+const Followers = ({ openModal, handleCloseModal, followers }) =>{
+    console.log(followers)
     return(
         <FollowTheme 
             openModal={openModal}
             handleCloseModal={handleCloseModal}
-            data='Followers'
+            header='Followers'
+            data={followers}
         />
     )
 }

@@ -1,5 +1,7 @@
 import React from 'react'
 import { Form, withFormik } from 'formik'
+import { connect } from 'react-redux'
+import { signUserIn } from '../../store/actions/AuthActions'
 
 
 import { ValidationSchema } from './ValidationSchema'
@@ -9,7 +11,8 @@ import PcSignIn from './pc/PcSignIn'
 
 
 
-const SignIn = ({ setFieldValue, handleBlur, touched, errors }) => {
+const SignIn = ({ setFieldValue, handleBlur, touched, errors, authError }) => {
+    //console.log(authError)
     return (
         <Form>
             <div className='mobile-signup' >
@@ -18,6 +21,7 @@ const SignIn = ({ setFieldValue, handleBlur, touched, errors }) => {
                     handleBlur={handleBlur}
                     touched={touched}
                     errors={errors}
+                    authError={authError}
                 />
             </div>
 
@@ -29,6 +33,8 @@ const SignIn = ({ setFieldValue, handleBlur, touched, errors }) => {
                     errors={errors}
                 />
             </div>
+
+            
         </Form>
     )
 }
@@ -45,8 +51,22 @@ const FormikSignIn = withFormik({
     validationSchema: ValidationSchema,
 
     handleSubmit(values, { props, setStatus, setSubmitting }) {
+        props.signUserIn(values)
         console.log(values)
     }
 })(SignIn)
 
-export default FormikSignIn
+
+const mapStateToProps = (state) =>{
+    return{
+        authError : state.auth.authError
+    }
+}
+
+const mapDispatchToProps = (dispatch) =>{
+    return{
+        signUserIn : (creds) => dispatch(signUserIn(creds))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FormikSignIn)
