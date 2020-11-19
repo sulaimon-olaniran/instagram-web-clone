@@ -16,6 +16,7 @@ import Stories from '../../../components/stories/Stories'
 import PostsFeed from '../../../components/feed/PostsFeed'
 import CreateButton from '../../../components/create_story/CreateButton'
 import MobileWelcome from '../../welcome/mobile/MobileWelcome'
+import LogoLoader from '../../../components/loaders/LogoLoader'
 
 const useStyles = makeStyles((theme) => ({
     small: {
@@ -31,10 +32,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const MobileHome = ({ feedPosts }) => {
+const MobileHome = ({ feedPosts, fetchingFeedPosts }) => {
     const classes = useStyles()
     //console.log(users)
-
+    if(fetchingFeedPosts) return <LogoLoader />
     return (
         <div className='mobile-home-container'>
 

@@ -17,7 +17,7 @@ const MobileWelcome = ({ users, profile }) =>{
     useEffect(() =>{
         const usersArray = []
         users && users.forEach(user =>{
-            if( user.userId !== userId && !following.includes(user.userId)){
+            if( user.userId !== userId && userId && following && !following.includes(user.userId)){
                 usersArray.push(user)
                 //console.log(usersArray)
             }

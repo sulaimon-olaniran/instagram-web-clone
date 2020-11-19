@@ -1,4 +1,4 @@
-import { storage } from '../../firebase/Firebase'
+import firebase, { storage, db } from '../../firebase/Firebase'
 
 export const createPost = (post, file) => {
     return (dispatch, getState, { getFirebase, getFirestore }) => {
@@ -26,7 +26,7 @@ export const createPost = (post, file) => {
                         }, { merge: true })
                         .then(() => {
                             //finally dispatching action after all async calls are done
-                            dispatch({ type: 'CREATE_POST', post })
+                            dispatch({ type: 'CREATE_POST_SUCCESS', post })
                         })
                         .catch(error => {
                             dispatch({ type: 'CREATE_POST_ERROR', error })
@@ -44,5 +44,72 @@ export const createPost = (post, file) => {
             .catch(error => {
                 dispatch({ type: 'CREATE_POST_ERROR', error })
             })
+    }
+}
+
+
+
+export const likePost = (data) =>{
+    return (dispatch, getState) =>{
+
+        const likedPostNotification = firebase.functions().httpsCallable('likedPostNotification')
+
+        db.collection('users').doc(data.userId)
+        .update({
+            likedPosts : firebase.firestore.FieldValue.arrayUnion(data.postId)
+        })
+        .then(() =>{
+                return db.collection('users').doc(data.posterId)
+                .collection('posts').doc(data.postId)
+                .update({
+                    likes : firebase.firestore.FieldValue.arrayUnion(data.userId)
+                })
+            })
+            .then(() =>{
+                return  likedPostNotification({
+                time : Date.now(),
+                userId : data.userId,
+                accountId : data.accountId,
+                postId : data.postId,
+                notification : 'Liked your post',
+            })
+        })
+        .then(() =>{
+            dispatch({type : 'LIKED_POST_SUCCESSFUL'})
+        })
+        .catch(error =>{
+            dispatch({ type : 'LIKED_POST_FAILED', error})
+        })
+        
+    }
+}
+
+export const unLikePost = (data) =>{
+    return (dispatch, getState) =>{
+        const docId = data.userId.concat(data.postId)
+
+        db.collection('users').doc(data.userId)
+        .update({
+            likedPosts : firebase.firestore.FieldValue.arrayRemove(data.postId)
+        })
+        .then(() =>{
+            return db.collection('users').doc(data.posterId)
+            .collection('posts').doc(data.postId)
+            .update({
+                likes : firebase.firestore.FieldValue.arrayRemove(data.userId)
+            })
+            .then(() =>{
+                return db.collection('users').doc(data.accountId).collection('notifications')
+                .doc(docId)
+                .delete()
+            })
+        })
+        .then(() =>{
+            dispatch({type : 'UNLIKE_POST_SUCCESSFUL'})
+        })
+        .catch(error =>{
+            dispatch({ type : 'UNLIKE_POST_FAILED', error})
+        })
+        
     }
 }

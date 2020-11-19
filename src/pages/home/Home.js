@@ -11,6 +11,7 @@ import MobileHome from './mobile/MobileHome'
 
 const Home = ({ users, following }) => {
     const [followingPosts, setFollowingPosts] = useState([])
+    const [fetching, setFetching] = useState(true)
     //const [fetching, setFetching] = useState(true)
 
     //const mountedRef = useRef(true)
@@ -19,8 +20,7 @@ const Home = ({ users, following }) => {
     const concatAllFollowingPosts = useCallback(() => {
 
         users && users.forEach(user => {
-            if (following.includes(user.userId)) {
-
+            if (following && following.includes(user.userId)) {
                 db.collection('users').doc(user.userId)
                     .collection('posts').onSnapshot(snapshot => {
                         // if (!mountedRef.current) return null
@@ -30,6 +30,7 @@ const Home = ({ users, following }) => {
                             posts.push(data)
                         })
                         setFollowingPosts(prev => prev.concat(posts))
+                        setFetching(false)
                     })
             }
 
@@ -51,6 +52,7 @@ const Home = ({ users, following }) => {
         <div>
             <MobileHome
                 feedPosts={followingPosts}
+                fetchingFeedPosts ={fetching}
             />
         </div>
     )

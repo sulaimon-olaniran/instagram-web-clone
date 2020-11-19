@@ -13,7 +13,11 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const UnFollowDialog = ({ handleCloseDialog, openDialog }) => {
+const UnFollowDialog = ({ handleCloseDialog, openDialog, unFollowUser }) => {
+    const handleUnFollowUser = () =>{
+        unFollowUser()
+        handleCloseDialog()
+    }
     const classes = useStyles()
     return (
         <Dialog onClose={handleCloseDialog} aria-labelledby="simple-dialog-title" open={openDialog}>
@@ -27,7 +31,13 @@ const UnFollowDialog = ({ handleCloseDialog, openDialog }) => {
 
                 <div className='unfollow-buttons-container'>
                     <div className='unfollow-dialog-button-container'>
-                        <Button color='secondary' size='large'>Unfollow</Button>
+                        <Button 
+                            color='secondary' 
+                            size='large'
+                            onClick={handleUnFollowUser}
+                        >
+                            Unfollow
+                        </Button>
                     </div>
 
                     <div className='unfollow-dialog-button-container'>

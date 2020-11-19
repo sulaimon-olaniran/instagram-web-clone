@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
-import CloseIcon from '@material-ui/icons/Close';
+import CloseIcon from '@material-ui/icons/Close'
 import { makeStyles } from '@material-ui/core/styles'
+import { connect } from 'react-redux'
 
 
 import { db } from '../../firebase/Firebase'
@@ -30,10 +31,11 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const SuggestionCard = ({ user, x }) => {
+const SuggestionCard = ({ user, x, followUser, profile }) => {
   const [userPosts, setUserPosts] = useState([])
   const classes = useStyles()
 
+  //console.log(profile)
 
   const fetchUserPosts = useCallback( () =>{
     db.collection('users').doc(user.userId)
@@ -52,6 +54,28 @@ const SuggestionCard = ({ user, x }) => {
     fetchUserPosts()
 
   }, [ fetchUserPosts ])
+
+  const handleFollowUser = () =>{
+    const data = {
+      userId : profile.userId,
+      userName : profile.userName,
+      profilePhoto : profile.profilePhoto,
+      accountId : user.userId
+    }
+
+    followUser(data)
+  }
+
+  const hanldeUnFollowUser = () =>{
+    const data = {
+      userId : profile.userId, //logged in user account id
+      accountId : user.userId //id of user to unfollow
+    }
+    unFollowUser(data)
+  }
+
+  const handleFollowOrUnFollow = profile.following.includes(user.userId) ? hanldeUnFollowUser : handleFollowUser
+  const textToDisplay = profile.following.includes(user.userId) ? 'Unfollow' : 'Follow'
 
   return (
     <div 
@@ -91,8 +115,9 @@ const SuggestionCard = ({ user, x }) => {
           variant='contained'
           color='primary'
           className={classes.button}
+          onClick={handleFollowOrUnFollow}
         >
-          Follow
+          {textToDisplay}
       </Button>
 
       </div>
@@ -101,5 +126,19 @@ const SuggestionCard = ({ user, x }) => {
   )
 }
 
+const mapStateToProps = (state) =>{
+  return{
+    //profile of currently logged in user
+    profile : state.firebase.profile
+  }
+}
 
-export default SuggestionCard
+const mapDispatchToProps = (dispatch) =>{
+  return{
+      followUser : data => dispatch(followUser(data)),
+      unFollowUser : data => dispatch(unFollowUser(data))
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(SuggestionCard)

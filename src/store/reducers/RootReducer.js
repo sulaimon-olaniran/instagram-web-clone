@@ -4,7 +4,7 @@ import { firebaseReducer } from 'react-redux-firebase'
 
 import AuthReducer from './AuthReducer'
 import PostsReducer from './PostsReducer'
-import ProfileReducer from './PostsReducer'
+import ProfileReducer from './ProfileReducer'
 
 
 

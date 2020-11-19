@@ -5,10 +5,12 @@ import Button from '@material-ui/core/Button'
 import Avatar from '@material-ui/core/Avatar'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import { makeStyles } from '@material-ui/core/styles'
+import { connect } from 'react-redux'
 
 
 import { db } from '../../../../../firebase/Firebase'
 import LogoLoader from '../../../../../components/loaders/LogoLoader'
+import { unFollowUser, followUser, removeFollower } from '../../../../../store/actions/ProfileActions'
 
 
 
@@ -20,39 +22,63 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const FollowTheme = ({ openModal, handleCloseModal, header, data }) => {
+const FollowTheme = ({ openModal, handleCloseModal, header, data, from, profile, unFollowUser, followUser, removeFollower }) => {
     const [fetchingData, setFetchingData] = useState(true)
     const [followUsersData, setFollowUsersDAta] = useState([])
     const classes = useStyles()
     //console.log(data)
+
+    const handleUnfollowUser = (id) =>{
+        const data ={
+            userId : profile.userId,
+            accountId : id
+        }
+        unFollowUser(data)
+    }
+
+
+    const handleFollowUser = (id) =>{
+        const data = {
+            userId : profile.userId,
+            userName : profile.userName,
+            profilePhoto : profile.profilePhoto,
+            accountId : id
+        }
+        followUser(data)
+    }
+
+    const handleRemoveFollower = (id) =>{
+        const data ={
+            userId : profile.userId,
+            accountId : id 
+        }
+
+        removeFollower(data)
+    }
 
     const handleCloseClearModal = () =>{
         handleCloseModal()
         setFollowUsersDAta([])
     }
 
+
     //get each follower/following user data using their id
     const getAllFollowData = useCallback( () => {
-        data && data.length > 0 && data.forEach(data =>{
+        data && data.length > 0 ? 
+        
+        data.forEach(data =>{
             db.collection('users').doc(data)
             .onSnapshot(snapshot =>{
-                if(followUsersData > 0){
-                    if(followUsersData.includes(snapshot.data())){
-                        return null
-                    }
-                    else{
-                        setFollowUsersDAta(prev => prev.concat(snapshot.data()))
-                        console.log('i added more data even though you asked me not to')
-                    }
-                }
-                else{
-                    setFollowUsersDAta(prev => prev.concat(snapshot.data()))
-                }
+                setFollowUsersDAta(prev => prev.concat(snapshot.data()))
                 setFetchingData(false)
-                
             })
-        })
-    }, [ data, followUsersData ])
+        }) 
+        
+        : 
+        
+        setFetchingData(false)
+
+    }, [ data ])
    
     useEffect(() =>{
         getAllFollowData()
@@ -101,12 +127,41 @@ const FollowTheme = ({ openModal, handleCloseModal, header, data }) => {
                                         </div>
 
 
+                                        { from === 'account' ?
                                         <Button
                                             color='primary'
                                             variant='contained'
+                                            onClick={
+                                                header === 'Following' ?
+                                                () => handleUnfollowUser(user.userId)
+                                                :
+                                                () => handleRemoveFollower(user.userId)
+                                            }
                                         >
-                                            Follow
-                                    </Button>
+                                            {header === 'Following' ? 'Unfollow' : 'Remove'}
+                                        </Button>
+
+                                            :
+
+                                            profile && profile.following.includes(user.userId) ?
+                                            <Button
+                                                color='primary'
+                                                variant='contained'
+                                                onClick={ () => handleUnfollowUser(user.userId)}
+                                            >
+                                                Following
+                                            </Button>
+
+                                            :
+
+                                            <Button
+                                                color='primary'
+                                                variant='contained'
+                                                onClick={ () => handleFollowUser(user.userId)}
+                                            >
+                                                Follow
+                                            </Button>
+                                        }
                                     </div>
                                 )
                             })
@@ -119,5 +174,19 @@ const FollowTheme = ({ openModal, handleCloseModal, header, data }) => {
     )
 }
 
+const mapStateToProps = (state) =>{
+    return{
+        profile : state.firebase.profile
+    }
+}
 
-export default FollowTheme
+const mapDispatchToProps = (dispatch) =>{
+    return{
+        unFollowUser : data => dispatch(unFollowUser(data)),
+        followUser : data => dispatch(followUser(data)),
+        removeFollower : data => dispatch(removeFollower(data))
+    }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(FollowTheme)

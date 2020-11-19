@@ -121,12 +121,14 @@ const MobileUserAccount = ({ match }) => {
                 handleCloseModal={handleCloseModal}
                 openModal={followersModal}
                 followers={userData && userData.followers}
+                from='account'
             />}
 
             { followingModal && <Following 
                 handleCloseModal={handleCloseModal}
                 openModal={followingModal}
                 following={userData && userData.following}
+                from='account'
             />}
 
 

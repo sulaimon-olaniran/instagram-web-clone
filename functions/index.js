@@ -21,21 +21,39 @@ exports.checkIfEmailExists = functions.https.onCall((data, context) => {
 })
 
 
-exports.handleFollowUser = functions.https.onCall((data, context) =>{
-    const userId = data.userId
-    const accountId = data.accountId
-    const time = data.timeStamp
-    const notification = data.notification
-    const profilePicture = data.userPicture
-    const userName = data.userName
+exports.followUserNotification = functions.https.onCall((data, context) =>{
+    const { userId, accountId, time, notification } = data
+    const docId = userId.concat(accountId)
 
     return admin.firestore().collection('users').doc(accountId)
-    .collection('notifications').add({
+    .collection('notifications').doc(docId).set({
         time : time,
         userId : userId,
         notification : notification,
-        profilePicture : profilePicture,
-        userName : userName
+        seen : false,
+        type : 'followed'
+    })
+    .then(() =>{
+        return 'Notification sent successfully'
+    })
+    .catch(error =>{
+        return error
+    })
+})
+
+
+exports.likedPostNotification = functions.https.onCall((data, context) =>{
+    const { userId, accountId, time, postId, notification } = data
+    const docId = userId.concat(postId)
+
+    return admin.firestore().collection('users').doc(accountId)
+    .collection('notifications').doc(docId).set({
+        time : time,
+        userId : userId,
+        postId : postId,
+        notification : notification,
+        seen : false,
+        type : 'liked_post'
     })
     .then(() =>{
         return 'Notification sent successfully'

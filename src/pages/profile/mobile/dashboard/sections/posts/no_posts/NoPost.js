@@ -12,7 +12,7 @@ const NoPost = ({ from, user }) => {
                 <CameraAltOutlinedIcon />
             </span>
 
-            { from !== 'account' ?
+            { from === 'account' ?
                 <div className='no-post-content-container'>
                     <h1>Share Photos</h1>
                     <p>When you share photos, they will appear on your profile</p>
