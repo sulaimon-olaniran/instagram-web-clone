@@ -3,11 +3,13 @@ import { makeStyles } from '@material-ui/core/styles'
 import TextField from '@material-ui/core/TextField'
 import { withFormik, Field, Form } from 'formik'
 import Button from '@material-ui/core/Button'
-
+import { connect } from 'react-redux'
 
 
 
 import GenderModal from './gender/GenderModal'
+import { ValidationSchema } from './ValidationSchema'
+import { updateUserDetails } from '../../../../../store/actions/ProfileActions'
 
 
 
@@ -23,9 +25,9 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const ProfileInformation = () =>{
+const ProfileInformation = ({ setFieldValue, values, touched, errors, updateUserDetails, profile }) =>{
     const [genderModal, setGenderModal] = useState(false)
-    const [genderValue, setGenderValue] = useState('Female')
+    //const [genderValue, setGenderValue] = useState('Female')
     const classes = useStyles()
 
     const handleOpenGenderModal = () =>{
@@ -38,8 +40,9 @@ const ProfileInformation = () =>{
 
 
     const toggleGenderValue = (value) =>{
-        setGenderValue(value)
+        //setGenderValue(value)
         setGenderModal(false)
+        setFieldValue('gender', value)
     }
 
     return(
@@ -47,29 +50,28 @@ const ProfileInformation = () =>{
             <GenderModal
               openModal={genderModal}
               handleCloseModal={handleCloseGenderModal}
-              defaultValue={genderValue}
+              defaultValue={values.gender}
               toggleGenderValue={toggleGenderValue}
             />
 
             <Form className='profile-information-formik-form'>
                 <Field 
-                    as={TextField} type="text" name="name" label="Name"
+                    as={TextField} type="text" name="fullName" label="Name"
                     variant='outlined'
                 />
 
                 <small>
                     Help people discover your account by using the name
-                    you're know by" either your full name, nickname, or business name.
+                    you're know by  either your full name, nickname, or business name.
                 </small>
 
                 <Field 
-                    as={TextField} type="text" name="username" label="Username"
+                    as={TextField} type="text" name="userName" label="Username"
                     variant='outlined'
                 />
 
                 <small>
-                    In most cases, you'll be able to change your username back to
-                    sulaimon007 for another 14days
+                    In most cases, you'll be able to change your username back to {profile.userName} for another 14days
                 </small>
 
                 <Field 
@@ -96,6 +98,8 @@ const ProfileInformation = () =>{
                 <Field 
                     as={TextField} type="email" name="email" label="Email"
                     variant='outlined'
+                    error={ touched.email && errors.email}
+                    helperText={touched.email ? errors.email : null}
                 />
 
                 <Field 
@@ -104,11 +108,11 @@ const ProfileInformation = () =>{
                 />
 
                 <Field 
-                    as={TextField} type="text" name="gender" label={genderValue}
+                    as={TextField} type="text" name="gender" label='Gender'
                     variant='outlined'
                     onClick={handleOpenGenderModal}
                     disabled
-                    //defaultValue={genderValue}
+                  
                 />
 
                 <div className='profile-form-buttons-container'>
@@ -135,26 +139,41 @@ const ProfileInformation = () =>{
 
 
 const FormikProfileInfromation = withFormik({
-    mapPropsToValues() {
+    mapPropsToValues({ profile }) {
         return {
-            name: "",
-            username: "",
-            website : "",
-            bio : "",
-            Email : "",
-            phoneNumber : "",
-            gender : "",
+            fullName: profile.fullName || "",
+            userName: profile.userName || "",
+            website : profile.website || "",
+            bio : profile.bio || "",
+            email : profile.email || "",
+            phoneNumber : profile.phoneNumber || "",
+            gender : profile.gender || "",
         }
     },
 
-    //validationSchema: SignInYupValidation,
+    validationSchema: ValidationSchema,
 
-    handleSubmit(values) {
-        console.log(values)
+    handleSubmit(values, { props }) {
+        const { profile, updateUserDetails} =  props
+        //console.log(values)
+        updateUserDetails(values, profile.userId)
     }
 })(ProfileInformation)
 
 
 
+const mapStateToProps = state =>{
+    return{
+        profile : state.firebase.profile
+    }
+}
 
-export default FormikProfileInfromation
+
+const mapDispatchToProps = dispatch =>{
+    return{
+        updateUserDetails : (data, userId) => dispatch(updateUserDetails(data, userId))
+    }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(FormikProfileInfromation)

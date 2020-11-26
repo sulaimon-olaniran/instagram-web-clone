@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 
-const MobileProfile = ({ match, history, followUser, unFollowUser, profile }) => {
+const MobileProfile = ({ match, history, followUser, unFollowUser, profile, posts }) => {
     const [userProfile, setUserProfile] = useState({})
     const [fetchingData, setFetchingData] = useState(true)
     const [userPosts, setUserPosts] = useState([])
@@ -51,23 +51,21 @@ const MobileProfile = ({ match, history, followUser, unFollowUser, profile }) =>
     //console.log(match.params.id)
 
     const getUserProfileData = useCallback(() => {
-        db.collection('users').doc(match.params.id)
+        const userId = match.params.id
+        const allPosts = []
+        db.collection('users').doc(userId)
             .onSnapshot(snapshot => {
                 setUserProfile(snapshot.data())
                 //console.log(snapshot.data())
-
-                db.collection('users').doc(match.params.id)
-                    .collection('posts').onSnapshot(snapshot => {
-                        const posts = []
-                        snapshot.forEach((doc) => {
-                            posts.push(doc.data())
-                        })
-
-                        setUserPosts(posts)
-                        setFetchingData(false)
-                    })
+                posts && posts.forEach(post => {
+                    if (post.userId === userId) {
+                        allPosts.push(post)
+                    }
+                })
+                setUserPosts(allPosts)
+                setFetchingData(false)
             })
-    }, [match.params.id])
+    }, [match, posts])
 
 
     const handleFollowUser = () => {

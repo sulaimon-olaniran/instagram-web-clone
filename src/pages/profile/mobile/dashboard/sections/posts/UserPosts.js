@@ -33,7 +33,7 @@ const UserPosts = ({ posts, from, user }) => {
                         //console.log(i)
                         return (
                             <GridListTile key={post.postId}  >
-                                <Link to={`/p/${post.postId}/${post.userId}`}>
+                                <Link to={`/p/${post.postId}/`}>
                                     <img src={post.fileUrl} alt='FILE' />
                                 </Link>
                             </GridListTile>

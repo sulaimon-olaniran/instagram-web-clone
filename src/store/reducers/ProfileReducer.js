@@ -59,6 +59,36 @@ const ProfileReducer = (state = initState, action) =>{
                profileError : action.error
             }
 
+         case  "PHOTO_UPDATE_SUCCESSFUL" :
+            console.log('profile photo updated successfully')
+            return{
+               ...state,
+               profileError : null
+            }
+
+
+         case "PHOTO_UPDATE_FAILED" :
+            console.log('profile photo update failed', action.error)
+            return {
+               ...state,
+               profileError : action.error
+            }
+
+         case  "UPDATED_PROFILE_SUCCESS" :
+            console.log('profile details updated successfully')
+            return{
+               ...state,
+               profileError : null
+            }
+
+
+         case "UPDATED_PROFILE_FAILED" :
+            console.log('profile details update failed', action.error)
+            return {
+               ...state,
+               profileError : action.error
+            }
+
         default : return state
      }
 }

@@ -1,0 +1,17 @@
+.delete-comment-dialog-container{
+    width: 15rem;
+    min-height: 7rem;
+
+    .button-container{
+        width: 100%;
+        height: 3.5rem;
+        border-bottom: 1px solid lightgray;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        button{
+            text-transform: initial;
+        }
+    }
+}

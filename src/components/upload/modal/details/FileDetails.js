@@ -14,7 +14,8 @@ import Location from './location/Location'
 
 
 
-const FileDetails = ({ filePreviewUrl, fileUrl, goToPreviousStep, createPost }) => {
+const FileDetails = ({ filePreviewUrl, fileUrl, goToPreviousStep, createPost, userId }) => {
+    console.log(userId)
     const [imageStyle, setImageStyle] = useState(null)
     const [locationModal, setLocationModal] = useState(false)
     const [locationDetails, setLocationDetails] = useState(null)
@@ -47,8 +48,11 @@ const FileDetails = ({ filePreviewUrl, fileUrl, goToPreviousStep, createPost }) 
     }
 
     const handleCreatePost = () =>{
-        const file = imageFileRef.current
-        createPost(post, file)
+        const data ={
+            file : imageFileRef.current,
+            userId : userId
+        }
+        createPost(post, data)
     }
 
 
@@ -124,12 +128,18 @@ const FileDetails = ({ filePreviewUrl, fileUrl, goToPreviousStep, createPost }) 
     )
 }
 
+const mapStateToProps = state =>{
+    return{
+        userId : state.firebase.profile.userId
+    }
+}
+
 const mapDispatchToProps = (dispatch) =>{
     return{
-        createPost : (post, file) => dispatch(createPost(post, file))
+        createPost : (post, data) => dispatch(createPost(post, data))
     }
 }
 
 
-export default connect(null, mapDispatchToProps)(FileDetails)
+export default connect(mapStateToProps, mapDispatchToProps)(FileDetails)
 

@@ -26,30 +26,32 @@ const BottomNav = ({ auth, profile }) => {
     const classes = useStyles()
     return (
         <nav
-            style={{display : showNavBar}}
+            style={{ display: showNavBar }}
         >
-            <Link  to='/'>
+            <Link to='/'>
                 <MyActiveHomeIcon
                     height='24px'
                     width='24px'
                 />
             </Link>
 
-            <Link  to='/explore'>
+            <Link to='/explore'>
                 <MyUnActiveSearchIcon
                     height='24px'
                     width='24px'
                 />
             </Link>
 
-            <UploadFiles 
+            <UploadFiles
                 component={<MyAddIcon height='24px' width='24px' />}
             />
 
-            <UnLikedIcon
-                height='24px'
-                width='24px'
-            />
+            <Link to='/account/activity'>
+                <UnLikedIcon
+                    height='24px'
+                    width='24px'
+                />
+            </Link>
 
             <Link to={`/account/${profile.userName}/${profile.userId}`}>
                 <Avatar
@@ -62,10 +64,10 @@ const BottomNav = ({ auth, profile }) => {
     )
 }
 
-const mapStateToProps = (state) =>{
-    return{
-        auth : state.firebase.auth,
-        profile : state.firebase.profile
+const mapStateToProps = (state) => {
+    return {
+        auth: state.firebase.auth,
+        profile: state.firebase.profile
     }
 }
 

@@ -1,0 +1,49 @@
+.each-mobile-activity-container{
+    min-height: 7vh;
+    width: 100%;
+    padding: 10px 15px 10px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .notification-information{
+        width: 85%;
+        display: flex;
+        justify-content: space-between;
+
+        .followed-notifier-details{
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        .followed-notification-item{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            button{
+                text-transform: initial;
+            }
+        }
+
+        .notification-post-image{
+            width: 40px;
+            height: 40px;
+            img{
+                width: 100%;
+                height: 100%;
+                object-fit: contain;
+            }
+        }
+
+        
+    }
+
+}
+
+hr{
+    width: 80%;
+    margin: 3px 10px 3px auto;
+    
+}

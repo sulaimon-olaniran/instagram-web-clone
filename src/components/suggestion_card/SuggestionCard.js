@@ -4,9 +4,11 @@ import Button from '@material-ui/core/Button'
 import CloseIcon from '@material-ui/icons/Close'
 import { makeStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
+import { compose } from 'redux'
+import { firestoreConnect } from 'react-redux-firebase'
 
 
-import { db } from '../../firebase/Firebase'
+//import { db } from '../../firebase/Firebase'
 import { followUser, unFollowUser } from '../../store/actions/ProfileActions'
 
 
@@ -31,24 +33,23 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const SuggestionCard = ({ user, x, followUser, profile }) => {
+const SuggestionCard = ({ user, posts, x, followUser, profile }) => {
   const [userPosts, setUserPosts] = useState([])
   const classes = useStyles()
-
-  //console.log(profile)
+  
 
   const fetchUserPosts = useCallback( () =>{
-    db.collection('users').doc(user.userId)
-    .collection('posts').onSnapshot(snapshot =>{
-      const posts = []
-      snapshot.forEach(snap =>{
-        posts.push(snap.data())
-      })
+    const allPosts = []
 
-      setUserPosts(posts)
+    posts && posts.forEach(post =>{
+      if(post.userId === user.userId){
+        allPosts.push(post)
+      }
     })
+   
+    setUserPosts(allPosts)
 
-  }, [user])
+  }, [user, posts])
 
   useEffect(() =>{
     fetchUserPosts()
@@ -129,6 +130,7 @@ const SuggestionCard = ({ user, x, followUser, profile }) => {
 const mapStateToProps = (state) =>{
   return{
     //profile of currently logged in user
+    posts: state.firestore.ordered.posts,
     profile : state.firebase.profile
   }
 }
@@ -140,5 +142,10 @@ const mapDispatchToProps = (dispatch) =>{
   }
 }
 
+export default compose(
+  connect(mapStateToProps, mapDispatchToProps),
+  firestoreConnect(() => ['posts'])
+)(SuggestionCard)
 
-export default connect(mapStateToProps, mapDispatchToProps)(SuggestionCard)
+
+//xport default connect(mapStateToProps, mapDispatchToProps)(SuggestionCard)

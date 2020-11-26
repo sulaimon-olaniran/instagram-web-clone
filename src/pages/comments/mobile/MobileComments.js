@@ -1,15 +1,17 @@
 import React, { useState } from 'react'
-import { withRouter } from 'react-router-dom'
+//import { withRouter } from 'react-router-dom'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import TextareaAutosize from 'react-textarea-autosize'
 import Modal from '@material-ui/core/Modal'
 import { makeStyles } from '@material-ui/core/styles'
+import { connect } from 'react-redux'
 
 
 import { MyDirectIcon } from '../../../components/MyIcons'
 import EachComment from './each_comment/EachComment'
+import { commentOnPost } from '../../../store/actions/PostsAction'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -20,9 +22,28 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const MobileComments = ({ post, posterProfile, openCommentModal, handleCloseModal }) => {
+const MobileComments = ({ post, postComments, posterProfile, openCommentModal, handleCloseModal, profile, commentOnPost }) => {
     const [textAreaHeight, setTextAreaHeight] = useState(0)
+    const [commentText, setCommentText] = useState('')
     const classes = useStyles()
+
+
+    const handleTextInputChange = e =>{
+        setCommentText(e.target.value)
+    }
+
+    const handleSubmitComment = () =>{
+        console.log(commentText)
+        const data = {
+            comment : commentText,
+            accountId : posterProfile.userId,
+            userId : profile.userId,
+            postId : post.postId,
+            time : Date.now()
+        }
+        commentOnPost(data)
+        setCommentText('')
+    }
 
     return (
         <Modal
@@ -49,7 +70,7 @@ const MobileComments = ({ post, posterProfile, openCommentModal, handleCloseModa
 
                     <div className='comment-input-container'>
                         <Avatar 
-                            src={posterProfile.profilePhoto}
+                            src={profile.profilePhoto}
                         />
                         <form>
                             <TextareaAutosize
@@ -57,15 +78,24 @@ const MobileComments = ({ post, posterProfile, openCommentModal, handleCloseModa
                                 autoCorrect='off'
                                 autoComplete='off'
                                 maxRows={5}
+                                value={commentText}
+                                onChange={handleTextInputChange}
                                 onHeightChange={(height) => setTextAreaHeight(height)}
                             />
-                            <Button color='primary' size='small' disabled={true}>Post</Button>
+                            <Button 
+                                onClick={handleSubmitComment}
+                                color='primary' 
+                                size='small' 
+                                disabled={commentText === ''}
+                            >
+                                Post
+                            </Button>
                         </form>
                     </div>
                 </div>
 
                 <div className='caption-container'>
-                    <Avatar />
+                    <Avatar src={posterProfile && posterProfile.profilePhoto}/>
 
                     <div className='caption-text'>
                         <p>
@@ -78,10 +108,10 @@ const MobileComments = ({ post, posterProfile, openCommentModal, handleCloseModa
 
                 <div className='comments-container'>
                     {
-                        post && post.comments.map((comment, i) => {
+                        postComments && postComments.map((comment, i) => {
                             return (
                                 <React.Fragment key={i}>
-                                    <EachComment comment={comment} />
+                                    <EachComment comment={comment} post={post} profile={profile} />
                                 </React.Fragment>
                             )
                         })
@@ -95,4 +125,18 @@ const MobileComments = ({ post, posterProfile, openCommentModal, handleCloseModa
 }
 
 
-export default withRouter(MobileComments)
+const mapStateToProps = state =>{
+    return {
+        profile : state.firebase.profile
+    }
+}
+
+
+const mapDispatchToProps = dispatch => {
+    return {
+        commentOnPost : data => dispatch(commentOnPost(data))
+    }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(MobileComments)

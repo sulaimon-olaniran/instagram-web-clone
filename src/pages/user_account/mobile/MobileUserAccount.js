@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const MobileUserAccount = ({ match }) => {
+const MobileUserAccount = ({ match, posts }) => {
     const [editProfileModal, setEditProfileModal] = useState(false)
     const [optionsModal, setOptionsModal] = useState(false)
     const [followingModal, setFollowingModal] = useState(false)
@@ -50,22 +50,20 @@ const MobileUserAccount = ({ match }) => {
 
     const handleFetchUserData = useCallback( () =>{
         const { userId } = match.params
+        const allPosts = []
         db.collection('users').doc(userId)
         .onSnapshot(snapshot =>{
             setUserData(snapshot.data())
 
-            db.collection('users').doc(userId)
-            .collection('posts').onSnapshot(snapshot =>{
-                const posts = []
-                snapshot.forEach((doc) =>{
-                    posts.push(doc.data())
-                })
-
-                setUserPosts(posts)
-                setFetchingUserData(false)
+            posts && posts.forEach(post => {
+                if (post.userId === userId) {
+                    allPosts.push(post)
+                }
             })
+            setUserPosts(allPosts)
+            setFetchingUserData(false)
         })
-    }, [ match ])
+    }, [ match, posts ])
 
     useEffect(() =>{
         handleFetchUserData()

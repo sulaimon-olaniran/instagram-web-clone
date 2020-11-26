@@ -24,6 +24,7 @@ import FormikChangePassword from './pages/change_password/ChangePassoword'
 
 import Profile from './pages/profile/Profile'
 import UserAccount from './pages/user_account/UserAccount'
+import MobileAccountActivity from './pages/mobile_activity/AccountActivity'
 
 
 
@@ -48,11 +49,12 @@ function App({ auth }) {
             <Route path='/' exact component={homeComponent} />
             <Route path='/explore' exact component={Explore} />
             <Route path='/comments' exact component={MobileComments} />
-            <Route path='/explore/people/suggested/' exact component={Suggestions} />
-            <Route path='/:username/:id/' exact component={Profile} />
-            <Route path='/p/:postId/:posterId' exact component={MobilePost} />
+            <Route path='/explore/people/suggested' exact component={Suggestions} />
+            <Route path='/profile/:username/:id' exact component={Profile} />
+            <Route path='/p/:postId/' exact component={MobilePost} />
             <Route exact path='/account/:username/:userId'  component={UserAccount} />
             <Route path='/accounts/password/change' exact component={FormikChangePassword} />
+            <Route path='/account/activity' exact component={MobileAccountActivity} />
             <BottomNav />
           </React.Fragment>
         </Switch>

@@ -1,4 +1,4 @@
-.dialog-contents-container{
+.not-user-dialog-contents-container{
     width: 16rem;
     height: 21rem;
     overflow: hidden;
@@ -15,5 +15,32 @@
         display: flex;
         align-items: center;
         justify-content: center;
+
+        button{
+            text-transform: initial;
+        }
+    }
+}
+
+.user-dialog-contents-container{
+    width: 16rem;
+    height: 10rem;
+    border-radius: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    .content-container{
+        width: 100%;
+        height: 3.5rem;
+        border-bottom: 1px solid lightgray;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        button{
+            text-transform: initial;
+        }
     }
 }

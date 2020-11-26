@@ -14,7 +14,10 @@ import { MyDirectIcon } from '../../../MyIcons'
 
 
 
-const SharePost = ({ open, close }) => {
+const SharePost = ({ open, close, link, handleCopyPostLink }) => {
+    //const [linkSnackBar, setLinkSnackBar] = useState(false)
+
+
     return (
         <Drawer
             anchor='bottom'
@@ -27,41 +30,41 @@ const SharePost = ({ open, close }) => {
                     <p>Share</p>
                 </div>
 
-                <div className='contents-container'>
+                <div className='contents-container' onClick={close}>
                     <div className='each-content'>
                         <MyDirectIcon height='24px' width='24px' /> <p>Share to Direct</p>
                     </div>
 
-                    <div className='each-content'>
-                        <FacebookShareButton url='http://localhost:3000/'>
+                    <div className='each-content' onClick={close}>
+                        <FacebookShareButton url={link}>
                             <FacebookIcon size={28} round={true} />
                             <p>Share to Facebook</p>
                         </FacebookShareButton>
                     </div>
 
-                    <div className='each-content'>
-                        <FacebookMessengerShareButton url='http://localhost:3000/'>
+                    <div className='each-content' onClick={close}>
+                        <FacebookMessengerShareButton url={link}>
                             <FacebookMessengerIcon size={28} round={true} />
                             <p>Share to Messenger</p>
                         </FacebookMessengerShareButton>
                     </div>
 
-                    <div className='each-content'>
-                        <WhatsappShareButton url='http://localhost:3000/'>
+                    <div className='each-content' onClick={close}>
+                        <WhatsappShareButton url={link}>
                             <WhatsappIcon size={28} round={true} />
                             <p>Share to WhatsApp</p>
                         </WhatsappShareButton>
                     </div>
 
-                    <div className='each-content'>
-                        <TwitterShareButton url='http://localhost:3000/' title='Check out this post on IG'>
+                    <div className='each-content' onClick={close}>
+                        <TwitterShareButton url={link} title='Check out this post on IG'>
                             <TwitterIcon size={28} round={true} />
                             <p>Share to Twitter</p>
                         </TwitterShareButton>
                     </div>
 
-                    <div className='each-content'>
-                        <EmailShareButton url='http://localhost:3000/'>
+                    <div className='each-content' onClick={close}>
+                        <EmailShareButton url={link}>
                             <EmailIcon size={28} round={true} />
                             <p>Share Via Email</p>
                         </EmailShareButton>
@@ -70,22 +73,23 @@ const SharePost = ({ open, close }) => {
                     <div className='each-content'>
                         <LinkIcon />
                         <p>
-                            <Button>
+                            <Button onClick={handleCopyPostLink}>
                                 Copy Link
-                        </Button>
+                            </Button>
                         </p>
                     </div>
 
                     <div className='each-content'>
                         <CancelIcon />
                         <p>
-                            <Button>
+                            <Button onClick={close}>
                                 Cancel
-                        </Button>
+                            </Button>
                         </p>
                     </div>
 
                 </div>
+                
 
             </div>
 

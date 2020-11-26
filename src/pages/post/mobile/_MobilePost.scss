@@ -2,6 +2,7 @@
     width: 100%;
     min-height: 50vh;
     background-color: white;
+    padding-bottom: 7vh;
 
         .post-nav-container{
             width: 100%;
@@ -14,7 +15,7 @@
             position: fixed;
             top: 0;
             left: 0;
-            z-index: 3;
+            //z-index: 3;
             border-bottom: 1px solid lightgray;
 
             p{

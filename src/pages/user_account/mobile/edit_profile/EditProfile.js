@@ -5,6 +5,7 @@ import ProfilePhoto from './profile_photo/ProfilePhoto'
 import FormikProfileInfromation from './information/ProfileInfromation'
 import { makeStyles } from '@material-ui/core/styles'
 import Backdrop from '@material-ui/core/Backdrop'
+import { connect } from 'react-redux'
 
 
 
@@ -16,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const EditProfile = ({ openModal, handleCloseModal }) =>{
+const EditProfile = ({ openModal, handleCloseModal, profile }) =>{
     const classes = useStyles()
     return(
         <Modal
@@ -38,9 +39,13 @@ const EditProfile = ({ openModal, handleCloseModal }) =>{
                     <p>Edit Profile</p>
                 </div>
 
-                <ProfilePhoto />
+                <ProfilePhoto 
+                    profile={profile}
+                />
             
-                <FormikProfileInfromation />
+                <FormikProfileInfromation 
+                    profile={profile}
+                />
 
             </div>
 
@@ -49,5 +54,12 @@ const EditProfile = ({ openModal, handleCloseModal }) =>{
 }
 
 
+const mapStateToProps = (state) =>{
+    //console.log(state)
+    return {
+        profile : state.firebase.profile
+    }
+}
 
-export default EditProfile
+
+export default connect(mapStateToProps)(EditProfile)

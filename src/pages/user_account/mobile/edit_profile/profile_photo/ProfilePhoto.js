@@ -1,13 +1,18 @@
 import React, { useState } from 'react'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
+import { connect } from 'react-redux'
+
+
 import UploadModal from '../../../../../components/upload/modal/UploadModal'
+import {  uploadProfilePicture } from '../../../../../store/actions/ProfileActions'
 
 
 
 
 
-const ProfilePhoto = () => {
+const ProfilePhoto = ({ profile }) => {
+   // console.log(profile)
     const [fileUrl, setFileUrl] = useState(null)
     const [filePreviewUrl, setFilePreviewUrl] = useState(null)
     const [openModal, setOpenModal] = useState(false)
@@ -29,7 +34,7 @@ const ProfilePhoto = () => {
     return (
         <div className='edit-profile-photo-container'>
             <Avatar
-                src='https://source.unsplash.com/random/600x600/?kid'
+                src={profile.profilePhoto}
             />
 
             <section>
@@ -59,5 +64,11 @@ const ProfilePhoto = () => {
 }
 
 
+const mapDispatchToProps = dispatch =>{
+    return {
+        updateProfilePicture : data => dispatch(uploadProfilePicture(data))
+    }
+}
 
-export default ProfilePhoto
+
+export default connect(null, mapDispatchToProps)(ProfilePhoto)

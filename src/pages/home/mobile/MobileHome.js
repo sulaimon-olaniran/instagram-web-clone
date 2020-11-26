@@ -50,7 +50,7 @@ const MobileHome = ({ feedPosts, fetchingFeedPosts }) => {
                     />
                 </Badge>
             </div>
-            { feedPosts.length > 0 ?
+            {!fetchingFeedPosts && feedPosts.length > 0 ?
                 <React.Fragment>
                     <div className='stories-container'>
                         <HorizontalScroller>

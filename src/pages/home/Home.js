@@ -2,57 +2,57 @@ import React, { useState, useEffect, useCallback } from 'react'
 import { firestoreConnect } from 'react-redux-firebase'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-import { db } from '../../firebase/Firebase'
+//import { db } from '../../firebase/Firebase'
 
 
 import MobileHome from './mobile/MobileHome'
 
 
 
-const Home = ({ users, following }) => {
+const Home = ({ users, following, posts }) => {
     const [followingPosts, setFollowingPosts] = useState([])
     const [fetching, setFetching] = useState(true)
     //const [fetching, setFetching] = useState(true)
 
     //const mountedRef = useRef(true)
-    //console.log(following)
+    // console.log(users)
+    // console.log(posts)
 
-    const concatAllFollowingPosts = useCallback(() => {
 
-        users && users.forEach(user => {
-            if (following && following.includes(user.userId)) {
-                db.collection('users').doc(user.userId)
-                    .collection('posts').onSnapshot(snapshot => {
-                        // if (!mountedRef.current) return null
-                        const posts = []
-                        snapshot.forEach(doc => {
-                            const data = doc.data()
-                            posts.push(data)
-                        })
-                        setFollowingPosts(prev => prev.concat(posts))
-                        setFetching(false)
-                    })
-            }
+    const getAllFollowingPosts = useCallback(() => {
 
+        const allPosts = []
+        const promises = posts && posts.map(post => {
+            return following.length > 0 && following.includes(post.userId) ?
+            allPosts.push(post) : null
+        
         })
-    }, [users, following])
+
+        Promise.all([promises])
+        .then(() =>{
+            setFollowingPosts(allPosts)
+            setFetching(false)
+        })
+        
+
+        //console.log(allPosts)
+        // setFollowingPosts(allPosts)
+        // setFetching(false)
+    }, [posts, following])
 
 
 
     useEffect(() => {
-        concatAllFollowingPosts()
+        getAllFollowingPosts()
 
-        return () => {
-            //mountedRef.current = false
-        }
-    }, [concatAllFollowingPosts])
-
+    }, [getAllFollowingPosts])
+    //console.log(followingPosts)
 
     return (
         <div>
             <MobileHome
                 feedPosts={followingPosts}
-                fetchingFeedPosts ={fetching}
+                fetchingFeedPosts={fetching}
             />
         </div>
     )
@@ -60,9 +60,10 @@ const Home = ({ users, following }) => {
 
 
 const mapStateToProps = (state) => {
-    //console.log(state.firestore)
+    //console.log(state)
     return {
         users: state.firestore.ordered.users,
+        posts: state.firestore.ordered.posts,
         following: state.firebase.profile.following
     }
 }
@@ -71,7 +72,5 @@ const mapStateToProps = (state) => {
 
 export default compose(
     connect(mapStateToProps),
-    firestoreConnect([
-        { collection: 'users' }
-    ])
+    firestoreConnect(() => ['posts', 'users'])
 )(Home)

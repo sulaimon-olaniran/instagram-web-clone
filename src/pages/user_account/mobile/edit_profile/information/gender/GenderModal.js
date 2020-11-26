@@ -53,19 +53,19 @@ const StyledRadio = props => {
 
     return (
         <Radio
-        className={classes.root}
-        //disableRipple
-        color="default"
-        checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon)} />}
-        icon={<span className={classes.icon} />}
-        {...props}
+            //className={classes.root}
+            //disableRipple
+            color="default"
+            checkedIcon={<span className={clsx(classes.icon, classes.checkedIcon)} />}
+            icon={<span className={classes.icon} />}
+            {...props}
         />
     );
 }
 
 
 const GenderModal = ({ openModal, handleCloseModal, defaultValue, toggleGenderValue }) =>{
-    const [radioValue, setRadioValue] = useState('Female')
+    const [radioValue, setRadioValue] = useState(defaultValue)
     const [confirmaDialog, setConfrimDialog] = useState(false)
 
     const handleRadioValueChange = e =>{

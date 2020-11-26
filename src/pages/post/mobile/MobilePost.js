@@ -11,16 +11,15 @@ import LogoLoader from '../../../components/loaders/LogoLoader'
 const MobilePost = ({ match, history }) =>{
     const [fetching, setFetching] = useState(true)
     const [post, setPost] = useState({})
-    const {postId, posterId} = match.params
+    const {postId} = match.params
     
     const handleFetchPost = useCallback( () =>{
-        db.collection('users').doc(posterId)
-        .collection('posts').doc(postId)
+        db.collection('posts').doc(postId)
         .onSnapshot(snapshot =>{
             setPost(snapshot.data())
             setFetching(false)
         })
-    }, [postId, posterId])
+    }, [postId])
 
     useEffect(() =>{
         handleFetchPost()

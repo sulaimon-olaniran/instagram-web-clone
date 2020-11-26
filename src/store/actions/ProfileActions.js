@@ -1,4 +1,6 @@
-import firebase, { db } from '../../firebase/Firebase'
+import firebase, { db, storage } from '../../firebase/Firebase'
+
+
 
 export const followUser = (data) =>{
     return( dispatch, getState ) =>{
@@ -69,6 +71,46 @@ export const removeFollower = (data) =>{
         })
         .catch( error =>{
             dispatch({ type : 'REMOVE_FOLLOWER_FAILED', error})
+        })
+    }
+}
+
+
+
+export const uploadProfilePicture = (data) =>{
+    return(dispatch, getState) =>{
+        const { file, userId } = data
+        const uploadTask = storage.ref(`profile_images/${file.name}`)
+        uploadTask.put(file)
+        .then(() =>{
+            return storage.ref('profile_images').child(file.name).getDownloadURL()
+            .then(url =>{
+                return db.collection('users').doc(userId)
+                .update({
+                    "profilePhoto" : url
+                })
+            })
+        })
+        .then(() =>{
+            dispatch({ type : 'PHOTO_UPDATE_SUCCESSFUL'})
+        })
+        .catch(error =>{
+            dispatch({type : 'PHOTO_UPDATE_FAILED', error})
+        })
+    }
+}
+
+
+export const updateUserDetails = (data, userId) =>{
+    return(dispatch, getState) =>{
+        db.collection('users').doc(userId).update({
+            ...data
+        })
+        .then(() =>{
+            dispatch({ type : 'UPDATED_PROFILE_SUCCESS'})
+        })
+        .catch(error =>{
+            dispatch({ type : 'UPDATED_PROFILE_FAILED', error})
         })
     }
 }
