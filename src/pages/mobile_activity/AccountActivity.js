@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 
 import { db } from '../../firebase/Firebase'
 import EachActivity from './each_activity/EachActivity'
+import Suggestions from '../suggestions/Suggestions'
 
 
 
@@ -11,7 +12,7 @@ const MobileAccountActivity = ({ profile }) =>{
     const [activities, setActivities] = useState()
 
     const grabAllUserNotifications = useCallback(() =>{
-        db.collection('users').doc('9G6R635DzajdJA0ht6Ng').collection('notifications')
+        db.collection('users').doc('9G6R635DzajdJA0ht6Ng').collection('notifications').orderBy('time', 'desc')
         .onSnapshot(snapshot =>{
             const notifications = []
             snapshot.forEach(doc =>{
@@ -46,6 +47,8 @@ const MobileAccountActivity = ({ profile }) =>{
                     )
                 })
             }
+
+            <Suggestions as='component' />
         </div>
     )
 }

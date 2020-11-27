@@ -2,7 +2,10 @@ import React from 'react'
 import Button from '@material-ui/core/Button'
 import Avatar from '@material-ui/core/Avatar'
 import { makeStyles } from '@material-ui/core/styles'
+import { connect } from 'react-redux'
 
+
+import { followUser } from '../../../store/actions/ProfileActions'
 
 
 
@@ -17,22 +20,31 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const Suggestion = ({ data }) =>{
+const Suggestion = ({ user, profile }) =>{
     const classes = useStyles()
+
+    const handleFollowUser = () =>{
+        const data = {
+            userId : profile.userId,
+            accountId : user.userId
+        }
+
+        followUser(data)
+    }
 
     return(
         <div className='each-suggestion-container'>
 
             <div className='profile-container'>
                 <Avatar 
-                    src={data.image} alt={data.name} 
+                    src={user.profilePhoto} alt='file' 
                     className={classes.large}
                 />
 
                 <div className='personal-details'>
-                    <h5>{data.name}</h5>
-                    <p>{data.username}</p>
-                    <p>{data.reason}</p>
+                    <h5>{user.fullName}</h5>
+                    <p>{user.userName}</p>
+                    <p>suggested for you</p>
                 </div>
             </div>
 
@@ -40,6 +52,8 @@ const Suggestion = ({ data }) =>{
             <Button 
                 color='primary'
                 variant='contained'
+                size='small'
+                onClick={handleFollowUser}
             >
                 Follow
             </Button>
@@ -49,5 +63,12 @@ const Suggestion = ({ data }) =>{
 
 
 
+const mapDispatchToProps = dispatch =>{
+    return{
+        followUser : data => dispatch(followUser(data))
+    }
+}
 
-export default Suggestion 
+
+
+export default connect(null, mapDispatchToProps)(Suggestion) 

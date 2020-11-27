@@ -65,7 +65,7 @@ exports.likedPostNotification = functions.https.onCall((data, context) =>{
 
 
 exports.commentOnPostNotification = functions.https.onCall((data, context) =>{
-    const { userId, accountId, time, postId, notification, commentId} = data
+    const { userId, accountId, time, postId, notification, comment, commentId} = data
 
     const docId = userId.concat(commentId)
 
@@ -76,7 +76,8 @@ exports.commentOnPostNotification = functions.https.onCall((data, context) =>{
         postId : postId,
         notification : notification,
         seen : false,
-        type : 'post_comment'
+        type : 'post_comment',
+        comment : comment
     })
     .then(() =>{
         return 'Notification sent successfully'
@@ -87,7 +88,7 @@ exports.commentOnPostNotification = functions.https.onCall((data, context) =>{
 })
 
 exports.likedPostCommentNotification = functions.https.onCall((data, context) =>{
-    const { userId, accountId, time, postId, notification, commentId} = data
+    const { userId, accountId, time, postId, notification, comment, commentId} = data
 
     const docId = commentId.concat(userId)
 
@@ -98,7 +99,8 @@ exports.likedPostCommentNotification = functions.https.onCall((data, context) =>
         postId : postId,
         notification : notification,
         seen : false,
-        type : 'liked_comment'
+        type : 'liked_comment',
+        comment : comment
     })
     .then(() =>{
         return 'Notification sent successfully'

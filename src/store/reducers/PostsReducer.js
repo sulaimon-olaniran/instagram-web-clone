@@ -73,7 +73,7 @@ const PostsReducer = (state = initState, action) =>{
                return state
 
           case 'LIKED_COMMENT_FAILED' :
-               console.log('liking comment failed')
+               console.log('liking comment failed', action.error)
                return state
 
           case 'UNLIKE_COMMENT_SUCCESS' :

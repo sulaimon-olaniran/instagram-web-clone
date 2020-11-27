@@ -54,7 +54,8 @@ const EachComment = ({ from, comment, post, profile, likePostComment, unLikePost
             userId: profile.userId,
             accountId: comment.userId,
             commentId: comment.commentId,
-            postId: post.postId
+            postId: post.postId,
+            comment : comment.comment
         }
 
         likePostComment(data)

@@ -175,7 +175,8 @@ export const commentOnPost = (data) =>{
                     accountId : data.accountId,
                     postId : data.postId,
                     notification : 'commented on your post',
-                    commentId : docRef.id
+                    commentId : docRef.id,
+                    comment : data.comment
                 })
             })
         })
@@ -213,6 +214,7 @@ export const deletePostComment = (data) =>{
 export const likePostComment = (data) =>{
     return(dispatch, getState) =>{
         const likedPostCommentNotification = firebase.functions().httpsCallable('likedPostCommentNotification')
+        
         db.collection('users').doc(data.userId)
         .update({
             likedComments : firebase.firestore.FieldValue.arrayUnion(data.commentId)
@@ -229,7 +231,8 @@ export const likePostComment = (data) =>{
                     accountId : data.accountId,
                     postId : data.postId,
                     notification : 'Liked your comment',
-                    commentId : data.commentId
+                    commentId : data.commentId,
+                    comment : data.comment
                 })
             })
         })

@@ -11,6 +11,7 @@ import { connect } from 'react-redux'
 import { db } from '../../../../../firebase/Firebase'
 import LogoLoader from '../../../../../components/loaders/LogoLoader'
 import { unFollowUser, followUser, removeFollower } from '../../../../../store/actions/ProfileActions'
+import Suggestions from '../../../../suggestions/Suggestions'
 
 
 
@@ -18,6 +19,11 @@ const useStyles = makeStyles((theme) => ({
     modal: {
         overflowY: 'scroll',
     },
+
+    followButton : {
+        backgroundColor: '#0095f6'
+    },
+
 }));
 
 
@@ -118,7 +124,7 @@ const FollowTheme = ({ openModal, handleCloseModal, header, data, from, profile,
                                             <div className='follow-personal-details'>
                                             <Link 
                                                 onClick={handleCloseClearModal}
-                                                to={`/${user.userName}/${user.userId}`}
+                                                to={`/profile/${user.userName}/${user.userId}`}
                                             >
                                                 <h5>{user.fullName}</h5>
                                             </Link>
@@ -131,6 +137,8 @@ const FollowTheme = ({ openModal, handleCloseModal, header, data, from, profile,
                                         <Button
                                             color='primary'
                                             variant='contained'
+                                            size='small'
+                                            className={classes.followButton}
                                             onClick={
                                                 header === 'Following' ?
                                                 () => handleUnfollowUser(user.userId)
@@ -145,9 +153,10 @@ const FollowTheme = ({ openModal, handleCloseModal, header, data, from, profile,
 
                                             profile && profile.following.includes(user.userId) ?
                                             <Button
-                                                color='primary'
-                                                variant='contained'
+                                                //color='primary'
+                                                variant='outlined'
                                                 onClick={ () => handleUnfollowUser(user.userId)}
+                                                size='small'
                                             >
                                                 Following
                                             </Button>
@@ -157,6 +166,8 @@ const FollowTheme = ({ openModal, handleCloseModal, header, data, from, profile,
                                             <Button
                                                 color='primary'
                                                 variant='contained'
+                                                size='small'
+                                                className={classes.followButton}
                                                 onClick={ () => handleFollowUser(user.userId)}
                                             >
                                                 Follow
@@ -167,6 +178,8 @@ const FollowTheme = ({ openModal, handleCloseModal, header, data, from, profile,
                             })
                         }
                     </div>
+
+                    <Suggestions as='component'/>
 
                 </div>
 

@@ -7,26 +7,53 @@ import moment from 'moment'
 
 
 import { db } from '../../../firebase/Firebase'
+import { followUser, unFollowUser } from '../../../store/actions/ProfileActions'
 
 
 
-const EachActivity = ({ activity, profile }) => {
+const EachActivity = ({ activity, profile, followUser, unFollowUser }) => {
     const [notifier, setNotifier] = useState({})
+    const [post, setPost] = useState({}) //get the post from which activity occured
+    //console.log(activity)
 
     const getNotifierAccount = useCallback(() => {
         const docId = activity && activity.userId
-        db.collection('users').doc(docId)
-            .onSnapshot(snapshot => {
-                setNotifier(snapshot.data())
-                //return db
+        db.collection('users').doc(docId).get()
+        .then(doc =>{
+            setNotifier(doc.data())
+            activity && activity.type !=='followed'  && 
+            db.collection('posts').doc(activity && activity.postId)
+            .get().then(doc =>{
+                setPost(doc.data())
             })
+        })
+        .then(() =>{
+            console.log('all done')
+        })
+           
     }, [activity])
 
     useEffect(() => {
         getNotifierAccount()
     }, [getNotifierAccount])
 
-    console.log(activity)
+    const handleFollowUser = () =>{
+        const data ={
+            userId : profile.userId,
+            accountId : activity.userId
+        }
+
+        followUser(data)
+    }
+
+    const handleUnFollowUser = () =>{
+        const data ={
+            userId : profile.userId,
+            accountId : activity.userId
+        }
+
+        unFollowUser(data)
+    }
 
     return (
         <React.Fragment>
@@ -40,7 +67,7 @@ const EachActivity = ({ activity, profile }) => {
                         <React.Fragment>
                             <div className='followed-notifier-details'>
                                 <p>{notifier && notifier.userName}</p>
-                                <small>{activity.notification}. {moment(activity.time).fromNow()} </small>
+                                <small>{activity.notification}. <span className='time'>{moment(activity.time).fromNow()}</span></small>
                             </div>
 
                             <div className='followed-notification-item'>
@@ -48,6 +75,7 @@ const EachActivity = ({ activity, profile }) => {
                                 <Button
                                     size='small'
                                     variant='outlined'
+                                    onClick={handleUnFollowUser}
                                 >
                                     Following
                                 </Button>
@@ -56,6 +84,7 @@ const EachActivity = ({ activity, profile }) => {
                                     size='small'
                                     variant='contained'
                                     color='primary'
+                                    onClick={handleFollowUser}
                                 >
                                     Follow
                                 </Button>}
@@ -64,18 +93,26 @@ const EachActivity = ({ activity, profile }) => {
                     }
 
                     {
-                        activity.type === 'liked_post' &&
+                        activity.type !== 'followed' &&
                         <React.Fragment>
                             <div className='followed-notifier-details'>
                                 <p>{notifier && notifier.userName}</p>
-                                <small>{activity.notification}. {moment(activity.time).fromNow()} </small>
+
+                                {activity.type === 'liked_post' && 
+                                <small>{activity.notification}. <span className='time'>{moment(activity.time).fromNow()} </span></small>}
+
+                                {activity.type === 'post_comment' && 
+                                <small>commented: {activity.comment} <span className='time'>{moment(activity.time).fromNow()}</span></small>}
+
+                                {activity.type === 'liked_comment' &&
+                                <small>liked your comment: {activity.comment} <span className='time'>{moment(activity.time).fromNow()}</span></small>}
                             </div>
 
                             <Link 
                                 to={`/p/${activity.postId}`}
                                 className='notification-post-image'
                             >
-                                <img src='https://source.unsplash.com/random/600x600/?flowers' alt='File' />
+                                <img src={post && post.fileUrl} alt='File' />
                             </Link>
                         </React.Fragment>
                     }
@@ -92,7 +129,8 @@ const EachActivity = ({ activity, profile }) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-
+        followUser : data => dispatch(followUser(data)),
+        unFollowUser : data => dispatch(unFollowUser(data))
     }
 }
 

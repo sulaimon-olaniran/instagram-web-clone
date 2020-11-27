@@ -239,6 +239,7 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
                     <CommentIcon
                         width='24px'
                         height='24px'
+                        action={handleOpenComment}
                     />
 
                     <ShareIcon

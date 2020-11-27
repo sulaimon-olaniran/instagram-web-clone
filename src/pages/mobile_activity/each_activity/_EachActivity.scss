@@ -8,14 +8,29 @@
 
     .notification-information{
         width: 85%;
+        height: 100%;
         display: flex;
         justify-content: space-between;
 
         .followed-notifier-details{
+            width: 85%;
+            height: 100%;
             display: flex;
             flex-direction: column;
             align-items: flex-start;
             justify-content: center;
+            
+            p{
+                font-weight: 500;
+            }
+
+            small{
+
+                .time{
+                    font-size: 0.7rem;
+                    color: gray;
+                }
+            }
         }
 
         .followed-notification-item{
@@ -24,15 +39,20 @@
             justify-content: center;
             button{
                 text-transform: initial;
+                background-color: #0095f6;
             }
+
         }
 
         .notification-post-image{
-            width: 40px;
-            height: 40px;
+            min-height: 100%;
+            width: 15%;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
             img{
-                width: 100%;
-                height: 100%;
+                width: 40px;
+                height: 40px;
                 object-fit: contain;
             }
         }

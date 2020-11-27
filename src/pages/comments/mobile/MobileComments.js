@@ -33,7 +33,7 @@ const MobileComments = ({ post, postComments, posterProfile, openCommentModal, h
     }
 
     const handleSubmitComment = () =>{
-        console.log(commentText)
+        //console.log(commentText)
         const data = {
             comment : commentText,
             accountId : posterProfile.userId,
