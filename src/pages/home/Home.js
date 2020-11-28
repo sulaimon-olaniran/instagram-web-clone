@@ -9,7 +9,7 @@ import MobileHome from './mobile/MobileHome'
 
 
 
-const Home = ({ users, following, posts }) => {
+const Home = ({ users, following, posts, setCurrentPage }) => {
     const [followingPosts, setFollowingPosts] = useState([])
     const [fetching, setFetching] = useState(true)
     //const [fetching, setFetching] = useState(true)
@@ -44,8 +44,9 @@ const Home = ({ users, following, posts }) => {
 
     useEffect(() => {
         getAllFollowingPosts()
+        setCurrentPage('home')
 
-    }, [getAllFollowingPosts])
+    }, [getAllFollowingPosts, setCurrentPage])
     //console.log(followingPosts)
 
     return (

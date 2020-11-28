@@ -8,7 +8,7 @@ import Suggestions from '../suggestions/Suggestions'
 
 
 
-const MobileAccountActivity = ({ profile }) =>{
+const MobileAccountActivity = ({ profile, setCurrentPage }) =>{
     const [activities, setActivities] = useState()
 
     const grabAllUserNotifications = useCallback(() =>{
@@ -26,8 +26,9 @@ const MobileAccountActivity = ({ profile }) =>{
 
     useEffect(() =>{
         grabAllUserNotifications()
+        setCurrentPage('activity')
 
-    }, [ grabAllUserNotifications ])
+    }, [ grabAllUserNotifications, setCurrentPage ])
 
     //console.log(activities)
 

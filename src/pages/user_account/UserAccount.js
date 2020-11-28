@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { firestoreConnect } from 'react-redux-firebase'
@@ -8,8 +8,12 @@ import { compose } from 'redux'
 import MobileUserAccount from './mobile/MobileUserAccount'
 
 
-const UserAccount = ({ auth, posts }) =>{
+const UserAccount = ({ auth, posts, setCurrentPage }) =>{
     //console.log(posts)
+    useEffect(() =>{
+        setCurrentPage('')
+        
+    }, [ setCurrentPage])
 
     if(!auth.uid) return <Redirect to='/' />
     return(

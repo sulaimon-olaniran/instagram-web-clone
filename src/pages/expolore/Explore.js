@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import GridList from '@material-ui/core/GridList'
 import GridListTile from '@material-ui/core/GridListTile'
@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Explore = () => {
+const Explore = ({ setCurrentPage }) => {
     const exploreImagess = [
         {
             url: 'https://source.unsplash.com/random/600x600/?nature,animals',
@@ -211,6 +211,12 @@ const Explore = () => {
     ]
     
     const classes = useStyles();
+
+
+    useEffect(() =>{
+        setCurrentPage('explore')
+
+    }, [setCurrentPage])
 
 
     return (

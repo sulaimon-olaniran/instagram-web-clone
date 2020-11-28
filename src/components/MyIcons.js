@@ -12,6 +12,18 @@ export const LikedIcon = ({ action, height, width }) => (
     </svg>
 )
 
+
+export const BlackLikedIcon = ({ action, height, width }) => (
+    <svg style={{ height: height, width: width }} viewBox="0 0 48 48" fill="black" onClick={action}>
+        <path
+            d="M34.6 3.1c-4.5 0-7.9 1.8-10.6 5.6-2.7-3.7-6.1-5.5-10.6-5.5C6 
+            3.1 0 9.6 0 17.6c0 7.3 5.4 12 10.6 16.5.6.5 1.3 1.1 1.9 1.7l2.3 
+            2c4.4 3.9 6.6 5.9 7.6 6.5.5.3 1.1.5 1.6.5s1.1-.2 1.6-.5c1-.6 2.8-2.2 
+            7.8-6.8l2-1.8c.7-.6 1.3-1.2 2-1.7C42.7 29.6 48 25 48 17.6c0-8-6-14.5-13.4-14.5z"
+        />
+    </svg>
+)
+
 export const UnLikedIcon = ({ action, height, width }) => (
     <svg style={{ height: height, width: width }} viewBox="0 0 48 48" fill="#262626" onClick={action}>
         <path
@@ -53,6 +65,17 @@ export const ShareIcon = ({ action, height, width }) => (
 
 export const UnSavedIcon = ({ action, height, width }) => (
     <svg style={{ height: height, width: width }} viewBox="0 0 48 48" onClick={action}>
+        <path
+            d="M43.5 48c-.4 0-.8-.2-1.1-.4L24 29 5.6 47.6c-.4.4-1.1.6-1.6.3-.6-.2-1-.8-1-1.4v-45C3 
+            .7 3.7 0 4.5 0h39c.8 0 1.5.7 1.5 1.5v45c0 .6-.4 1.2-.9 1.4-.2.1-.4.1-.6.1zM24 26c.8 0 
+            1.6.3 2.2.9l15.8 16V3H6v39.9l15.8-16c.6-.6 1.4-.9 2.2-.9z"
+        />
+    </svg>
+)
+
+
+export const ActiveUnSavedIcon = ({ action, height, width }) => (
+    <svg style={{ height: height, width: width }} viewBox="0 0 48 48" fill='#0095f6' onClick={action}>
         <path
             d="M43.5 48c-.4 0-.8-.2-1.1-.4L24 29 5.6 47.6c-.4.4-1.1.6-1.6.3-.6-.2-1-.8-1-1.4v-45C3 
             .7 3.7 0 4.5 0h39c.8 0 1.5.7 1.5 1.5v45c0 .6-.4 1.2-.9 1.4-.2.1-.4.1-.6.1zM24 26c.8 0 

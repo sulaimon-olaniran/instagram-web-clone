@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './styles/Styles.scss'
 import FormikSignIn from './pages/signin/SignIn'
 import ResetPassword from './pages/rest_password/_ResetPassword'
@@ -29,9 +29,9 @@ import MobileAccountActivity from './pages/mobile_activity/AccountActivity'
 
 
 function App({ auth }) {
-  //console.log(auth)
+  const [currentPage, setCurrentPage] = useState('')
   //const signedIn = false
-  const homeComponent = auth.uid ? Home : FormikSignIn
+  const homeComponent = auth.uid ? <Home setCurrentPage={setCurrentPage}/> : <FormikSignIn />
 
 
   //VIEW STORY AND COMMENTS NOT NEEDED AS LINKS ANYMORE
@@ -46,16 +46,16 @@ function App({ auth }) {
           <Route path='/stories/:name/:id' exact component={ViewStory} />
 
           <React.Fragment>
-            <Route path='/' exact component={homeComponent} />
-            <Route path='/explore' exact component={Explore} />
+            <Route path='/' exact component={() => homeComponent} />
+            <Route path='/explore' exact component={() => <Explore setCurrentPage={setCurrentPage}/>} />
             <Route path='/comments' exact component={MobileComments} />
             <Route path='/explore/people/suggested' exact component={Suggestions} />
             <Route path='/profile/:username/:id' exact component={Profile} />
             <Route path='/p/:postId/' exact component={MobilePost} />
-            <Route exact path='/account/:username/:userId'  component={UserAccount} />
+            <Route exact path='/account/:username/:userId'  component={ () => <UserAccount setCurrentPage={setCurrentPage}/>} />
             <Route path='/accounts/password/change' exact component={FormikChangePassword} />
-            <Route path='/account/activity' exact component={MobileAccountActivity} />
-            <BottomNav />
+            <Route path='/account/activity' exact component={() => <MobileAccountActivity setCurrentPage={setCurrentPage}/>} />
+            <BottomNav currentPage={currentPage} />
           </React.Fragment>
         </Switch>
       </div>

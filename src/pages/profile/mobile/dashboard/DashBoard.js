@@ -6,16 +6,19 @@ import { makeStyles } from '@material-ui/core/styles'
 import {
     MyActivePostsIcon,
     MyUnactivePostsIcon,
-    ActiveChannelIcon,
-    UnactiveChannelIcon,
+    //ActiveChannelIcon,
+    //UnactiveChannelIcon,
     UnactiveTaggedIcon,
-    ActiveTaggedIcon
+    ActiveTaggedIcon,
+    UnSavedIcon,
+    ActiveUnSavedIcon
 }
     from '../../../../components/MyIcons'
 import UserPosts from './sections/posts/UserPosts';
 import UserFeed from './sections/feed/UserFeed';
 import Tagged from './sections/tagged/Tagged';
 import Channel from './sections/channel/Channel';
+import SavedPosts from './sections/saved_posts/SavedPosts';
 
 const useStyles = makeStyles((theme) => ({
     unActive: {
@@ -53,6 +56,14 @@ const DashBoard = ({ user, posts, from }) => {
             />
             break;
 
+        case 'saved_posts':
+        mainComponentDisplayed = <SavedPosts 
+            savedPosts={user.savedPosts}
+            from={from}
+            user={user}
+        />
+        break;
+
         case 'tagged':
             mainComponentDisplayed = <Tagged />
             break;
@@ -84,11 +95,19 @@ const DashBoard = ({ user, posts, from }) => {
                 />
 
                 {
+                    from !== 'account' ? null
+                    : activeSection === 'saved_posts' ?
+                    <ActiveUnSavedIcon height='24px' width='24px' action={() => toggleActiveSection('saved_posts')} />
+                    :
+                    <UnSavedIcon height='24px' width='24px' action={() => toggleActiveSection('saved_posts')} />
+                }
+
+                {/* {
                     activeSection !== 'channel' ?
                         <UnactiveChannelIcon height='24px' width='24px' action={() => toggleActiveSection('channel')} />
                         :
                         <ActiveChannelIcon height='24px' width='24px' action={() => toggleActiveSection('channel')} />
-                }
+                } */}
 
                 {
                     activeSection === 'tagged' ?
