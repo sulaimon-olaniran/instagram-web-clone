@@ -16,7 +16,7 @@ const Home = ({ users, following, posts, setCurrentPage }) => {
 
     //const mountedRef = useRef(true)
     // console.log(users)
-    // console.log(posts)
+    //console.log(posts)
 
 
     const getAllFollowingPosts = useCallback(() => {

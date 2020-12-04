@@ -20,6 +20,8 @@ import UnFollowDialog from './actions/unfollow/UnFollow'
 import BlockReportRestrictDialog from './actions/brr-dialog/BRRDialog'
 import LogoLoader from '../../../components/loaders/LogoLoader'
 import { followUser, unFollowUser } from '../../../store/actions/ProfileActions'
+import { handleViewStory } from '../../../store/actions/AppActions'
+import StoryAvatar from '../../../components/avatar/StoryAvatar'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -40,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 
-const MobileProfile = ({ match, history, followUser, unFollowUser, profile, posts }) => {
+const MobileProfile = ({ match, history, followUser, unFollowUser, profile, posts, handleViewStory }) => {
     const [userProfile, setUserProfile] = useState({})
     const [fetchingData, setFetchingData] = useState(true)
     const [userPosts, setUserPosts] = useState([])
@@ -162,10 +164,18 @@ const MobileProfile = ({ match, history, followUser, unFollowUser, profile, post
             <div className='user-information-container'>
 
                 <div className='first-section-container'>
+                    {  userProfile && !userProfile.stories.length > 0 ?
                     <Avatar
                         className={classes.large}
                         src={userProfile && userProfile.profilePhoto}
                     />
+                        :
+                    <StoryAvatar
+                        src={userProfile && userProfile.profilePhoto}
+                        height='80px'
+                        width='80px'
+                        action={() => handleViewStory(userProfile)}
+                    />}
 
                     <div className='name-message-follow-container'>
                         <p>{match.params.username}</p>
@@ -272,7 +282,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         followUser: data => dispatch(followUser(data)),
-        unFollowUser: data => dispatch(unFollowUser(data))
+        unFollowUser: data => dispatch(unFollowUser(data)),
+        handleViewStory : data => dispatch(handleViewStory(data))
     }
 }
 

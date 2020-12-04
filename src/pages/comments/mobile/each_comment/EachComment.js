@@ -9,11 +9,13 @@ import { UnLikedIcon, LikedIcon } from '../../../../components/MyIcons'
 import { db } from '../../../../firebase/Firebase'
 import CommentActionDialog from './comment_action/CommentActionDialog'
 import { likePostComment, unLikePostComment } from '../../../../store/actions/PostsAction'
+import { handleViewStory } from '../../../../store/actions/AppActions'
+import StoryAvatar from '../../../../components/avatar/StoryAvatar'
 
 
 
 
-const EachComment = ({ from, comment, post, profile, likePostComment, unLikePostComment }) => {
+const EachComment = ({ from, comment, post, profile, likePostComment, unLikePostComment, handleViewStory }) => {
     const [user, setUser] = useState({}) //to get user that made the comment
     const [actionDialog, setActionDialog] = useState(false)
     const holdTimeRef = useRef(null)
@@ -55,7 +57,7 @@ const EachComment = ({ from, comment, post, profile, likePostComment, unLikePost
             accountId: comment.userId,
             commentId: comment.commentId,
             postId: post.postId,
-            comment : comment.comment
+            comment: comment.comment
         }
 
         likePostComment(data)
@@ -71,6 +73,8 @@ const EachComment = ({ from, comment, post, profile, likePostComment, unLikePost
 
         unLikePostComment(data)
     }
+
+    //console.log(user)
 
     if (from === "top_three") return (
         <div className='each-comment-container'>
@@ -107,13 +111,25 @@ const EachComment = ({ from, comment, post, profile, likePostComment, unLikePost
                 comment={comment}
                 post={post}
             />
-            <Avatar src={user && user.profilePhoto} />
+            {user && user.stories && !user.stories.length > 0 ?
+                <Avatar src={user && user.profilePhoto} />
+                :
+                <StoryAvatar
+                    src={user && user.profilePhoto}
+                    height='40px'
+                    width='40px'
+                    action={() => handleViewStory(user)}
+                />}
 
             <div className='comment-details'>
                 <div className='comment-text'>
-                    <Link to={`/profile/${user && user.userName}/${user && user.userId}`}>
-                        <p><span>{user && user.userName}</span> {comment.comment}</p>
-                    </Link>
+                    <p>
+                        <Link to={`/profile/${user && user.userName}/${user && user.userId}`}>
+                            {user && user.userName}
+                        </Link>
+                        {comment.comment}
+                    </p>
+                    
                     {profile && profile.likedComments.includes(comment.commentId) ?
                         <LikedIcon
                             height='12px'
@@ -145,7 +161,8 @@ const EachComment = ({ from, comment, post, profile, likePostComment, unLikePost
 const mapDispatchToProps = dispatch => {
     return {
         likePostComment: data => dispatch(likePostComment(data)),
-        unLikePostComment: data => dispatch(unLikePostComment(data))
+        unLikePostComment: data => dispatch(unLikePostComment(data)),
+        handleViewStory: data => dispatch(handleViewStory(data))
     }
 }
 

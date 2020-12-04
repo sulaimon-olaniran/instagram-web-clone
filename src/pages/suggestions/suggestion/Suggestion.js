@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import Button from '@material-ui/core/Button'
 import Avatar from '@material-ui/core/Avatar'
 import { makeStyles } from '@material-ui/core/styles'
@@ -35,7 +36,10 @@ const Suggestion = ({ user, profile }) =>{
     return(
         <div className='each-suggestion-container'>
 
-            <div className='profile-container'>
+            <Link 
+                to={`/profile/${user.userName}/${user.userId}`}
+                className='profile-container'
+            >
                 <Avatar 
                     src={user.profilePhoto} alt='file' 
                     className={classes.large}
@@ -46,7 +50,7 @@ const Suggestion = ({ user, profile }) =>{
                     <p>{user.userName}</p>
                     <p>suggested for you</p>
                 </div>
-            </div>
+            </Link>
 
 
             <Button 

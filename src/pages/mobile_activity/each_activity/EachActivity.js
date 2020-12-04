@@ -8,10 +8,12 @@ import moment from 'moment'
 
 import { db } from '../../../firebase/Firebase'
 import { followUser, unFollowUser } from '../../../store/actions/ProfileActions'
+import { handleViewStory } from '../../../store/actions/AppActions'
+import StoryAvatar from '../../../components/avatar/StoryAvatar'
 
 
 
-const EachActivity = ({ activity, profile, followUser, unFollowUser }) => {
+const EachActivity = ({ activity, profile, followUser, unFollowUser, handleViewStory }) => {
     const [notifier, setNotifier] = useState({})
     const [post, setPost] = useState({}) //get the post from which activity occured
     //console.log(activity)
@@ -58,7 +60,16 @@ const EachActivity = ({ activity, profile, followUser, unFollowUser }) => {
     return (
         <React.Fragment>
             <div className='each-mobile-activity-container'>
-                <Avatar src={notifier && notifier.profilePhoto} />
+
+                {notifier && notifier.stories && notifier.stories.length > 0 ?
+                <StoryAvatar
+                    src={notifier && notifier.profilePhoto}
+                    height='40px'
+                    width='40px'
+                    action={() => handleViewStory(notifier)}
+                />
+                :
+                <Avatar src={notifier && notifier.profilePhoto} />}
 
                 <div className='notification-information'>
 
@@ -130,7 +141,8 @@ const EachActivity = ({ activity, profile, followUser, unFollowUser }) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         followUser : data => dispatch(followUser(data)),
-        unFollowUser : data => dispatch(unFollowUser(data))
+        unFollowUser : data => dispatch(unFollowUser(data)),
+        handleViewStory : data => dispatch(handleViewStory(data))
     }
 }
 

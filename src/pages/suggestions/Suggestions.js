@@ -45,7 +45,7 @@ const Suggestions = ({ as, auth, users, profile, history }) => {
                     <p>Suggestions For You</p>
                 }
 
-                <div className='suggestions-list-container'>
+                {as !== 'component' ? <div className='suggestions-list-container'>
                     {
                         suggestedUsers.length > 0 && suggestedUsers.map((user, i) => {
                             return (
@@ -57,6 +57,19 @@ const Suggestions = ({ as, auth, users, profile, history }) => {
 
                     }
                 </div>
+                    :
+                <div className='suggestions-list-container'>
+                    {
+                        suggestedUsers.length > 0 && suggestedUsers.slice(0, 10).map((user, i) => {
+                            return (
+                                <React.Fragment key={i}>
+                                    <Suggestion user={user} profile={profile} />
+                                </React.Fragment>
+                            )
+                        })
+
+                    }
+                </div>}
 
             </div>
             { as === 'component' &&

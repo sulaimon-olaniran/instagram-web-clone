@@ -1,9 +1,17 @@
 import React, { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import GridList from '@material-ui/core/GridList'
 import GridListTile from '@material-ui/core/GridListTile'
+import { firestoreConnect } from 'react-redux-firebase'
+import { connect } from 'react-redux'
+import { compose } from 'redux'
+
+
 
 import { MyUnActiveSearchIcon } from '../../components/MyIcons'
+
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -19,196 +27,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Explore = ({ setCurrentPage }) => {
-    const exploreImagess = [
-        {
-            url: 'https://source.unsplash.com/random/600x600/?nature,animals',
-            rows: 3,
-            cols: 3,
-        },
-
-        {
-            url :'https://source.unsplash.com/random/600x600/?nature,flowers',
-            rows: 1,
-            cols : 1
-
-        },
-        
-        {
-            url :'https://source.unsplash.com/random/600x600/?places',
-            rows: 1,
-            cols : 1
-
-        },
-        {
-            url :'https://source.unsplash.com/random/600x600/?cows',
-            rows: 1,
-            cols : 1
-
-        },
-        {
-            url :'https://source.unsplash.com/random/1600x900/?dog',
-            rows: 1,
-            cols : 1
-
-        },
-        {
-            url :'https://source.unsplash.com/random/600x600/?foods',
-            rows: 1,
-            cols : 1
-
-        },
-        {
-            url :'https://source.unsplash.com/random/600x600/?elephants',
-            rows: 1,
-            cols : 1
-
-        },
-        {
-            url :'https://source.unsplash.com/random/600x600/?car',
-            rows: 1,
-            cols : 1
-
-        },
-        {
-            url :'https://source.unsplash.com/random/600x600/?train',
-            rows: 1,
-            cols : 1
-
-        },
-        {
-            url :'https://source.unsplash.com/random/600x600/?pet',
-            rows: 1,
-            cols : 1
-
-        },
-        {
-            url :'https://source.unsplash.com/random/600x600/?guns',
-            rows: 3,
-            cols : 3
-
-        },
-        {
-            url :'https://source.unsplash.com/random/600x600/?ronaldo',
-            rows: 1,
-            cols : 1
-
-        },
-        {
-            url :'https://source.unsplash.com/random/600x600/?messi',
-            rows: 1,
-            cols : 1
-
-        },
-        {
-            url :'https://source.unsplash.com/random/600x600/?london',
-            rows: 1,
-            cols : 1
-
-        },
-        {
-            url :'https://source.unsplash.com/random/600x600/?manchester',
-            rows: 1,
-            cols : 1
-
-        },
-        {
-            url :'https://source.unsplash.com/random/600x600/?flag',
-            rows: 1,
-            cols : 1
-
-        },
-        {
-            url :'https://source.unsplash.com/random/600x600/?pasta',
-            rows: 1,
-            cols : 1
-
-        },
-        {
-            url :'https://source.unsplash.com/random/600x600/?rice',
-            rows: 1,
-            cols : 1
-
-        },
-        {
-            url :'https://source.unsplash.com/random/600x600/?rome',
-            rows: 1,
-            cols : 1
-
-        },
-        {
-            url :'https://source.unsplash.com/random/600x600/?birds',
-            rows: 1,
-            cols : 1
-
-        },
-        {
-            url :'https://source.unsplash.com/random/600x600/?eggs',
-            rows: 1,
-            cols : 1
-
-        },
-        {
-            url :'https://source.unsplash.com/random/600x600/?lions',
-            rows: 1,
-            cols : 1
-
-        },
-        {
-            url :'https://source.unsplash.com/random/600x600/?wolves',
-            rows: 1,
-            cols : 1
-
-        },
-        {
-            url :'https://source.unsplash.com/random/600x600/?soldiers',
-            rows: 1,
-            cols : 1
-
-        },
-        {
-            url :'https://source.unsplash.com/random/600x600/?police',
-            rows: 1,
-            cols : 1
-
-        },
-        {
-            url :'https://source.unsplash.com/random/600x600/?fire',
-            rows: 1,
-            cols : 1
-
-        },
-        {
-            url :'https://source.unsplash.com/random/600x600/?river',
-            rows: 1,
-            cols : 1
-
-        },
-        {
-            url :'https://source.unsplash.com/random/600x600/?volcano',
-            rows: 1,
-            cols : 1
-
-        },
-        {
-            url :'https://source.unsplash.com/random/600x600/?mountains',
-            rows: 1,
-            cols : 1
-
-        },
-        {
-            url :'https://source.unsplash.com/random/600x600/?girl',
-            rows: 1,
-            cols : 1
-
-        },
-        {
-            url :'https://source.unsplash.com/random/600x600/?eifel',
-            rows: 1,
-            cols : 1
-
-        },
-    ]
+const Explore = ({ setCurrentPage, posts }) => {
     
     const classes = useStyles();
 
@@ -230,14 +49,19 @@ const Explore = ({ setCurrentPage }) => {
             <div className='explore-contents-container'>
                 <GridList cellHeight={120} className={classes.gridList} cols={3}>
                     {
-                        exploreImagess.map((image, i) => {
+                        posts ? posts.map((post, i) => {
                             //console.log(i)
                             return (
-                                <GridListTile key={i} cols={image.cols} rows={image.rows} >
-                                    <img src={image.url} alt='FILE' />
+                                <GridListTile key={post.postId} >
+                                    <Link to={`/p/${post.postId}`}>
+                                        <img src={post.fileUrl} alt='FILE' />
+                                    </Link>
+                                   
                                 </GridListTile>
                             )
                         })
+                        :
+                        <p>Loading</p>
                     }
                 </GridList>
 
@@ -246,9 +70,20 @@ const Explore = ({ setCurrentPage }) => {
         </div>
     )
 }
+const mapStateToProps = (state) => {
+    //console.log(state)
+    return {
+        posts: state.firestore.ordered.posts,
+    }
+}
 
 
-export default Explore
+
+export default compose(
+    connect(mapStateToProps),
+    firestoreConnect(() => ['posts'])
+)(Explore)
+//export default Explore
 
 
 

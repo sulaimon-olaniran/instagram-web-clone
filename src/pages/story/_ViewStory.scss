@@ -4,31 +4,31 @@
     background-color: black;
 
     .top-section-container{
-        width: 100%;
+        width: 40px;
         height: 5vh;
-        top: 5vh;
+        top: 3vh;
+        right : 7%;
         position: absolute;
         z-index: 9999;
         display: flex;
         padding: 0 25px;
-        justify-content: space-between;
         align-items: center;
 
-        .account-profile{
-            width: 60%;
-            height: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+    }
 
-            p{
-                color: white;
-                font-weight: 600;
-            }
+    .bottom-more-button-container{
+        width: 40px;
+        height: 3vh;
+        position: absolute;
+        bottom: 3vh;
+        right: 7%;
+        z-index: 9999;
+        display: flex;
+        align-items: center ;
+        justify-content: center;
 
-            small{
-                color: rgb(194, 194, 194);
-            }
+        .MuiSvgIcon-root{
+            fill: white;
         }
     }
 
@@ -36,3 +36,5 @@
         color:white;
     }
 }
+
+@import './delete_story/DeleteStory';

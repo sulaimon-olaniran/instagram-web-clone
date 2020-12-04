@@ -1,0 +1,48 @@
+.delete-story-dialog-container{
+    width: 250px;
+    height: 15vh;
+
+    .button-container{
+        width: 100%;
+        height: 7.5vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-bottom: 1px solid lightgray;
+    }
+}
+
+
+.confirm-delete-story-dialog-container{
+    width: 250px;
+    height: 35vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+
+    h2{
+      font-weight: 500;  
+      font-size: 1.2rem;
+    }
+
+    p{
+        width: 65%;
+        text-align: center;
+        font-size: 0.9rem;
+    }
+
+    .confirm-delete-story-dialog-buttons-container{
+        width: 100%;
+        height: 50%;
+
+        .button-container{
+            width: 100%;
+            height: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-top: 1px solid lightgray;
+        }
+    }
+}

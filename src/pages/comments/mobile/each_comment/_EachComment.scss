@@ -20,11 +20,14 @@
 
                 p{
                     width: 90%;
+                    color: gray;
+                    a{
+                        margin-right: 5px;
+                        font-weight: 600;
+                        color: rgb(62, 62, 62);
+                    }
                 }
 
-                span{
-                    font-weight: 600;
-                }
             }
 
             .comment-time-likes{

@@ -35,14 +35,23 @@
         min-height: 15vh;
         display: flex;
         margin-top: 8vh;
+        padding-left: 10px;
         align-items: center;
         border-bottom: 1px solid lightgrey;
         background-color: rgb(255, 255, 255);
+
+        .user-story-container{
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
 
         .makeStyles-large-2{
           width: 70px;
           height: 70px;
+          margin-right: 15px;
         }
 
     }

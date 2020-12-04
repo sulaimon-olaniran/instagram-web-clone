@@ -1,33 +1,34 @@
-import React, { useState } from 'react'
-//import { Redirect } from 'react-router-dom'
+import React from 'react'
+import { connect } from 'react-redux'
 
 
 //import { MyCameraIcon } from '../MyIcons'
 import CreateStoryModal from './CreateStory'
+import { openCreateStoryModal, closeCreateStoryModal } from '../../store/actions/StoryAction'
 
 
 
-const CreateButton = ({ MyCameraIcon }) => {
-    const [fileUrl, setFileUrl] = useState(null)
-    const [filePreviewUrl, setFilePreviewUrl] = useState(null)
-    const [openModal, setOpenModal] = useState(false)
+const CreateButton = ({ component, openCreateStoryModal, closeCreateStoryModal, createStoryModal }) => {
+    //const [fileUrl, setFileUrl] = useState(null)
+    //const [filePreviewUrl, setFilePreviewUrl] = useState(null)
+    //const [openModal, setOpenModal] = useState(false)
 
 
     const handleInputChange = e => {
         if (e.target.files[0]) {
-            setFileUrl(e.target.files[0])
-            setFilePreviewUrl(URL.createObjectURL(e.target.files[0]))
-            setOpenModal(true)
+            //setFileUrl(e.target.files[0])
+            //setFilePreviewUrl(URL.createObjectURL(e.target.files[0]))
+            const data = {
+                fileUrl : e.target.files[0],
+                filePreviewUrl : URL.createObjectURL(e.target.files[0])
+            }
+            openCreateStoryModal(data) 
         }
     }
 
 
     const handleCloseModal = () =>{
-        setOpenModal(false)
-        localStorage.removeItem('imageRotation')
-        localStorage.removeItem('imageWidth')
-        localStorage.removeItem('filterStyle')
-        localStorage.removeItem('imageStyle')
+        closeCreateStoryModal()
     }
 
 
@@ -41,19 +42,33 @@ const CreateButton = ({ MyCameraIcon }) => {
                     accept="image/png, .jpeg, .jpg, image/gif"
                     style={{ display: 'none' }}
                 />
-                <MyCameraIcon height='24px' width='24px' />
+                {component}
             </label>
             
             <CreateStoryModal 
-               openModal={openModal}
+               openModal={createStoryModal}
                handleCloseModal={handleCloseModal}
-               fileUrl={fileUrl}
-               filePreviewUrl={filePreviewUrl}
+               //fileUrl={fileUrl}
+               //filePreviewUrl={filePreviewUrl}
             />
         </React.Fragment>
     )
 }
 
+const mapStateToProps = state =>{
+    return{
+        createStoryModal : state.story.createStoryModal,
+    }
+}
 
 
-export default CreateButton
+const mapDispatchToProps = dispatch =>{
+    return{
+        openCreateStoryModal : data => dispatch(openCreateStoryModal(data)), 
+        closeCreateStoryModal : () => dispatch(closeCreateStoryModal()), 
+    }
+}
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateButton)

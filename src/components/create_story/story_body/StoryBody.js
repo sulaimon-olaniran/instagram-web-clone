@@ -4,17 +4,22 @@ import GetAppIcon from '@material-ui/icons/GetApp'
 import BorderColorIcon from '@material-ui/icons/BorderColor'
 import WidgetsIcon from '@material-ui/icons/Widgets'
 import AddCircleIcon from '@material-ui/icons/AddCircle';
+import { connect } from 'react-redux'
 
 
 import CanvasDrawComponent from './canvas_draw/CanvasDraw'
 import AddIconDrawer from './add_icon/AddIcon'
 import IconCanvas from './add_icon/IconCanvas'
 import DiscardDialog from './discard_dialog/DiscardDialog'
+import { addStory } from '../../../store/actions/StoryAction'
+import GradientLoader from '../../loaders/gradient/GradientLoader'
 
 
 
 
-const StoryBody = ({ handleCloseModal, filePreviewUrl }) => {
+const StoryBody = ({ handleCloseModal, filePreviewUrl, fileUrl, addStory, addingStory, profile }) => {
+   
+     
     const [iconDrawer, setIconDrawer] = useState(false)
     const [iconUrl, setIconUrl] = useState(null)
     const [activeCanvas, setActiveCanvas] = useState('icons')
@@ -22,6 +27,7 @@ const StoryBody = ({ handleCloseModal, filePreviewUrl }) => {
     const imageRef = useRef(null) // holds the displayed image
     const drawingRef = useRef(null) //used to draw lines over image
     const mainCanvasRef = useRef(null) //brings all ref together as one image
+    const imageFileRef = useRef(null) //ref to convert canvas image url back into a file
 
     const iconRef = useRef(null)
 
@@ -89,9 +95,7 @@ const StoryBody = ({ handleCloseModal, filePreviewUrl }) => {
 
     }, [ filePreviewUrl ])
 
-
-    const downloadImage = () => {
-        const download = downloadRef.current
+    const prepareImageUrl = () =>{
         const mainCanvasContext = mainCanvasRef.current.getContext('2d')
         //const canvasContext = drawingRef.current.getContext('2d')
 
@@ -102,14 +106,51 @@ const StoryBody = ({ handleCloseModal, filePreviewUrl }) => {
         mainCanvasContext.drawImage(drawingRef.current, 0, 0, imageRef.current.width, imageRef.current.height)
         mainCanvasContext.drawImage(iconRef.current, 0, 0, imageRef.current.width, imageRef.current.height)
 
+    }
+
+
+    const downloadImage = () => {
+        const download = downloadRef.current
+        prepareImageUrl()
+
         const image = mainCanvasRef.current.toDataURL()
         //image.crossOrigin="anonymous"
         download.href = image
     }
 
+    const convertUrlToFileObject = async (url) => {
+        const response = await fetch(url)
+        const blob = await response.blob()
+        const file = new File([blob], `${fileUrl.name}`, { type: blob.type })
+        imageFileRef.current = file
+    }
+   // console.log(profile)
+    const handleAddStoryToDatabase = () =>{
+        prepareImageUrl()
+
+        const url = mainCanvasRef.current.toDataURL()
+        //console.log(url)
+        convertUrlToFileObject(url)
+        .then(() => {
+            const data = {
+                userId: profile.userId,
+                file: imageFileRef.current
+            }
+            addStory(data)
+            // console.log(imageFileRef.current)
+            // console.log(fileUrl)
+        })
+
+    }
+
     return (
         <React.Fragment>
-
+            {addingStory && <GradientLoader /> }
+            {addingStory &&
+                <div className='creating-story-loader-container'>
+                    <p>Creating Story</p>
+                </div>
+            }
             {   activeCanvas !== 'drawing' &&
                 <header>
                     <CloseIcon onClick={handleOpenDiscardDialog} />
@@ -119,6 +160,7 @@ const StoryBody = ({ handleCloseModal, filePreviewUrl }) => {
                         </a>
                         <WidgetsIcon onClick={handleOpenIconDrawer} />
                         <BorderColorIcon onClick={() => setActiveCanvas('drawing')}/>
+                        
                     </div>
                 </header>
             }
@@ -154,7 +196,11 @@ const StoryBody = ({ handleCloseModal, filePreviewUrl }) => {
             />
 
             { activeCanvas !== 'drawing' &&
-                <button className='add-story-button'>
+                <button 
+                    disabled={addingStory}
+                    onClick={handleAddStoryToDatabase}
+                    className='add-story-button'
+                >
                     <AddCircleIcon />
                     <p>Add to story</p>
                 </button>
@@ -163,5 +209,21 @@ const StoryBody = ({ handleCloseModal, filePreviewUrl }) => {
     )
 }
 
+const mapStateToProps = state =>{
+    //console.log(state)
+    return{
+        addingStory : state.story.addingStory,
+        fileUrl : state.story.fileUrl,
+        filePreviewUrl : state.story.filePreviewUrl,
+        profile : state.firebase.profile
+    }
+}
 
-export default StoryBody
+const mapDispatchToProps = dispatch =>{
+    return{
+        addStory : data => dispatch(addStory(data))
+    }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(StoryBody)

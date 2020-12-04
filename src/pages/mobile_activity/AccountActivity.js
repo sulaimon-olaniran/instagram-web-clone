@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
+import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 
@@ -8,11 +9,13 @@ import Suggestions from '../suggestions/Suggestions'
 
 
 
-const MobileAccountActivity = ({ profile, setCurrentPage }) =>{
-    const [activities, setActivities] = useState()
+const MobileAccountActivity = ({ profile, setCurrentPage, auth }) =>{
+    const [activities, setActivities] = useState([])
 
     const grabAllUserNotifications = useCallback(() =>{
-        db.collection('users').doc('9G6R635DzajdJA0ht6Ng').collection('notifications').orderBy('time', 'desc')
+      
+        db.collection('users').doc(auth.uid)
+        .collection('notifications').orderBy('time', 'desc')
         .onSnapshot(snapshot =>{
             const notifications = []
             snapshot.forEach(doc =>{
@@ -21,7 +24,7 @@ const MobileAccountActivity = ({ profile, setCurrentPage }) =>{
 
             setActivities(notifications)
         })
-    }, [])
+    }, [ auth])
 
 
     useEffect(() =>{
@@ -31,14 +34,15 @@ const MobileAccountActivity = ({ profile, setCurrentPage }) =>{
     }, [ grabAllUserNotifications, setCurrentPage ])
 
     //console.log(activities)
-
+    if(!auth.uid) return <Redirect to='/' />
     return(
         <div className="mobile-activity-container">
             <div className='mobile-activity-nav-container'>
                 <p>Activiy</p>
             </div>
             {
-                activities && activities.map((activity, i) =>{
+                activities.length > 0 ?
+                 activities.map((activity, i) =>{
                     return(
                         <EachActivity 
                             activity={activity} 
@@ -47,6 +51,10 @@ const MobileAccountActivity = ({ profile, setCurrentPage }) =>{
                         />
                     )
                 })
+                :
+                <div className='no-activity-container'>
+                    <p>You currently have no activity, when you do they would appear here</p>
+                </div>
             }
 
             <Suggestions as='component' />
@@ -56,8 +64,10 @@ const MobileAccountActivity = ({ profile, setCurrentPage }) =>{
 
 
 const mapStateToProps = state =>{
+    console.log(state)
     return{
-        profile : state.firebase.profile
+        profile : state.firebase.profile,
+        auth : state.firebase.auth,
     }
 }
 

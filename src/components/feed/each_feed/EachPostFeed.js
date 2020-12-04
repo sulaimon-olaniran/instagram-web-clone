@@ -16,11 +16,13 @@ import MobileComments from '../../../pages/comments/mobile/MobileComments'
 import { db } from '../../../firebase/Firebase'
 import { followUser } from '../../../store/actions/ProfileActions'
 import {  likePost, unLikePost, savePost, unSavePost } from '../../../store/actions/PostsAction'
+import { handleViewStory } from '../../../store/actions/AppActions'
 import FeedSkeleton from '../../skeletons/FeedSkeleton'
 import EachComment from '../../../pages/comments/mobile/each_comment/EachComment'
+import StoryAvatar from '../../avatar/StoryAvatar'
 
 
-const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePost, unSavePost }) => {
+const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePost, unSavePost, handleViewStory }) => {
     const [openDialog, setOpenDialog] = useState(false)
     const [openShareDrawer, setOpenShareDrawer] = useState(false)
     const [openComment, setOpenComment] = useState(false)
@@ -181,9 +183,17 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
             <div className='top-details-container'>
 
                 <div className='user-container'>
+                    {posterProfile && posterProfile.stories && !posterProfile.stories.length > 0 ?
                     <Avatar
                         src={posterProfile && posterProfile.profilePhoto}
                     />
+                        :
+                    <StoryAvatar 
+                        src={posterProfile && posterProfile.profilePhoto}
+                        height='48px'
+                        width='48px'
+                        action={() => handleViewStory(posterProfile)}
+                    />}
 
                     <Link 
                         to={`/profile/${posterProfile && posterProfile.userName}/${posterProfile && posterProfile.userId}`}
@@ -337,8 +347,9 @@ const mapDisptachToProps = (dispatch) =>{
         unLikePost : data => dispatch(unLikePost(data)),
         savePost : data => dispatch(savePost(data)),
         unSavePost : data => dispatch(unSavePost(data)),
+        handleViewStory : data => dispatch(handleViewStory(data))
     }
 }
 
 
-export default connect( mapStateToProps, mapDisptachToProps)(EachPostFeed)
+export default connect(mapStateToProps, mapDisptachToProps)(EachPostFeed)

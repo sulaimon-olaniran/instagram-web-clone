@@ -8,8 +8,10 @@ import StoryBody from './story_body/StoryBody'
 
 
 
-const CreateStoryModal = ({ openModal, handleCloseModal, filePreviewUrl }) => {
+const CreateStoryModal = ({ openModal, handleCloseModal, filePreviewUrl, fileUrl }) => {
 
+    //console.log(filePreviewUrl)
+    //console.log(fileUrl)
 
     return (
         <Modal
@@ -22,8 +24,9 @@ const CreateStoryModal = ({ openModal, handleCloseModal, filePreviewUrl }) => {
         >
             <div className='create-story-modal-container'>
                 <StoryBody
-                    filePreviewUrl={filePreviewUrl}
+                    //filePreviewUrl={filePreviewUrl}
                     handleCloseModal={handleCloseModal}
+                    //fileUrl={fileUrl}
                 />
             </div>
         </Modal>
