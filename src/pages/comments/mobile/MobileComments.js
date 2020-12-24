@@ -110,7 +110,7 @@ const MobileComments = ({ post, postComments, posterProfile, openCommentModal, h
                     {
                         postComments && postComments.map((comment, i) => {
                             return (
-                                <React.Fragment key={i}>
+                                <React.Fragment key={comment.commentId}>
                                     <EachComment comment={comment} post={post} profile={profile} />
                                 </React.Fragment>
                             )

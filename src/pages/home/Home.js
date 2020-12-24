@@ -6,17 +6,13 @@ import { compose } from 'redux'
 
 
 import MobileHome from './mobile/MobileHome'
+import PcHome from './pc/PcHome'
 
 
 
 const Home = ({ users, following, posts, setCurrentPage }) => {
     const [followingPosts, setFollowingPosts] = useState([])
     const [fetching, setFetching] = useState(true)
-    //const [fetching, setFetching] = useState(true)
-
-    //const mountedRef = useRef(true)
-    // console.log(users)
-    //console.log(posts)
 
 
     const getAllFollowingPosts = useCallback(() => {
@@ -34,10 +30,6 @@ const Home = ({ users, following, posts, setCurrentPage }) => {
             setFetching(false)
         })
         
-
-        //console.log(allPosts)
-        // setFollowingPosts(allPosts)
-        // setFetching(false)
     }, [posts, following])
 
 
@@ -47,21 +39,27 @@ const Home = ({ users, following, posts, setCurrentPage }) => {
         setCurrentPage('home')
 
     }, [getAllFollowingPosts, setCurrentPage])
-    //console.log(followingPosts)
 
     return (
-        <div>
-            <MobileHome
-                feedPosts={followingPosts}
-                fetchingFeedPosts={fetching}
-            />
-        </div>
+        <React.Fragment>
+            <div className='mobile-home'>
+                <MobileHome
+                    feedPosts={followingPosts}
+                    fetchingFeedPosts={fetching}
+                />
+            </div>
+            
+            <div className='pc-home'>
+                <PcHome  
+                    feedPosts={followingPosts}
+                />
+            </div>
+        </React.Fragment>
     )
 }
 
 
 const mapStateToProps = (state) => {
-    //console.log(state)
     return {
         users: state.firestore.ordered.users,
         posts: state.firestore.ordered.posts,

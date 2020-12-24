@@ -6,6 +6,16 @@
     align-items: center;
     //overflow-y: scroll;
 
+    .pc{
+        display: none;
+    }
+
+    .mobile{
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
     .MuiFormControl-root{
         width: 90%;
         margin-top: 25px;
@@ -53,6 +63,40 @@
         }
     }
 
+}
+
+
+@media(min-width : 960px) {
+   .profile-information-formik-form{
+       min-height: 0;
+       height: 90%;
+
+       .mobile{
+           display: none;
+       }
+
+       .pc{
+           display: flex;
+           width: 100%;
+           justify-content: center;
+       }
+
+       .MuiFormControl-root{
+           width: 90%;
+           margin-top: 20px;
+       }
+
+       .personal-information-header{
+           height: 4rem;
+       }
+
+
+       .profile-form-buttons-container{
+           height: 3rem;
+           width: 70%;
+           padding: 0;
+       }
+   }
 }
 
 @import './gender/GenderModal';

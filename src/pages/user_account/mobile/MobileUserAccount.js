@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState } from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
@@ -11,8 +11,6 @@ import EditProfile from './edit_profile/EditProfile'
 import AccountOptions from './options/AccountOptions'
 import Followers from '../../profile/mobile/follow/Followers'
 import Following from '../../profile/mobile/follow/Following'
-import { db } from '../../../firebase/Firebase'
-import LogoLoader from '../../../components/loaders/LogoLoader'
 
 
 
@@ -22,53 +20,21 @@ const useStyles = makeStyles((theme) => ({
         height: theme.spacing(10),
     },
 
-    small: {
-        width: theme.spacing(3),
-        height: theme.spacing(3),
-    },
-
-    tiny: {
-        width: theme.spacing(2),
-        height: theme.spacing(2),
-    },
-
     button: {
         width: '100%',
     },
 }));
 
 
-const MobileUserAccount = ({ match, posts }) => {
+const MobileUserAccount = ({ userPosts, userData }) => {
     const [editProfileModal, setEditProfileModal] = useState(false)
     const [optionsModal, setOptionsModal] = useState(false)
     const [followingModal, setFollowingModal] = useState(false)
     const [followersModal, setFollowersModal] = useState(false)
-    const [fetchingUserData, setFetchingUserData] = useState(true)
-    const [userPosts, setUserPosts] = useState([])
-    const [userData, setUserData] = useState({})
-    //console.log('mobile user account mounted')
 
-    const handleFetchUserData = useCallback( () =>{
-        const { userId } = match.params
-        const allPosts = []
-        db.collection('users').doc(userId)
-        .onSnapshot(snapshot =>{
-            setUserData(snapshot.data())
 
-            posts && posts.forEach(post => {
-                if (post.userId === userId) {
-                    allPosts.push(post)
-                }
-            })
-            setUserPosts(allPosts)
-            setFetchingUserData(false)
-        })
-    }, [ match, posts ])
+    const classes = useStyles()
 
-    useEffect(() =>{
-        handleFetchUserData()
-
-    }, [handleFetchUserData])
 
     const openEditProfileModal = () =>{
         setEditProfileModal(true)
@@ -99,9 +65,8 @@ const MobileUserAccount = ({ match, posts }) => {
         setFollowingModal(false)
     }
 
-    const classes = useStyles()
+    
 
-    if(fetchingUserData) return <LogoLoader />
     return (
         <div className='mobile-user-account-container'>
             <EditProfile
@@ -137,7 +102,7 @@ const MobileUserAccount = ({ match, posts }) => {
                     action={openOpetionsMOdal}
                 />
 
-                <p>Sulai_m0n</p>
+                <p>{userData.userName}</p>
 
                 <Link to='/explore/people/suggested/'>
                     <DiscoverIcon

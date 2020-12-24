@@ -7,7 +7,7 @@
 @import '../pages/signup/pc/PcSignUp';
 @import '../pages/signup/mobile/MobileSignUp';
 @import '../pages/rest_password/ResetPassword';
-@import '../pages/home/mobile/MobileHome';
+@import '../pages/home/Home';
 @import '../pages/comments/mobile/MobileComments';
 @import '../components/navbar/BottomNav';
 @import '../pages/expolore/Explore';
@@ -16,7 +16,7 @@
 @import '../components/stories/Stories';
 @import '../components/sliders/CubeSlider';
 @import '../pages/story/ViewStory';
-@import '../pages/post/mobile/MobilePost';
+@import '../pages/post/Post';
 @import '../components/feed/PostFeed';
 @import '../components/loaders/gradient/GradientLoader';
 @import '../components/upload/modal/UploadModal';
@@ -28,4 +28,9 @@
 @import '../pages/profile/Profile';
 @import '../pages/user_account/UserAccount';
 @import '../pages/mobile_activity/AccountActivity';
+@import '../components/navbar/top_nav/TopPcNav';
+@import '../components/search_box/SearchBox';
+@import '../components/profile_card/ProfileCard';
+@import '../components/post_outline/PostOutline';
+@import '../pages/mobile_search/MobileSearch';
 

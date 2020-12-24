@@ -26,5 +26,19 @@
     }
 }
 
+
+@media(min-width : 960px) {
+    .edit-profile-container{
+        min-height: 0;
+        height: 100%;
+        padding-top: 0;
+
+
+        .edit-profile-nav-container{
+            display: none;
+        }
+    }
+}
+
 @import './profile_photo/ProfilePhoto';
 @import './information/ProfileInformation';

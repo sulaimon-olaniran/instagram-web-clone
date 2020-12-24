@@ -12,3 +12,12 @@ nav{
     justify-content: space-between;
     padding: 0 20px;
 }
+
+
+
+@media(min-width : 960px) {
+    nav{
+        display: none !important;
+    }
+
+}

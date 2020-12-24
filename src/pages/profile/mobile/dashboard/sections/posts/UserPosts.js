@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles'
 import GridList from '@material-ui/core/GridList'
 import GridListTile from '@material-ui/core/GridListTile'
 import NoPost from './no_posts/NoPost'
+import PostOutline from '../../../../../../components/post_outline/PostOutline'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -33,9 +34,7 @@ const UserPosts = ({ posts, from, user }) => {
                         //console.log(i)
                         return (
                             <GridListTile key={post.postId}  >
-                                <Link to={`/p/${post.postId}/`}>
-                                    <img src={post.fileUrl} alt='FILE' />
-                                </Link>
+                                <PostOutline post={post} />
                             </GridListTile>
                         )
                     })

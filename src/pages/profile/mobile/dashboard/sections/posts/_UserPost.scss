@@ -15,3 +15,28 @@
 
 
 @import './no_posts/NoPost';
+
+
+
+@media(min-width : 700px) {
+    .user-post-container{
+
+
+        .MuiGridList-root{
+            width: 100%;
+            padding-left: 12px;
+            //justify-content: space-between;
+
+            .MuiGridListTile-root{
+                height: 280px !important;
+                width: 32% !important;
+                margin-right: 10px;
+                margin-bottom: 10px;
+                
+            }
+        }
+        
+    }
+
+
+}

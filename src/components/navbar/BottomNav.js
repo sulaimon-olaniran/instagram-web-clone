@@ -84,7 +84,7 @@ const BottomNav = ({ auth, profile, currentPage }) => {
 
             <Link to={`/account/${profile.userName}/${profile.userId}`}>
                 <Avatar
-                    src={'null'}
+                    src={profile && profile.profilePhoto}
                     className={classes.small}
                 />
             </Link>

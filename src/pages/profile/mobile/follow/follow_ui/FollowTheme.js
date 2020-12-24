@@ -46,8 +46,6 @@ const FollowTheme = ({ openModal, handleCloseModal, header, data, from, profile,
     const handleFollowUser = (id) =>{
         const data = {
             userId : profile.userId,
-            userName : profile.userName,
-            profilePhoto : profile.profilePhoto,
             accountId : id
         }
         followUser(data)

@@ -3,7 +3,7 @@ import FollowTheme from './follow_ui/FollowTheme'
 
 
 const Following = ({ openModal, handleCloseModal, following, from }) =>{
-    //console.log(following)
+    
     return(
         <FollowTheme 
             openModal={openModal}

@@ -36,4 +36,40 @@
 }
 
 
+
+.profile-information-gender-dialog{
+    width: 500px;
+    height: 270px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    .profile-information-gender-dialog-nav{
+        height: 2.5rem;
+        width: 100%;
+        display: flex;
+        padding-right: 25px;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid lightgray;
+
+        p{
+            width: 60%;
+            font-weight: 500;
+            text-align: right;
+        }
+    }
+
+    .MuiFormGroup-root{
+        width: 100%;
+        padding-left: 30px;
+    }
+
+    button{
+        width: 90%;
+        background-color: #0095f6;
+    }
+}
+
+
 @import './confrim_dialog/ConfirmDialog';

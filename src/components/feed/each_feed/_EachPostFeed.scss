@@ -2,6 +2,11 @@
     width: 100%;
     min-height: 70vh;
     margin-bottom: 25px;
+    background-color: white;
+
+    .each-post-bottom-commnent-input{
+        display: none;
+    }
 
     .top-details-container{
         width: 100%;
@@ -36,6 +41,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
+            object-position: center;
         }
     }
 
@@ -53,6 +59,10 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+
+            .pc-comment-feeds-icon-container{
+                display: none;
+            }
         }
     }
 
@@ -124,3 +134,52 @@
 
 @import './more_options/MoreOptions';
 @import './share/SharePost';
+
+
+@media(min-width : 960px) {
+    .each-post-feed-container{
+        border: 1px solid lightgray;
+        margin-bottom: 45px;
+        padding-bottom: 10px;
+
+        .bottom-actions-container{
+            
+            .left-sided{
+                width: 20%;
+
+                .mobile-comment-feeds-icon-container{
+                    display: none;
+                }
+
+                .pc-comment-feeds-icon-container{
+                    display: block;
+                }
+            }
+        }
+
+        .each-post-bottom-commnent-input{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            height: 50px;
+            border-top: 1px solid rgb(237, 237, 237);
+            padding: 0 20px;
+            margin-top: 15px;
+
+            input{
+                width: 90%;
+                height: 100%;
+                border: none;
+                outline: none;
+                font-size: 1rem;
+            }
+
+            button{
+                text-transform: initial;
+                color : #0095f6;
+            }
+        }
+    }
+
+}

@@ -35,7 +35,6 @@
     .suggestions-contents-container{
         width: 100%;
         min-height: 20vh;
-        margin-top: 7vh;
         padding-bottom: 10vh;
         display: flex;
         flex-direction: column;
@@ -43,6 +42,18 @@
         p{
             margin: 10px 0 10px 15px;
             font-weight: 600;
+        }
+    }
+}
+
+
+@media(min-width : 960px) {
+    
+    .suggestions-container{
+        padding: 0;
+
+        .suggestions-contents-container{
+            padding-bottom: 20px;
         }
     }
 }

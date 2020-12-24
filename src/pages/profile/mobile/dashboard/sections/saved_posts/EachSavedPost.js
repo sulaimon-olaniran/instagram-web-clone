@@ -7,7 +7,7 @@ import { db } from '../../../../../../firebase/Firebase'
 
 
 const EachSavedPost = ({ savedPost }) => {
-    const [post, setPost] = useState([])
+    const [post, setPost] = useState({})
 
 
     const getPostData = useCallback(() => {

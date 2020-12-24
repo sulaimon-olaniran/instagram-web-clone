@@ -5,7 +5,19 @@
     border-bottom: 1px solid lightgray;
     align-items: center;
     justify-content: space-around;
+
 }
+
+
+
+@media(min-width : 960px) {
+    .dashboard-nav-container{
+        border: none;
+        .user-feed-icon-container{
+            display: none;
+        }
+    }
+ }
 
 
 @import './sections/posts/UserPost';

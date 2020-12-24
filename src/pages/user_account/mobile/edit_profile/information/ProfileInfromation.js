@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 
 
 
-import GenderModal from './gender/GenderModal'
+import GenderModal, { GenderDialog } from './gender/GenderModal'
 import { ValidationSchema } from './ValidationSchema'
 import { updateUserDetails } from '../../../../../store/actions/ProfileActions'
 
@@ -27,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
 
 const ProfileInformation = ({ setFieldValue, values, touched, errors, updateUserDetails, profile }) =>{
     const [genderModal, setGenderModal] = useState(false)
+    const [genderDialog, setGenderDialog] = useState(false)
     //const [genderValue, setGenderValue] = useState('Female')
     const classes = useStyles()
 
@@ -34,13 +35,22 @@ const ProfileInformation = ({ setFieldValue, values, touched, errors, updateUser
         setGenderModal(true)
     }
 
+    const handleOpenGenderDialog = () =>{
+        setGenderDialog(true)
+    }
+
     const handleCloseGenderModal = () =>{
         setGenderModal(false)
     }
 
 
+    const handleCloseGenderDialog = () =>{
+        setGenderDialog(false)
+    }
+
+
     const toggleGenderValue = (value) =>{
-        //setGenderValue(value)
+        setGenderDialog(false)
         setGenderModal(false)
         setFieldValue('gender', value)
     }
@@ -52,6 +62,13 @@ const ProfileInformation = ({ setFieldValue, values, touched, errors, updateUser
               handleCloseModal={handleCloseGenderModal}
               defaultValue={values.gender}
               toggleGenderValue={toggleGenderValue}
+            />
+
+            <GenderDialog
+                openDialog={genderDialog}
+                handleCloseDialog={handleCloseGenderDialog}
+                defaultValue={values.gender}
+                toggleGenderValue={toggleGenderValue}
             />
 
             <Form className='profile-information-formik-form'>
@@ -107,13 +124,28 @@ const ProfileInformation = ({ setFieldValue, values, touched, errors, updateUser
                     variant='outlined'
                 />
 
-                <Field 
-                    as={TextField} type="text" name="gender" label='Gender'
-                    variant='outlined'
-                    onClick={handleOpenGenderModal}
-                    disabled
-                  
-                />
+                <div className='pc'>
+                    <Field 
+                        as={TextField} type="text" name="gender" label='Gender'
+                        variant='outlined'
+                        onClick={handleOpenGenderDialog}
+                        disabled
+                    
+                    />
+
+                </div>
+
+                <div className='mobile'>
+                    <Field 
+                        as={TextField} type="text" name="gender" label='Gender'
+                        variant='outlined'
+                        onClick={handleOpenGenderModal}
+                        disabled
+                    
+                    />
+
+                </div>
+
 
                 <div className='profile-form-buttons-container'>
 

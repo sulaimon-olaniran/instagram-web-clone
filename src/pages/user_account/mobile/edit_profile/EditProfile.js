@@ -12,14 +12,36 @@ import { connect } from 'react-redux'
 
 const useStyles = makeStyles((theme) => ({
     modal: {
-        overflowY : 'auto',
+        overflowY: 'auto',
     },
 }));
 
 
-const EditProfile = ({ openModal, handleCloseModal, profile }) =>{
+export const EditProfileTheme = ({ profile, handleCloseModal }) => {
+    return (
+        <div className='edit-profile-container'>
+
+            <div className='edit-profile-nav-container'>
+                <ArrowBackIosIcon onClick={handleCloseModal} />
+                <p>Edit Profile</p>
+            </div>
+
+            <ProfilePhoto
+                profile={profile}
+            />
+
+            <FormikProfileInfromation
+                profile={profile}
+            />
+
+        </div>
+    )
+}
+
+
+const EditProfile = ({ openModal, handleCloseModal, profile }) => {
     const classes = useStyles()
-    return(
+    return (
         <Modal
             aria-labelledby="transition-modal-title"
             aria-describedby="transition-modal-description"
@@ -32,32 +54,22 @@ const EditProfile = ({ openModal, handleCloseModal, profile }) =>{
                 timeout: 500,
             }}
         >
-            <div className='edit-profile-container'>
-                
-                <div className='edit-profile-nav-container'>
-                    <ArrowBackIosIcon onClick={handleCloseModal} />
-                    <p>Edit Profile</p>
-                </div>
-
-                <ProfilePhoto 
-                    profile={profile}
-                />
-            
-                <FormikProfileInfromation 
+            <React.Fragment>
+                <EditProfileTheme
+                    handleCloseModal={handleCloseModal}
                     profile={profile}
                 />
 
-            </div>
-
+            </React.Fragment>
         </Modal>
     )
 }
 
 
-const mapStateToProps = (state) =>{
+const mapStateToProps = (state) => {
     //console.log(state)
     return {
-        profile : state.firebase.profile
+        profile: state.firebase.profile
     }
 }
 

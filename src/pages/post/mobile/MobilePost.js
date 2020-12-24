@@ -1,33 +1,12 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React from 'react'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 
 
 //import { feedPosts } from '../../home/FakeData'
 import EachPostFeed from '../../../components/feed/each_feed/EachPostFeed'
-import { db } from '../../../firebase/Firebase'
-import LogoLoader from '../../../components/loaders/LogoLoader'
 
 
-const MobilePost = ({ match, history }) =>{
-    const [fetching, setFetching] = useState(true)
-    const [post, setPost] = useState({})
-    const {postId} = match.params
-    
-    const handleFetchPost = useCallback( () =>{
-        db.collection('posts').doc(postId)
-        .onSnapshot(snapshot =>{
-            setPost(snapshot.data())
-            setFetching(false)
-        })
-    }, [postId])
-
-    useEffect(() =>{
-        handleFetchPost()
-
-    }, [handleFetchPost])
-
-
-    if(fetching) return <LogoLoader />
+const MobilePost = ({ post, history }) =>{
     return(
         <div className='post-page-container'>
             

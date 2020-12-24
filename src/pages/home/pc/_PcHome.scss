@@ -1,0 +1,33 @@
+.pc-home-container{
+    width: 100%;
+    min-height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(247, 247, 247);
+
+    .pc-home-contents-container{
+        margin-top: 10vh;
+        min-height: 90vh;
+        width: 920px;
+        position: relative;
+
+        .pc-home-stories-container{
+            width: 65%;
+            height: 7rem;
+            border: 1px solid lightgray;
+            padding: 15px;
+            background-color: white;
+            border-radius: 5px;
+        }
+
+        .pc-home-feedposts-container{
+            width: 65%;
+            min-height: 50vh;
+            margin-top: 2rem;
+        }
+    }
+}
+
+
+@import './right_section/RightSection';

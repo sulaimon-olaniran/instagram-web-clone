@@ -89,10 +89,13 @@ const DashBoard = ({ user, posts, from }) => {
                     : <MyUnactivePostsIcon height='24px' width='24px' action={() => toggleActiveSection('posts')} />
                 }
 
-                <ViewDayIcon 
-                    className={activeSection === 'feed' ? classes.active : classes.unActive}
-                    onClick={() => toggleActiveSection('feed')}
-                />
+                <div className='user-feed-icon-container'>
+                    <ViewDayIcon 
+                        className={activeSection === 'feed' ? classes.active : classes.unActive}
+                        onClick={() => toggleActiveSection('feed')}
+                    />
+                </div>
+
 
                 {
                     from !== 'account' ? null

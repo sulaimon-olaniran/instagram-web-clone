@@ -16,13 +16,13 @@ import MobileComments from '../../../pages/comments/mobile/MobileComments'
 import { db } from '../../../firebase/Firebase'
 import { followUser } from '../../../store/actions/ProfileActions'
 import {  likePost, unLikePost, savePost, unSavePost } from '../../../store/actions/PostsAction'
-import { handleViewStory } from '../../../store/actions/AppActions'
+import { handleViewStory, handleOpenProfileCard } from '../../../store/actions/AppActions'
 import FeedSkeleton from '../../skeletons/FeedSkeleton'
 import EachComment from '../../../pages/comments/mobile/each_comment/EachComment'
 import StoryAvatar from '../../avatar/StoryAvatar'
 
 
-const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePost, unSavePost, handleViewStory }) => {
+const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePost, unSavePost, handleViewStory, handleOpenProfileCard }) => {
     const [openDialog, setOpenDialog] = useState(false)
     const [openShareDrawer, setOpenShareDrawer] = useState(false)
     const [openComment, setOpenComment] = useState(false)
@@ -156,6 +156,14 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
         handleCloseShareDrawer()
     }
 
+    const handleOpenProfilePopper = e =>{
+        const data = {
+            event : e.currentTarget,
+            profile : posterProfile
+        }
+        handleOpenProfileCard(data)
+    }
+
     if(fetching) return <FeedSkeleton buttonRef={buttonRef} />
     return (
         <div className='each-post-feed-container'>
@@ -185,10 +193,14 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
                 <div className='user-container'>
                     {posterProfile && posterProfile.stories && !posterProfile.stories.length > 0 ?
                     <Avatar
+                        onMouseEnter={handleOpenProfilePopper}
+                        //onMouseLeave={handleCloseProfileCard}
                         src={posterProfile && posterProfile.profilePhoto}
                     />
                         :
                     <StoryAvatar 
+                        onMouseEnter={handleOpenProfilePopper}
+                        //onMouseLeave={handleCloseProfileCard}
                         src={posterProfile && posterProfile.profilePhoto}
                         height='48px'
                         width='48px'
@@ -196,9 +208,13 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
                     />}
 
                     <Link 
+                        onMouseEnter={handleOpenProfilePopper}
+                        //onMouseLeave={handleCloseProfileCard}
                         to={`/profile/${posterProfile && posterProfile.userName}/${posterProfile && posterProfile.userId}`}
                     >
-                        <p>{posterProfile && posterProfile.userName}</p>
+                        <p>
+                            {posterProfile && posterProfile.userName}
+                        </p>
                     </Link>
 
                     { profile && !profile.following.includes(posterProfile && posterProfile.userId) &&
@@ -229,6 +245,7 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
 
 
             <div className='bottom-actions-container'>
+
                 <div className='left-sided'>
                 {profile && profile.likedPosts.includes(post && post.postId) ?
                     <LikedIcon
@@ -245,12 +262,24 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
                     />
                 
                 }
+                    <span className='mobile-comment-feeds-icon-container'>
+                        <CommentIcon
+                            width='24px'
+                            height='24px'
+                            action={handleOpenComment}
+                        />
+                    </span>
 
-                    <CommentIcon
-                        width='24px'
-                        height='24px'
-                        action={handleOpenComment}
-                    />
+                    <Link 
+                        to={`/p/${post.postId}`}
+                        className='pc-comment-feeds-icon-container'
+                    >
+                        <CommentIcon
+                            width='24px'
+                            height='24px'
+                            action={handleOpenComment}
+                        />
+                    </Link>
 
                     <ShareIcon
                         width='24px'
@@ -316,6 +345,16 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
                 </div>
 
             </div>
+
+            <div className='each-post-bottom-commnent-input'>
+                    <input
+                        placeholder='Add a comment'
+                    />
+                    <Button>
+                        Post
+                    </Button>
+            </div>
+
                 <Snackbar
                     open={linkSnackBar}
                     message="Link Copied To Clipboard"
@@ -347,7 +386,9 @@ const mapDisptachToProps = (dispatch) =>{
         unLikePost : data => dispatch(unLikePost(data)),
         savePost : data => dispatch(savePost(data)),
         unSavePost : data => dispatch(unSavePost(data)),
-        handleViewStory : data => dispatch(handleViewStory(data))
+        handleViewStory : data => dispatch(handleViewStory(data)),
+        handleOpenProfileCard : data => dispatch(handleOpenProfileCard(data)),
+        //handleCloseProfileCard : data => dispatch(handleCloseProfileCard(data)),
     }
 }
 

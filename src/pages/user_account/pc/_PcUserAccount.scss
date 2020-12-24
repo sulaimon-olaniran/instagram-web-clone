@@ -1,0 +1,107 @@
+.pc-user-account-container{
+    width: 920px;
+    min-height: 100%;
+    margin-top: 5rem;
+    overflow: hidden;
+
+    .user-account-information-container{
+        width: 100%;
+        min-height: 10rem;
+        display: flex;
+        justify-content: space-around;
+        border-bottom: 1px solid lightgray;
+        padding-bottom: 30px;
+
+        .user-account-details-container{
+            width: 60%;
+            height: 100%;
+
+            .first-section{
+                min-width: 200px;
+                height: 50px;
+                display: flex;
+                //justify-content: space-between;
+                align-items: flex-start;
+                p{
+                    font-size: 1.5rem;
+                    line-height: 20px;
+                }
+                button{
+                    text-transform: initial;
+                    margin: 0 15px;
+                    height: 24px;
+                }
+
+                .MuiSvgIcon-root{
+                    cursor: pointer;
+                }
+            }
+
+
+            .second-section{
+                width: 300px;
+                height: 50px;
+                display: flex;
+                justify-content: space-between;
+
+                button{
+                    padding: 5px;
+                    text-transform: lowercase;
+                    height: 30px;
+
+                    div{
+                        display: flex;
+                        align-items: center;
+
+                        p{
+                            margin-right: 10px;
+                            font-size: 1rem;
+                        }
+
+                        small{
+                            font-size: 1rem;
+                            font-weight: 400;
+                        }
+                    
+                    }
+                }
+            }
+
+
+
+            .third-section{
+                min-height: 5rem;
+                width: 300px;
+
+                h3{
+                    font-size: 1rem;
+                }
+    
+                p{
+                    font-size: 1rem;
+                    font-weight: 400;
+                    margin: 10px 0;
+                }
+    
+                a{
+                    color: rgba(var(--fe0,0,55,107),1);
+                    font-size: 0.9rem;
+                    font-weight: 500;
+                }
+
+            }
+
+
+
+
+
+        }
+
+
+
+    }
+}
+
+
+@import './settings/SettingsDialog';
+@import './edit_profile/PcEditProfile';

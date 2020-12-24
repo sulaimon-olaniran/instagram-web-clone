@@ -1,8 +1,8 @@
 import React from 'react'
 
 
-export const LikedIcon = ({ action, height, width }) => (
-    <svg style={{ height: height, width: width }} viewBox="0 0 48 48" fill="#ed4956" onClick={action}>
+export const LikedIcon = ({ action, height, width, fill }) => (
+    <svg style={{ height: height, width: width, cursor: 'pointer' }} viewBox="0 0 48 48" fill={fill ? fill : "#ed4956"} onClick={action}>
         <path
             d="M34.6 3.1c-4.5 0-7.9 1.8-10.6 5.6-2.7-3.7-6.1-5.5-10.6-5.5C6 
             3.1 0 9.6 0 17.6c0 7.3 5.4 12 10.6 16.5.6.5 1.3 1.1 1.9 1.7l2.3 
@@ -14,7 +14,7 @@ export const LikedIcon = ({ action, height, width }) => (
 
 
 export const BlackLikedIcon = ({ action, height, width }) => (
-    <svg style={{ height: height, width: width }} viewBox="0 0 48 48" fill="black" onClick={action}>
+    <svg style={{ height: height, width: width, cursor: 'pointer' }} viewBox="0 0 48 48" fill="black" onClick={action}>
         <path
             d="M34.6 3.1c-4.5 0-7.9 1.8-10.6 5.6-2.7-3.7-6.1-5.5-10.6-5.5C6 
             3.1 0 9.6 0 17.6c0 7.3 5.4 12 10.6 16.5.6.5 1.3 1.1 1.9 1.7l2.3 
@@ -25,7 +25,7 @@ export const BlackLikedIcon = ({ action, height, width }) => (
 )
 
 export const UnLikedIcon = ({ action, height, width }) => (
-    <svg style={{ height: height, width: width }} viewBox="0 0 48 48" fill="#262626" onClick={action}>
+    <svg style={{ height: height, width: width, cursor: 'pointer' }} viewBox="0 0 48 48" fill="#262626" onClick={action}>
         <path
             d="M34.6 6.1c5.7 0 10.4 5.2 10.4 11.5 0 6.8-5.9 11-11.5 16S25 41.3 
             24 41.9c-1.1-.7-4.7-4-9.5-8.3-5.7-5-11.5-9.2-11.5-16C3 11.3 7.7 6.1 
@@ -38,8 +38,8 @@ export const UnLikedIcon = ({ action, height, width }) => (
     </svg>
 )
 
-export const CommentIcon = ({ action, height, width }) => (
-    <svg style={{ height: height, width: width }} viewBox="0 0 48 48" onClick={action}>
+export const CommentIcon = ({ action, height, width, fill }) => (
+    <svg style={{ height: height, width: width, cursor: 'pointer' }} viewBox="0 0 48 48" onClick={action} fill={fill ? fill : null}>
         <path
             d="M47.5 46.1l-2.8-11c1.8-3.3 2.8-7.1 2.8-11.1C47.5 11 37 
             .5 24 .5S.5 11 .5 24 11 47.5 24 47.5c4 0 7.8-1 11.1-2.8l11 
@@ -53,7 +53,7 @@ export const CommentIcon = ({ action, height, width }) => (
 
 
 export const ShareIcon = ({ action, height, width }) => (
-    <svg style={{ height: height, width: width }} viewBox="0 0 48 48" onClick={action}>
+    <svg style={{ height: height, width: width, cursor: 'pointer' }} viewBox="0 0 48 48" onClick={action}>
         <path
             d="M47.8 3.8c-.3-.5-.8-.8-1.3-.8h-45C.9 3.1.3 3.5.1 4S0 5.2.4 5.7l15.9 
             15.6 5.5 22.6c.1.6.6 1 1.2 1.1h.2c.5 0 1-.3 1.3-.7l23.2-39c.4-.4.4-1 
@@ -64,7 +64,7 @@ export const ShareIcon = ({ action, height, width }) => (
 
 
 export const UnSavedIcon = ({ action, height, width }) => (
-    <svg style={{ height: height, width: width }} viewBox="0 0 48 48" onClick={action}>
+    <svg style={{ height: height, width: width, cursor: 'pointer' }} viewBox="0 0 48 48" onClick={action}>
         <path
             d="M43.5 48c-.4 0-.8-.2-1.1-.4L24 29 5.6 47.6c-.4.4-1.1.6-1.6.3-.6-.2-1-.8-1-1.4v-45C3 
             .7 3.7 0 4.5 0h39c.8 0 1.5.7 1.5 1.5v45c0 .6-.4 1.2-.9 1.4-.2.1-.4.1-.6.1zM24 26c.8 0 
@@ -75,7 +75,7 @@ export const UnSavedIcon = ({ action, height, width }) => (
 
 
 export const ActiveUnSavedIcon = ({ action, height, width }) => (
-    <svg style={{ height: height, width: width }} viewBox="0 0 48 48" fill='#0095f6' onClick={action}>
+    <svg style={{ height: height, width: width, cursor: 'pointer' }} viewBox="0 0 48 48" fill='#0095f6' onClick={action}>
         <path
             d="M43.5 48c-.4 0-.8-.2-1.1-.4L24 29 5.6 47.6c-.4.4-1.1.6-1.6.3-.6-.2-1-.8-1-1.4v-45C3 
             .7 3.7 0 4.5 0h39c.8 0 1.5.7 1.5 1.5v45c0 .6-.4 1.2-.9 1.4-.2.1-.4.1-.6.1zM24 26c.8 0 
@@ -86,7 +86,7 @@ export const ActiveUnSavedIcon = ({ action, height, width }) => (
 
 
 export const SavedIcon = ({ action, height, width }) => (
-    <svg style={{ height: height, width: width }} viewBox="0 0 48 48" fill='#262626' onClick={action}>
+    <svg style={{ height: height, width: width, cursor: 'pointer' }} viewBox="0 0 48 48" fill='#262626' onClick={action}>
         <path
             d="M43.5 48c-.4 0-.8-.2-1.1-.4L24 28.9 5.6 
             47.6c-.4.4-1.1.6-1.6.3-.6-.2-1-.8-1-1.4v-45C3 
@@ -98,7 +98,7 @@ export const SavedIcon = ({ action, height, width }) => (
 
 
 export const MyActiveHomeIcon = ({ action, height, width }) => (
-    <svg style={{ height: height, width: width }} viewBox="0 0 48 48" fill='#262626' onClick={action}>
+    <svg style={{ height: height, width: width, cursor: 'pointer' }} viewBox="0 0 48 48" fill='#262626' onClick={action}>
         <path
             d="M45.5 48H30.1c-.8 0-1.5-.7-1.5-1.5V34.2c0-2.6-2.1-4.6-4.6-4.6s-4.6 2.1-4.6 4.6v12.3c0 
             .8-.7 1.5-1.5 1.5H2.5c-.8 0-1.5-.7-1.5-1.5V23c0-.4.2-.8.4-1.1L22.9.4c.6-.6 1.6-.6 2.1 
@@ -109,7 +109,7 @@ export const MyActiveHomeIcon = ({ action, height, width }) => (
 
 
 export const MyUnActiveHomeIcon = ({ action, height, width }) => (
-    <svg style={{ height: height, width: width }} viewBox="0 0 48 48" fill='#262626' onClick={action}>
+    <svg style={{ height: height, width: width, cursor: 'pointer' }} viewBox="0 0 48 48" fill='#262626' onClick={action}>
         <path
             d="M45.3 48H30c-.8 0-1.5-.7-1.5-1.5V34.2c0-2.6-2-4.6-4.6-4.6s-4.6 2-4.6 
             4.6v12.3c0 .8-.7 1.5-1.5 1.5H2.5c-.8 0-1.5-.7-1.5-1.5V23c0-.4.2-.8.4-1.1L22.9.4c.6-.6 
@@ -121,7 +121,7 @@ export const MyUnActiveHomeIcon = ({ action, height, width }) => (
 
 
 export const MyUnActiveSearchIcon = ({ action, height, width }) => (
-    <svg style={{ height: height, width: width }} viewBox="0 0 48 48" fill='#262626' onClick={action}>
+    <svg style={{ height: height, width: width, cursor: 'pointer' }} viewBox="0 0 48 48" fill='#262626' onClick={action}>
         <path
             d="M20 40C9 40 0 31 0 20S9 0 20 0s20 9 20 20-9 20-20 20zm0-37C10.6 3 3 10.6 3 20s7.6 17 17 17 17-7.6 17-17S29.4 3 20 3z"
         />
@@ -133,7 +133,7 @@ export const MyUnActiveSearchIcon = ({ action, height, width }) => (
 
 
 export const MyActiveSearchIcon = ({ action, height, width }) => (
-    <svg style={{ height: height, width: width }} viewBox="0 0 48 48" fill='#262626' onClick={action}>
+    <svg style={{ height: height, width: width, cursor: 'pointer' }} viewBox="0 0 48 48" fill='#262626' onClick={action}>
         <path
             d="M47.6 44L35.8 32.2C38.4 28.9 40 24.6 40 20 40 9 31 0 20 0S0 9 0 
             20s9 20 20 20c4.6 0 8.9-1.6 12.2-4.2L44 47.6c.6.6 1.5.6 2.1 
@@ -145,7 +145,7 @@ export const MyActiveSearchIcon = ({ action, height, width }) => (
 
 
 export const MyAddIcon = ({ action, height, width }) => (
-    <svg style={{ height: height, width: width }} viewBox="0 0 48 48" fill='#262626' onClick={action}>
+    <svg style={{ height: height, width: width, cursor: 'pointer' }} viewBox="0 0 48 48" fill='#262626' onClick={action}>
         <path
             d="M31.8 48H16.2c-6.6 0-9.6-1.6-12.1-4C1.6 41.4 0 38.4 0 31.8V16.2C0 9.6 1.6 6.6 4 4.1 6.6 1.6 9.6 0 
             16.2 0h15.6c6.6 0 9.6 1.6 12.1 4C46.4 6.6 48 9.6 48 16.2v15.6c0 6.6-1.6 9.6-4 12.1-2.6 2.5-5.6 4.1-12.2 
@@ -165,7 +165,7 @@ export const MyAddIcon = ({ action, height, width }) => (
 
 
 export const MyDirectIcon = ({ action, height, width }) => (
-    <svg style={{ height: height, width: width }} viewBox="0 0 48 48" fill='#262626' onClick={action}>
+    <svg style={{ height: height, width: width, cursor: 'pointer' }} viewBox="0 0 48 48" fill='#262626' onClick={action}>
         <path
             d="M47.8 3.8c-.3-.5-.8-.8-1.3-.8h-45C.9 3.1.3 3.5.1 4S0 5.2.4 5.7l15.9 
             15.6 5.5 22.6c.1.6.6 1 1.2 1.1h.2c.5 0 1-.3 1.3-.7l23.2-39c.4-.4.4-1 
@@ -176,7 +176,7 @@ export const MyDirectIcon = ({ action, height, width }) => (
 
 
 export const MyCameraIcon = ({ action, height, width }) => (
-    <svg style={{ height: height, width: width }} viewBox="0 0 48 48" fill='#262626' onClick={action}>
+    <svg style={{ height: height, width: width, cursor: 'pointer' }} viewBox="0 0 48 48" fill='#262626' onClick={action}>
         <path
             clipRule='evenodd'
             d="M38.5 46h-29c-5 0-9-4-9-9V17c0-5 4-9 9-9h1.1c1.1 0 2.2-.6 
@@ -194,7 +194,7 @@ export const MyCameraIcon = ({ action, height, width }) => (
 
 
 export const MyActivePostsIcon = ({ action, height, width }) => (
-    <svg style={{ height: height, width: width }} viewBox="0 0 48 48" fill='#0095f6' onClick={action}>
+    <svg style={{ height: height, width: width, cursor: 'pointer' }} viewBox="0 0 48 48" fill='#0095f6' onClick={action}>
         <path
             clipRule='evenodd'
             d="M45 1.5H3c-.8 0-1.5.7-1.5 1.5v42c0 .8.7 1.5 1.5 1.5h42c.8 0 1.5-.7
@@ -209,7 +209,7 @@ export const MyActivePostsIcon = ({ action, height, width }) => (
 
 
 export const MyUnactivePostsIcon = ({ action, height, width }) => (
-    <svg style={{ height: height, width: width }} viewBox="0 0 48 48" fill='#8e8e8e' onClick={action}>
+    <svg style={{ height: height, width: width, cursor: 'pointer' }} viewBox="0 0 48 48" fill='#8e8e8e' onClick={action}>
         <path
             clipRule='evenodd'
             d="M45 1.5H3c-.8 0-1.5.7-1.5 1.5v42c0 .8.7 1.5 1.5 1.5h42c.8
@@ -223,7 +223,7 @@ export const MyUnactivePostsIcon = ({ action, height, width }) => (
 
 
 export const ActiveChannelIcon = ({ action, height, width }) => (
-    <svg style={{ height: height, width: width }} viewBox="0 0 48 48" fill='#0095f6' onClick={action}>
+    <svg style={{ height: height, width: width, cursor: 'pointer' }} viewBox="0 0 48 48" fill='#0095f6' onClick={action}>
         <path
             d="M41 10c-2.2-2.1-4.8-3.5-10.4-3.5h-3.3L30.5 3c.6-.6.5-1.6-.1-2.1-.6-.6-1.6-.5-2.1.1L24
             5.6 19.7 1c-.6-.6-1.5-.6-2.1-.1-.6.6-.7 1.5-.1 2.1l3.2 3.5h-3.3C11.8 6.5 9.2 7.9 7
@@ -239,7 +239,7 @@ export const ActiveChannelIcon = ({ action, height, width }) => (
 
 
 export const UnactiveChannelIcon = ({ action, height, width }) => (
-    <svg style={{ height: height, width: width }} viewBox="0 0 48 48" fill='#8e8e8e' onClick={action}>
+    <svg style={{ height: height, width: width, cursor: 'pointer' }} viewBox="0 0 48 48" fill='#8e8e8e' onClick={action}>
         <path
             d="M41 10c-2.2-2.1-4.8-3.5-10.4-3.5h-3.3L30.5 3c.6-.6.5-1.6-.1-2.1-.6-.6-1.6-.5-2.1.1L24
             5.6 19.7 1c-.6-.6-1.5-.6-2.1-.1-.6.6-.7 1.5-.1 2.1l3.2 3.5h-3.3C11.8 6.5 9.2 7.9 7
@@ -254,7 +254,7 @@ export const UnactiveChannelIcon = ({ action, height, width }) => (
 )
 
 export const ActiveTaggedIcon = ({ action, height, width }) => (
-    <svg style={{ height: height, width: width }} viewBox="0 0 48 48" fill='#0095f6' onClick={action}>
+    <svg style={{ height: height, width: width, cursor: 'pointer' }} viewBox="0 0 48 48" fill='#0095f6' onClick={action}>
         <path
             d="M41.5 5.5H30.4c-.5 0-1-.2-1.4-.6l-4-4c-.6-.6-1.5-.6-2.1
             0l-4 4c-.4.4-.9.6-1.4.6h-11c-3.3 0-6 2.7-6 6v30c0 3.3 2.7
@@ -275,7 +275,7 @@ export const ActiveTaggedIcon = ({ action, height, width }) => (
 
 
 export const UnactiveTaggedIcon = ({ action, height, width }) => (
-    <svg style={{ height: height, width: width }} viewBox="0 0 48 48" fill='#8e8e8e' onClick={action}>
+    <svg style={{ height: height, width: width, cursor: 'pointer' }} viewBox="0 0 48 48" fill='#8e8e8e' onClick={action}>
         <path
             d="M41.5 5.5H30.4c-.5 0-1-.2-1.4-.6l-4-4c-.6-.6-1.5-.6-2.1 
             0l-4 4c-.4.4-.9.6-1.4.6h-11c-3.3 0-6 2.7-6 6v30c0 3.3 2.7 6 6 
@@ -292,7 +292,7 @@ export const UnactiveTaggedIcon = ({ action, height, width }) => (
 
 
 export const SuccessIcon = ({ action, height, width }) => (
-    <svg style={{ height: height, width: width }} viewBox="0 0 48 48" fill='#58c322' onClick={action}>
+    <svg style={{ height: height, width: width, cursor: 'pointer' }} viewBox="0 0 48 48" fill='#58c322' onClick={action}>
         <path
             d="M24 48C10.8 48 0 37.2 0 24S10.8 0 24 0s24 10.8 24 24-10.8
              24-24 24zm0-45C12.4 3 3 12.4 3 24s9.4 21 21 21 21-9.4 21-21S35.6 3 24 3z"
@@ -305,7 +305,7 @@ export const SuccessIcon = ({ action, height, width }) => (
 )
 
 export const SecuredIcon = ({ action, height, width }) => (
-    <svg style={{ height: height, width: width }} viewBox="0 0 48 48" fill='#262626' onClick={action}>
+    <svg style={{ height: height, width: width, cursor: 'pointer' }} viewBox="0 0 48 48" fill='#262626' onClick={action}>
         <path
             d="M17.708 28.971l-5.84-5.924a1.5 1.5 0 00-2.136 2.106l6.9 7a1.5 1.5 0
              002.129.008l13.5-13.5a1.5 1.5 0 00-2.122-2.122L17.708 28.971z"
@@ -324,7 +324,7 @@ export const SecuredIcon = ({ action, height, width }) => (
 
 
 export const SettingsIcon = ({ action, height, width }) =>(
-    <svg style={{ height: height, width: width }} viewBox="0 0 48 48" fill='#262626' onClick={action}>
+    <svg style={{ height: height, width: width, cursor: 'pointer' }} viewBox="0 0 48 48" fill='#262626' onClick={action}>
         <path
             fillRule='evenodd'
             d="M46.7 20.6l-2.1-1.1c-.4-.2-.7-.5-.8-1-.5-1.6-1.1-3.2-1.9-4.7-.2-.4-.3-.8-.1-1.2l.8-2.3c.2-.5
@@ -344,7 +344,7 @@ export const SettingsIcon = ({ action, height, width }) =>(
 
 
 export const DiscoverIcon = ({ action, height, width }) =>(
-    <svg style={{ height: height, width: width }} viewBox="0 0 48 48" fill='#262626' onClick={action}>
+    <svg style={{ height: height, width: width, cursor: 'pointer' }} viewBox="0 0 48 48" fill='#262626' onClick={action}>
         <path
             d="M32 25.5c5.2 0 9.5-4.3 9.5-9.5S37.2 6.5 32 6.5s-9.5 4.3-9.5 9.5 4.3 9.5 9.5 9.5zm0-16c3.6 0 6.5
             2.9 6.5 6.5s-2.9 6.5-6.5 6.5-6.5-2.9-6.5-6.5 2.9-6.5 6.5-6.5zm5.5 19h-11c-5.5 0-10 4.5-10 10V40c0
@@ -355,4 +355,34 @@ export const DiscoverIcon = ({ action, height, width }) =>(
         />
     </svg>
 )
+
+
+export const MyUnActiveExploreIcon = ({ action, height, width }) =>(
+    <svg style={{ height: height, width: width, cursor: 'pointer' }} viewBox="0 0 48 48" fill='#262626' onClick={action}>
+        <path
+            clipRule='evenodd'
+            fillRule='evenodd'
+            d="M24 0C10.8 0 0 10.8 0 24s10.8 24 24 24 24-10.8 24-24S37.2 0 24 0zm0 45C12.4 45 3 35.6 3
+            24S12.4 3 24 3s21 9.4 21 21-9.4 21-21 21zm10.2-33.2l-14.8 7c-.3.1-.6.4-.7.7l-7 14.8c-.3.6-.2
+            1.3.3 1.7.3.3.7.4 1.1.4.2 0 .4 0 .6-.1l14.8-7c.3-.1.6-.4.7-.7l7-14.8c.3-.6.2-1.3-.3-1.7-.4-.5-1.1-.6-1.7-.3zm-7
+            .4 15l-5.5-5.5 10.5-5-5 10.5z"
+            
+        />
+    </svg>
+)
+
+
+export const MyActiveExploreIcon = ({ action, height, width }) =>(
+    <svg style={{ height: height, width: width, cursor: 'pointer' }} viewBox="0 0 48 48" fill='#262626' onClick={action}>
+        <path
+            clipRule='evenodd'
+            fillRule='evenodd'
+            d="M24 0C10.8 0 0 10.8 0 24s10.8 24 24 24 24-10.8 24-24S37.2 0 24 0zm12.2 13.8l-7
+            14.8c-.1.3-.4.6-.7.7l-14.8 7c-.2.1-.4.1-.6.1-.4 0-.8-.2-1.1-.4-.4-.4-.6-1.1-.3-1.7l7-14.8c.1-.3.4-.6.7-.7l14.8-7c.6-.3
+            1.3-.2 1.7.3.5.4.6 1.1.3 1.7zm-15 7.4l-5 10.5 10.5-5-5.5-5.5z"
+            
+        />
+    </svg>
+)
+
 

@@ -4,7 +4,11 @@
 
 @media(min-width : 960px) {
     .pc-profile{
-        display: block;
+        display: flex;
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
     }
 
     .mobile-profile{
@@ -15,3 +19,7 @@
 
 
 @import './mobile/MobileProfile';
+@import './pc/PcProfile';
+
+@import './actions/unfollow/UnFollowDialog';
+@import './actions/brr-dialog/BRRDialog';

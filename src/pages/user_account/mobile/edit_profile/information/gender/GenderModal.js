@@ -6,8 +6,15 @@ import clsx from 'clsx'
 import RadioGroup from '@material-ui/core/RadioGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Radio from '@material-ui/core/Radio'
+import CloseIcon from '@material-ui/icons/Close'
 import { makeStyles } from '@material-ui/core/styles'
+import Dialog from '@material-ui/core/Dialog'
+
+
+
 import ConfirmDialog from './confrim_dialog/ConfirmDialog'
+
+
 
 
 const useStyles = makeStyles({
@@ -116,7 +123,7 @@ const GenderModal = ({ openModal, handleCloseModal, defaultValue, toggleGenderVa
                         <FormControlLabel value="Female" control={<StyledRadio />} label="Female" />
                         <FormControlLabel value="Male" control={<StyledRadio />} label="Male" />
                         <FormControlLabel value="Other" control={<StyledRadio />} label="Other" />
-                        <FormControlLabel value="Prefer Not To Say" control={<StyledRadio />} label="Prefer Not to Say" />
+                        <FormControlLabel value="Gender" control={<StyledRadio />} label="Prefer Not to Say" />
                     </RadioGroup>
                 </div>
 
@@ -129,3 +136,69 @@ const GenderModal = ({ openModal, handleCloseModal, defaultValue, toggleGenderVa
 
 
 export default GenderModal
+
+
+
+
+export const GenderDialog = ({ openDialog, handleCloseDialog, defaultValue, toggleGenderValue }) =>{
+    const [radioValue, setRadioValue] = useState(defaultValue)
+    const [confirmaDialog, setConfrimDialog] = useState(false)
+
+    const handleRadioValueChange = e =>{
+        setRadioValue(e.target.value)
+    }
+
+    const handleCloseConfirmDialog = () =>{
+        setConfrimDialog(false)
+    }
+
+    const handleGoBack = () =>{
+        if(defaultValue !== radioValue){
+            setConfrimDialog(true)
+        }
+        else{
+            handleCloseDialog()
+        }
+
+    }
+
+
+    return(
+        <React.Fragment>
+            <Dialog
+                aria-labelledby='simple-dialog-title'
+                open={openDialog}
+                onClose={handleCloseDialog}
+            >
+                <ConfirmDialog 
+                    openDialog={confirmaDialog}
+                    handleCloseDialog={handleCloseConfirmDialog}
+                    handleCloseModal={handleCloseDialog}
+                />
+
+                <div className='profile-information-gender-dialog'>
+                    <div className='profile-information-gender-dialog-nav'>
+                        <p>Gender</p>
+                        <CloseIcon fontSize='large' onClick={handleGoBack} />
+                        
+                    </div>
+
+                    <RadioGroup defaultValue={defaultValue} aria-label="gender" name="customized-radios" onChange={handleRadioValueChange}>
+                        <FormControlLabel value="Female" control={<StyledRadio />} label="Female" />
+                        <FormControlLabel value="Male" control={<StyledRadio />} label="Male" />
+                        <FormControlLabel value="Other" control={<StyledRadio />} label="Other" />
+                        <FormControlLabel value="Gender" control={<StyledRadio />} label="Prefer Not to Say" />
+                    </RadioGroup>
+
+                    <Button
+                        variant='contained'
+                        onClick={() => toggleGenderValue(radioValue)}
+                    >
+                        Done
+                    </Button>
+                </div>
+
+            </Dialog>
+        </React.Fragment>
+    )
+}

@@ -1,0 +1,17 @@
+.pc-home{
+    display: none;
+}
+
+@media(min-width : 960px) {
+    .pc-home{
+        display: block;
+    }
+
+    .mobile-home{
+        display: none;
+    }
+
+}
+
+@import './mobile/MobileHome';
+@import './pc/PcHome';

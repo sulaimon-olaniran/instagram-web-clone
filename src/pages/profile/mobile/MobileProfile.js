@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState } from 'react'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
@@ -8,19 +8,15 @@ import PersonIcon from '@material-ui/icons/Person'
 import CheckIcon from '@material-ui/icons/Check'
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 import { withRouter } from 'react-router-dom'
-import { connect } from 'react-redux'
-import { compose } from 'redux'
 
 
-import { db } from '../../../firebase/Firebase'
+
+//import { db } from '../../../firebase/Firebase'
 import DashBoard from './dashboard/DashBoard'
 import Followers from './follow/Followers'
 import Following from './follow/Following'
-import UnFollowDialog from './actions/unfollow/UnFollow'
-import BlockReportRestrictDialog from './actions/brr-dialog/BRRDialog'
-import LogoLoader from '../../../components/loaders/LogoLoader'
-import { followUser, unFollowUser } from '../../../store/actions/ProfileActions'
-import { handleViewStory } from '../../../store/actions/AppActions'
+
+//import LogoLoader from '../../../components/loaders/LogoLoader'
 import StoryAvatar from '../../../components/avatar/StoryAvatar'
 
 
@@ -42,56 +38,14 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 
-const MobileProfile = ({ match, history, followUser, unFollowUser, profile, posts, handleViewStory }) => {
-    const [userProfile, setUserProfile] = useState({})
-    const [fetchingData, setFetchingData] = useState(true)
-    const [userPosts, setUserPosts] = useState([])
+const MobileProfile = ({ history, profile, userProfile, userPosts, handleViewStory, handleFollowUser, openUnFollowDialog, openBlockDialog }) => {
     const [followingModal, setFollowingModal] = useState(false)
     const [followersModal, setFollowersModal] = useState(false)
-    const [unfollowDialog, setUnfollowDialog] = useState(false)
-    const [blockDialog, setBlockDialog] = useState(false)
-    //console.log(match.params.id)
+    
 
-    const getUserProfileData = useCallback(() => {
-        const userId = match.params.id
-        const allPosts = []
-        db.collection('users').doc(userId)
-            .onSnapshot(snapshot => {
-                setUserProfile(snapshot.data())
-                //console.log(snapshot.data())
-                posts && posts.forEach(post => {
-                    if (post.userId === userId) {
-                        allPosts.push(post)
-                    }
-                })
-                setUserPosts(allPosts)
-                setFetchingData(false)
-            })
-    }, [match, posts])
+    const classes = useStyles()
 
 
-    const handleFollowUser = () => {
-        const data = {
-            accountId: match.params.id,
-            userId: profile.userId
-        }
-
-        followUser(data)
-    }
-
-    const handleUnFollowUser = () => {
-        const data = {
-            accountId: match.params.id,
-            userId: profile.userId
-        }
-
-        unFollowUser(data)
-    }
-
-
-    useEffect(() => {
-        getUserProfileData()
-    }, [getUserProfileData])
 
     //console.log(userPosts)
 
@@ -108,24 +62,13 @@ const MobileProfile = ({ match, history, followUser, unFollowUser, profile, post
         setFollowingModal(false)
     }
 
-    const openUnFollowDialog = () => {
-        setUnfollowDialog(true)
-    }
+ 
 
-    const openBlockDialog = () => {
-        setBlockDialog(true)
-    }
-
-    const handleCloseDialog = () => {
-        setUnfollowDialog(false)
-        setBlockDialog(false)
-    }
-
-    const classes = useStyles()
     //console.log(match)
-    if (fetchingData) return <LogoLoader />
+    
+
     return (
-        <div className='profile-page-container'>
+        <div className='mobile-profile-page-container'>
 
             { followersModal && <Followers
                 handleCloseModal={handleCloseModal}
@@ -141,23 +84,14 @@ const MobileProfile = ({ match, history, followUser, unFollowUser, profile, post
                 from='profile'
             />}
 
-            <UnFollowDialog
-                openDialog={unfollowDialog}
-                handleCloseDialog={handleCloseDialog}
-                unFollowUser={handleUnFollowUser}
-            />
-
-            <BlockReportRestrictDialog
-                openDialog={blockDialog}
-                handleCloseDialog={handleCloseDialog}
-            />
+            
 
 
-            <div className='profile-nav-container'>
+            <div className='mobile-profile-nav-container'>
                 <ArrowBackIosIcon
                     onClick={() => history.goBack()}
                 />
-                <p>{match.params.username}</p>
+                <p>{userProfile && userProfile.userName}</p>
             </div>
 
 
@@ -178,10 +112,14 @@ const MobileProfile = ({ match, history, followUser, unFollowUser, profile, post
                     />}
 
                     <div className='name-message-follow-container'>
-                        <p>{match.params.username}</p>
+                        <p>{userProfile && userProfile.userName}</p>
+
+                        <MoreHorizIcon
+                            onClick={openBlockDialog}
+                        />
 
                         <div className='message-follow-container'>
-                            {profile && profile.following.includes(match.params.id) ?
+                            {profile && profile.following.includes(userProfile && userProfile.userId) ?
                                 <React.Fragment>
                                     <Button
                                         variant='outlined'
@@ -217,11 +155,10 @@ const MobileProfile = ({ match, history, followUser, unFollowUser, profile, post
                                     Follow
                             </Button>}
                         </div>
+                        
                     </div>
 
-                    <MoreHorizIcon
-                        onClick={openBlockDialog}
-                    />
+                    
                 </div>
 
                 <div className='second-section-container'>
@@ -272,23 +209,10 @@ const MobileProfile = ({ match, history, followUser, unFollowUser, profile, post
     )
 }
 
-const mapStateToProps = (state) => {
-    return {
-        profile: state.firebase.profile
-    }
-}
 
 
-const mapDispatchToProps = (dispatch) => {
-    return {
-        followUser: data => dispatch(followUser(data)),
-        unFollowUser: data => dispatch(unFollowUser(data)),
-        handleViewStory : data => dispatch(handleViewStory(data))
-    }
-}
 
 
-export default compose(
-    withRouter,
-    connect(mapStateToProps, mapDispatchToProps)
-)(MobileProfile)
+
+
+export default withRouter(MobileProfile)

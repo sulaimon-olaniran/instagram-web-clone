@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import GridList from '@material-ui/core/GridList'
@@ -10,7 +10,8 @@ import { compose } from 'redux'
 
 
 import { MyUnActiveSearchIcon } from '../../components/MyIcons'
-
+import SpinnerLoader from '../../components/loaders/spinner/SpinnerLoader'
+import PostOutline from '../../components/post_outline/PostOutline'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -28,42 +29,67 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Explore = ({ setCurrentPage, posts }) => {
-    
+    const [currentData, setCurrentData] = useState(18)
+    const [loadMore, setLoadMore] = useState(false)
     const classes = useStyles();
 
 
-    useEffect(() =>{
-        setCurrentPage('explore')
+    const handleOnWindowScroll = useCallback(() => {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
 
-    }, [setCurrentPage])
+            if (posts && currentData < posts.length) {
+
+                setLoadMore(true)
+
+                setTimeout(() => {
+                    setCurrentData(prev => prev + 18)
+                    setLoadMore(false)
+                }, [1500])
+            }
+        }
+    }, [currentData, posts])
+
+
+    useEffect(() => {
+        setCurrentPage('explore')
+        window.addEventListener('scroll', handleOnWindowScroll)
+
+        return () => {
+            window.removeEventListener('scroll', handleOnWindowScroll)
+        }
+
+    }, [setCurrentPage, handleOnWindowScroll])
+
+
 
 
     return (
         <div className='explore-page-container'>
-            <div className='top-button-container'>
+            <Link className='top-button-container' to='/explore/search'>
                 <button>
                     <MyUnActiveSearchIcon width='12px' height='12px' /> Search
                 </button>
-            </div>
+            </Link>
 
             <div className='explore-contents-container'>
                 <GridList cellHeight={120} className={classes.gridList} cols={3}>
                     {
-                        posts ? posts.map((post, i) => {
+                        posts ? posts.slice(0, currentData).map((post, i) => {
                             //console.log(i)
                             return (
                                 <GridListTile key={post.postId} >
-                                    <Link to={`/p/${post.postId}`}>
-                                        <img src={post.fileUrl} alt='FILE' />
-                                    </Link>
-                                   
+                                    <PostOutline post={post} />
                                 </GridListTile>
                             )
                         })
-                        :
-                        <p>Loading</p>
+                            :
+                            <SpinnerLoader
+                                height='100vh'
+                            />
                     }
                 </GridList>
+
+                {loadMore && <SpinnerLoader height='50px' />}
 
             </div>
 
@@ -83,52 +109,3 @@ export default compose(
     connect(mapStateToProps),
     firestoreConnect(() => ['posts'])
 )(Explore)
-//export default Explore
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-const exploreImages = [
-        'http://lorempixel.com/output/cats-q-c-640-480-4.jpg',
-        'http://lorempixel.com/output/transport-q-c-640-480-2.jpg',
-        'http://lorempixel.com/output/sports-q-c-640-480-2.jpg',
-        'http://lorempixel.com/output/city-q-c-640-480-1.jpg',
-        'http://lorempixel.com/output/nightlife-q-c-640-480-2.jpg',
-        'http://lorempixel.com/output/business-q-c-640-480-2.jpg',
-        'http://lorempixel.com/output/food-q-c-640-480-2.jpg',
-        'http://lorempixel.com/output/technics-q-c-640-480-2.jpg',
-        'http://lorempixel.com/output/abstract-q-c-640-480-3.jpg',
-        'http://lorempixel.com/output/sports-q-c-640-480-5.jpg',
-        'http://lorempixel.com/output/cats-q-c-640-480-1.jpg',
-        'http://lorempixel.com/output/transport-q-c-640-480-6.jpg',
-        'http://lorempixel.com/output/sports-q-c-640-480-8.jpg',
-        'http://lorempixel.com/output/city-q-c-640-480-9.jpg',
-        'http://lorempixel.com/output/nightlife-q-c-640-480-3.jpg',
-        'http://lorempixel.com/output/business-q-c-640-480-3.jpg',
-        'http://lorempixel.com/output/food-q-c-640-480-3.jpg',
-        'http://lorempixel.com/output/technics-q-c-640-480-3.jpg',
-        'http://lorempixel.com/output/abstract-q-c-640-480-3.jpg',
-        'http://lorempixel.com/output/sports-q-c-640-480-6.jpg',
-    ]
-*/

@@ -4,7 +4,11 @@
 
 @media(min-width : 960px) {
     .pc-user-account{
-        display: block;
+        display: flex;
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
     }
 
     .mobile-user-account{
@@ -15,3 +19,4 @@
 
 
 @import './mobile/MobileUserAccount';
+@import './pc/PcUserAccount';

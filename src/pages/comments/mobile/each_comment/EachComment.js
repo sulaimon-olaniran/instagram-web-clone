@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom'
 import Avatar from '@material-ui/core/Avatar'
 import { connect } from 'react-redux'
 import moment from 'moment'
+import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
+
 
 
 import { UnLikedIcon, LikedIcon } from '../../../../components/MyIcons'
@@ -40,11 +42,12 @@ const EachComment = ({ from, comment, post, profile, likePostComment, unLikePost
     const handleCloseActionDialog = () => {
         setActionDialog(false)
     }
+    
 
     const handleMouseDown = () => {
         holdTimeRef.current = setTimeout(() => {
             handleOpenActiondialog()
-        }, 1000)
+        }, 2000)
     }
 
     const handleMouseUp = () => {
@@ -146,9 +149,16 @@ const EachComment = ({ from, comment, post, profile, likePostComment, unLikePost
                 </div>
 
                 <div className='comment-time-likes'>
-                    <small>{moment(comment.time).fromNow()}</small>
-                    {comment.likes.length > 0 && <small>{comment.likes.length} likes</small>}
-                    <small>Reply</small>
+                    <div className='time-likes'>
+                        <small>{moment(comment.time).fromNow()}</small>
+                        {comment.likes.length > 0 && <small>{comment.likes.length} likes</small>}
+                    </div>
+
+                    <div className='more-options'>
+                        <MoreHorizIcon
+                            fontSize='small'
+                        />
+                    </div>
                 </div>
             </div>
 

@@ -58,3 +58,35 @@ export const signUserUp = (user) =>{
         })
     }
 }
+
+
+
+
+export const changePassword = (data) =>{
+    return(dispatch, getState) =>{
+       
+        dispatch({type : 'CHANGING_PASSWORD'})
+
+        firebase.auth().currentUser.updatePassword(data.newPassword)
+        .then(() =>{
+            return db.collection('users').doc(data.userId)
+            .update({
+                password : data.newPassword
+            })
+        })
+        .then(() =>{
+            dispatch({type : 'PASSWORD_UPDATE_SUCCESS'})
+        })
+        .catch(error =>{
+            dispatch({type : 'PASSWORD_UPDATE_FAILED', error})
+        })
+        
+    }
+}
+
+
+export const closePasswordSnackBar = () =>{
+    return(dispatch, getState) =>{
+        dispatch({type : 'CLOSE_PASSWORD_SNACKBAR'})
+    }
+}

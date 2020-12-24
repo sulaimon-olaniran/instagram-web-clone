@@ -1,0 +1,41 @@
+.pc-search-box{
+    width: 250px;
+    height: 30px;
+    border: 1px solid lightgray;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0 10px;
+    background-color: rgb(242, 242, 242);
+    border-radius: 5px;
+
+    .cancel-icon-container{
+        display: none;
+    }
+
+    input{
+        width: 90%;
+        height: 100%;
+        padding-left: 37%;
+        background: url(https://cdn3.iconfinder.com/data/icons/google-material-design-icons/48/ic_search_48px-128.png);
+        background-size: 16px;
+        background-repeat: no-repeat;
+        background-position: 35% 50%;
+        //background-position: 62px 0;
+        transition: all 0.05s ease-in-out;
+        border: none;
+        outline: none;
+    }
+
+    input:focus {
+        padding-left: 16px;
+        background-position: left;
+      }
+}
+
+.pc-search-box:focus-within{
+    .cancel-icon-container{
+        display: block;
+        z-index: 999;
+    }
+}

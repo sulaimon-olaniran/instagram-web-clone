@@ -1,5 +1,8 @@
 const initState = {
-     authError : null
+     authError : null, 
+     changingPassword : false,
+     passwordSnackbar : false,
+     snackbarText : '',
 }
 
 
@@ -36,6 +39,42 @@ const AuthReducer = (state = initState, action) =>{
                ...state,
                authError : action.error.message
           }
+
+          //
+
+          case 'CHANGING_PASSWORD' :
+              
+               return {
+                    ...state,
+                    changingPassword : true,
+               }
+
+          case 'PASSWORD_UPDATE_SUCCESS' :
+               console.log('password update successfull')
+               return{
+                    ...state,
+                    changingPassword : false,
+                    passwordSnackbar : true,
+                    snackbarText : 'Password Updated'
+               }
+
+          case 'PASSWORD_UPDATE_FAILED' :
+               console.log('password update failed', action.error)
+          return {
+               ...state,
+               changingPassword : false,
+               passwordSnackbar : true,
+               snackbarText : 'Password Update Failed',
+               authError : action.error.message
+          }
+        
+
+          case 'CLOSE_PASSWORD_SNACKBAR' :
+              //console.log('closed story successfully')
+              return {
+                  ...state,
+                  passwordSnackbar : false
+              }
 
           default : return state
      }

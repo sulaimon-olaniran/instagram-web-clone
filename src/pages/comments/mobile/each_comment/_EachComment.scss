@@ -1,10 +1,9 @@
 .every-comment-container{
-    min-height: 10vh;
+    min-height: 4rem;
     width: 100%;
-   // padding: 15px;
     display: flex;
     justify-content: space-around;
-    margin-top: 15px;
+    margin-top: 20px;
 
     .comment-details{
         width: 80%;
@@ -32,12 +31,38 @@
 
             .comment-time-likes{
                 margin-top: 10px;
-                small{
-                    color: rgb(194, 194, 194);
-                    margin-right: 8px;
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+
+                .time-likes{
+                    small{
+                        color: rgb(194, 194, 194) !important;
+                        margin: 0 !important;
+                        margin-right: 8px !important;
+                    }  
+                }
+                
+
+                .more-options{
+                    display: none;
+                    justify-content: flex-end;
+                    .MuiSvgIcon-fontSizeSmall{
+                        fill: rgb(92, 92, 92);
+                        cursor: pointer;
+                    }
                 }
             }
 
+    }
+
+    .comment-details:hover{
+        .comment-time-likes{
+            .more-options{
+                display: flex;
+                align-self: flex-end;
+            }
+        }
     }
 }
 
