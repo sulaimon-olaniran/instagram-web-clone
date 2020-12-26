@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles'
 
 
 
-import { SettingsIcon, DiscoverIcon } from '../../../components/MyIcons'
+import { SettingsIcon } from '../../../components/MyIcons'
 import DashBoard from '../../profile/mobile/dashboard/DashBoard'
 import FollowersButton from '../../profile/pc/follow/FollowersButton'
 import FollowingButton from '../../profile/pc/follow/FollowingButton'

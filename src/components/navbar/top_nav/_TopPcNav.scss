@@ -19,6 +19,10 @@
         align-items: center;
         position: relative;
 
+        img{
+            cursor: pointer;
+        }
+
         .nav-content-links-container{
             width: 25%;
             height: 100%;

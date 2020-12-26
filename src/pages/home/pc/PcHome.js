@@ -15,7 +15,7 @@ import { handleCloseProfileCard } from '../../../store/actions/AppActions'
 
 const PcHome = ({ feedPosts, handleCloseProfileCard}) => {
     return(
-        <div className='pc-home-container' onMouseEnter={() => console.log('hoody hoo')}>
+        <div className='pc-home-container'>
             
             <div className='pc-home-contents-container'>
                 <RightSection />

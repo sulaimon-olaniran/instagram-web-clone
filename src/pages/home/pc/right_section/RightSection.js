@@ -42,7 +42,7 @@ const RightSection = ({ users, profile, handleOpenProfileCard, followUser }) =>{
         const suggested = []
         
         users && users.forEach(user => {
-            profile && !profile.following.includes(user.userId) &&
+            profile.isLoaded && !profile.isEmpty && !profile.following.includes(user.userId) &&
             profile.userId !== user.userId && suggested.push(user)
         })
 

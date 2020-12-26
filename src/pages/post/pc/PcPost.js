@@ -404,6 +404,7 @@ const mapDispatchToProps = dispatch => {
         handleViewStory : data => dispatch(handleViewStory(data)),
         handleOpenProfileCard : data => dispatch(handleOpenProfileCard(data)),
         handleCloseProfileCard : data => dispatch(handleCloseProfileCard(data)),
+        deletePost : data => dispatch(deletePost(data)),
     }
 }
 

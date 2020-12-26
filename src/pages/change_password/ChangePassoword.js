@@ -121,7 +121,8 @@ const FormikChangePassword = withFormik({
     //validationSchema: SignInYupValidation,
 
     handleSubmit(values, { props, setStatus, resetForm }) {
-        const { changePassword, profile, changingPassword } = props
+        //changingpassword
+        const { changePassword, profile } = props
         if (values.oldPassword !== profile.password) {
             setStatus({ error: 'The inputed old password is not correct' })
         }

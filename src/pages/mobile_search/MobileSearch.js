@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import CloseIcon from '@material-ui/icons/Close'
+import React, { useState, useEffect, useRef } from 'react'
+//import CloseIcon from '@material-ui/icons/Close'
 import { Button } from '@material-ui/core'
 import { withRouter } from 'react-router-dom'
 
@@ -14,6 +14,12 @@ import SearchResults from '../expolore/search/search_results/SearchResults'
 
 const MobileSearch = ({ history }) => {
     const [inputValue, setInputValue ] = useState('')
+    const inputRef = useRef(null)
+
+
+    useEffect(() =>{
+        inputRef.current.focus()
+    }, [])
    
 
     const handleInputChange = e =>{
@@ -24,23 +30,13 @@ const MobileSearch = ({ history }) => {
         <div className='mobile-search-container'>
 
             <div className='mobile-search-top-container'>
-                <div className='pc-search-box'>
+                <div className='mobile-search-box'>
                     <input
                         placeholder='Search'
                         onChange={handleInputChange}
                         value={inputValue}
+                        ref={inputRef}
                     />
-
-                    <div
-                        className='cancel-icon-container'
-                    >
-                        <Button
-                            onClick={() => setInputValue('')}
-                        >
-                            <CloseIcon fontSize='small' />
-
-                        </Button>
-                    </div>
 
                 </div>
 

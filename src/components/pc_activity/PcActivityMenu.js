@@ -12,7 +12,7 @@ import EachActivity from '../../pages/mobile_activity/each_activity/EachActivity
 
 
 const PcActivityMenu = ({ anchorEl, handleClose, auth, profile }) => {
-    console.log(auth)
+    //console.log(auth)
     const [activities, setActivities] = useState([])
 
     const grabAllUserNotifications = useCallback(() => {

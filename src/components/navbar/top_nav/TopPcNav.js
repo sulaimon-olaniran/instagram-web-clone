@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 
 
 import instagram_img from './assets/instagram_img.png'
-import { MyActiveHomeIcon, MyUnActiveHomeIcon, UnLikedIcon, MyDirectIcon, MyActiveExploreIcon } from '../../MyIcons'
+import { MyActiveHomeIcon, MyUnActiveHomeIcon, UnLikedIcon, MyDirectIcon, MyActiveExploreIcon, MyUnActiveExploreIcon, BlackLikedIcon } from '../../MyIcons'
 import PcSearchBox from '../../search_box/SearchBox'
 import PcActivityMenu from '../../pc_activity/PcActivityMenu'
 import PcSearchResults from '../../../pages/expolore/search/pc/PcSearchResults'
@@ -26,37 +26,57 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const TopPcNav = ({ inputValue, searchResults }) =>{
+const TopPcNav = ({ inputValue, searchResults, profile }) => {
     const [activityMenu, setActivityMenu] = useState(null)
+    const [activeIcon, setActiveIcon] = useState(null)
     const classes = useStyles()
 
 
-    const handleOpenActivityMenu = event =>{
+    const handleOpenActivityMenu = event => {
         setActivityMenu(event.currentTarget)
     }
 
-    const handleCloseActivityMenu = () =>{
-        setActivityMenu(null)
+
+    const handleActiveIcon = active => {
+        setActiveIcon(active)
     }
 
-    return(
+    const handleCloseActivityMenu = () => {
+        setActivityMenu(null)
+        handleActiveIcon('activity')
+    }
+
+    return (
         <div className='top-pc-nav-container'>
             <PcActivityMenu
                 anchorEl={activityMenu}
                 handleClose={handleCloseActivityMenu}
             />
             <div className='nav-contents'>
-                <img src={instagram_img} alt="logo" />
+                <Link to='/'>
+                    <img src={instagram_img} alt="logo" />
+                </Link>
 
                 <PcSearchBox />
 
-                { searchResults && <PcSearchResults inputValue={inputValue} />}
+                {searchResults && <PcSearchResults inputValue={inputValue} />}
 
                 <div className='nav-content-links-container'>
-                    <MyActiveHomeIcon
-                        height='24px'
-                        width='24px'
-                    />
+                    <Link to='/'>
+                        {activeIcon === 'home' ?
+                            <MyActiveHomeIcon
+                                height='24px'
+                                width='24px'
+                            />
+                            :
+                            <MyUnActiveHomeIcon
+                                height='24px'
+                                width='24px'
+                                action={() => handleActiveIcon('home')}
+                            />
+                        }
+                    </Link>
+
 
                     <Badge badgeContent={1} color="secondary">
                         <MyDirectIcon
@@ -65,26 +85,50 @@ const TopPcNav = ({ inputValue, searchResults }) =>{
                         />
                     </Badge>
 
+
                     <Link
                         to='/explore'
                     >
 
-                        <MyActiveExploreIcon
+                        {
+                            activeIcon === 'explore' ?
+                                <MyActiveExploreIcon
+                                    height='24px'
+                                    width='24px'
+                                />
+                                :
+                                <MyUnActiveExploreIcon
+                                    height='24px'
+                                    width='24px'
+                                    action={() => handleActiveIcon('explore')}
+                                />
+                        }
+
+                    </Link>
+
+
+                    {activeIcon === 'activity' ?
+                        <BlackLikedIcon
                             height='24px'
                             width='24px'
                         />
+                        :
+                        <UnLikedIcon
+                            height='24px'
+                            width='24px'
+                            action={handleOpenActivityMenu}
+                        />}
 
-                    </Link> 
 
-                    <UnLikedIcon
-                        height='24px'
-                        width='24px'
-                        action={handleOpenActivityMenu}
-                    />
+                    <Link
+                        to={`/account/${profile && profile.userName}/${profile && profile.userId}`}
+                    >
 
-                    <Avatar
-                        className={classes.small}
-                    />
+                        <Avatar
+                            className={classes.small}
+                            onClick={() => handleActiveIcon('')}
+                        />
+                    </Link>
                 </div>
 
             </div>
@@ -93,11 +137,12 @@ const TopPcNav = ({ inputValue, searchResults }) =>{
 }
 
 
-const mapStateToProps = state =>{
+const mapStateToProps = state => {
     //console.log(state)
-    return{
-      inputValue : state.application.inputValue,
-      searchResults : state.application.searchResults,  
+    return {
+        inputValue: state.application.inputValue,
+        searchResults: state.application.searchResults,
+        profile: state.firebase.profile
 
     }
 }

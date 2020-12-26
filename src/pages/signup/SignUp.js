@@ -21,7 +21,7 @@ const SignUp = ({ setFieldValue, handleBlur, touched, errors, values, auth, auth
         //send email to users {email} using email.js
     }
 
-    console.log(authError)
+    //console.log(authError)
 
     if(auth.uid) return <Redirect to='/' />
 
@@ -67,8 +67,7 @@ const FormikSignUp = withFormik({
 
     validationSchema: ValidationSchema,
 
-    handleSubmit(values, { props, setStatus, setSubmitting }) {
-       // console.log(values)
+    handleSubmit(values, { props }) {
         const { signUserUp } = props
         signUserUp(values)
     }

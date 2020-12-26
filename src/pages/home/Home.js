@@ -10,7 +10,7 @@ import PcHome from './pc/PcHome'
 
 
 
-const Home = ({ users, following, posts, setCurrentPage }) => {
+const Home = ({ users, profile, posts, setCurrentPage }) => {
     const [followingPosts, setFollowingPosts] = useState([])
     const [fetching, setFetching] = useState(true)
 
@@ -18,8 +18,8 @@ const Home = ({ users, following, posts, setCurrentPage }) => {
     const getAllFollowingPosts = useCallback(() => {
 
         const allPosts = []
-        const promises = posts && posts.map(post => {
-            return following.length > 0 && following.includes(post.userId) ?
+        const promises = profile.isLoaded  && !profile.isEmpty && posts && posts.map(post => {
+            return profile.following.length > 0 && profile.following.includes(post.userId) ?
             allPosts.push(post) : null
         
         })
@@ -30,7 +30,7 @@ const Home = ({ users, following, posts, setCurrentPage }) => {
             setFetching(false)
         })
         
-    }, [posts, following])
+    }, [posts, profile])
 
 
 
@@ -60,10 +60,11 @@ const Home = ({ users, following, posts, setCurrentPage }) => {
 
 
 const mapStateToProps = (state) => {
+   //console.log(state)
     return {
         users: state.firestore.ordered.users,
         posts: state.firestore.ordered.posts,
-        following: state.firebase.profile.following
+        profile: state.firebase.profile,
     }
 }
 

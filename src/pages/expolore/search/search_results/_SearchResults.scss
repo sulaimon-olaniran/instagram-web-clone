@@ -13,8 +13,9 @@
         align-items: center;
         justify-content: space-between;
         padding-left: 15px;
-        margin-bottom: 10px;
+        padding-top: 10px;
         border-bottom: 1px solid lightgray;
+        cursor: pointer;
 
         .names-container{
             min-width: 100px;
@@ -30,6 +31,10 @@
             }
         }
 
+    }
+
+    .each-search-result-container:hover{
+        background-color: rgb(242, 242, 242);
     }
 }
 

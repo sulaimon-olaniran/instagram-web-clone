@@ -1,37 +1,41 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import Avatar from '@material-ui/core/Avatar'
-import { makeStyles } from '@material-ui/core/styles'
+//import { makeStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
 import { firestoreConnect } from 'react-redux-firebase'
 import { compose } from 'redux'
 import SpinnerLoader from '../../../../components/loaders/spinner/SpinnerLoader'
 
 
-const useStyles = makeStyles((theme) => ({
-    xLarge: {
-        width: theme.spacing(18),
-        height: theme.spacing(18),
-    },
 
-    button: {
-        width: '100%',
-    },
-}));
+import { hideSearchResults } from '../../../../store/actions/AppActions'
 
 
+// const useStyles = makeStyles((theme) => ({
+//     xLarge: {
+//         width: theme.spacing(18),
+//         height: theme.spacing(18),
+//     },
+
+//     button: {
+//         width: '100%',
+//     },
+// }));
 
 
-const SearchResults = ({ inputValue, users }) =>{
+
+
+const SearchResults = ({ inputValue, users, hideSearchResults, profile }) =>{
     const [matchedSearch, setMatchedSearch] = useState([])
-    const classes = useStyles()
+    //const classes = useStyles()
 
 
-
+    console.log(inputValue)
     const handleSearchOutput = useCallback(() =>{
         const matchedUsers = []
         users && users.forEach(user =>{
-            if(user.userName.toLowerCase().includes(inputValue.toLowerCase())){
+            if(inputValue !== '' && user.userName.toLowerCase().includes(inputValue.toLowerCase())){
                 matchedUsers.push(user)
             }
         })
@@ -53,25 +57,42 @@ const SearchResults = ({ inputValue, users }) =>{
             {
                 matchedSearch.length > 0 ? matchedSearch.map(user =>{
                     return(
-                        <div className='each-search-result-container' key={user.userId}>
+                        <Link 
+                            to={
+                                user.userId === profile.userId ?
+                                `/account/${user.userName}/${user.userId}`
+                                :
+                                `/profile/${user.userName}/${user.userId}`
+                            }
+                            onClick={hideSearchResults}
+                            className='each-search-result-container' 
+                            key={user.userId}
+                        >
                             <Avatar src={user.profilePhoto} alt={user.userName} />
 
                             <div className='names-container'>
                                 <p>{user.userName}</p>
                                 <small>{user.fullName}</small>
                             </div>
-                        </div>
+                        </Link>
                     )
                 })
 
                 :
 
-                <p>No user matched your search</p>
+                inputValue !== '' && <p>No user matched your search</p>
             }
 
 
         </div>
     )
+}
+
+
+const mapDispatchToProps = dispatch =>{
+    return{
+        hideSearchResults : () => dispatch(hideSearchResults())
+    }
 }
 
 
@@ -83,7 +104,7 @@ const mapStateToProps = (state) =>{
     }
 }
 export default compose(
-    connect(mapStateToProps),
+    connect(mapStateToProps, mapDispatchToProps),
     firestoreConnect(() => ['users'])
 )(SearchResults)
 

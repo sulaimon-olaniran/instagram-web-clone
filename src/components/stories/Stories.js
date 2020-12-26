@@ -14,7 +14,7 @@ import { handleViewStory } from '../../store/actions/AppActions'
 
 
 
-const Stories = ({ following, users, handleViewStory }) =>{
+const Stories = ({ profile, users, handleViewStory }) =>{
    
     const [storyUsers, setStoryUsers] = useState(null)
     //let money = you
@@ -23,14 +23,14 @@ const Stories = ({ following, users, handleViewStory }) =>{
     const getFollowedUserStories = useCallback(() =>{
     const usersData = []
   
-     users && users.forEach(user =>{
-           if(following.includes(user.userId) && user.stories && user.stories.length > 0){
+    profile.isLoaded && !profile.isEmpty && users && users.forEach(user =>{
+           if(profile.following.includes(user.userId) && user.stories && user.stories.length > 0){
                usersData.push(user)
            }
         })
         //console.log(usersData)
         setStoryUsers(usersData)
-    }, [ following, users ])
+    }, [ profile, users ])
     
     useEffect(() =>{
         getFollowedUserStories()
@@ -67,7 +67,7 @@ const Stories = ({ following, users, handleViewStory }) =>{
 
 const mapStateToProps = state =>{
     return{
-        following : state.firebase.profile.following,
+        profile : state.firebase.profile,
         users: state.firestore.ordered.users,
     }
 }
