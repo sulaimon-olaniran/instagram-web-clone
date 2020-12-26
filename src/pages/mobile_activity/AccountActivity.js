@@ -11,10 +11,11 @@ import Suggestions from '../suggestions/Suggestions'
 
 const MobileAccountActivity = ({ profile, setCurrentPage, auth }) =>{
     const [activities, setActivities] = useState([])
+    console.log(auth)
 
     const grabAllUserNotifications = useCallback(() =>{
       
-        db.collection('users').doc(auth.uid)
+        auth.isLoaded && !auth.isEmpty && db.collection('users').doc(auth.uid)
         .collection('notifications').orderBy('time', 'desc')
         .onSnapshot(snapshot =>{
             const notifications = []

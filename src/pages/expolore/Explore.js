@@ -75,7 +75,7 @@ const Explore = ({ setCurrentPage, posts }) => {
                 <GridList cellHeight={120} className={classes.gridList} cols={3}>
                     {
                         posts ? posts.slice(0, currentData).map((post, i) => {
-                            //console.log(i)
+                            //console.log(i)gjj
                             return (
                                 <GridListTile key={post.postId} >
                                     <PostOutline post={post} />

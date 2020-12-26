@@ -12,12 +12,12 @@ import EachActivity from '../../pages/mobile_activity/each_activity/EachActivity
 
 
 const PcActivityMenu = ({ anchorEl, handleClose, auth, profile }) => {
-
+    console.log(auth)
     const [activities, setActivities] = useState([])
 
     const grabAllUserNotifications = useCallback(() => {
 
-        db.collection('users').doc(auth.uid)
+        auth.isLoaded && !auth.isEmpty && db.collection('users').doc(auth.uid)
             .collection('notifications').orderBy('time', 'desc')
             .onSnapshot(snapshot => {
                 const notifications = []
