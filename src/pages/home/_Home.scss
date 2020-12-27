@@ -4,7 +4,13 @@
 
 @media(min-width : 960px) {
     .pc-home{
-        display: block;
+        width: 100%;
+        min-height: 90vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgb(247, 247, 247);
+        padding-bottom: 30px;
     }
 
     .mobile-home{

@@ -4,13 +4,18 @@
     display: flex;
     justify-content: center;
     background-color: rgb(247, 247, 247);
-    padding-top: 4rem;
 
     .pc-post{
         display: none;
     }
+}
+
+
+
     
-    @media(min-width : 960px) {
+@media(min-width : 960px) {
+    .post-container{
+        padding-top: 4rem;
         .pc-post{
             display: block;
         }
@@ -18,8 +23,9 @@
         .mobile-post{
             display: none;
         }
-    
+
     }
+
 }
 
 

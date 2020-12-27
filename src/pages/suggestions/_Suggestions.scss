@@ -48,12 +48,19 @@
 
 
 @media(min-width : 960px) {
-    
     .suggestions-container{
         padding: 0;
+        background-color: rgb(247, 247, 247);
+
+        .suggestions-nav-container{
+            display: none;
+        }
 
         .suggestions-contents-container{
             padding-bottom: 20px;
+            width: 600px;
+            background-color: white;
+            margin-top: 7vh;
         }
     }
 }

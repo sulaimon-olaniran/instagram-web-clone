@@ -44,3 +44,15 @@
         }
     }
 }
+
+
+
+@media(min-width : 960px) {
+    .not-user-dialog-contents-container{
+        width: 400px;
+    }
+
+    .user-dialog-contents-container{
+        width: 400px;
+    }
+}

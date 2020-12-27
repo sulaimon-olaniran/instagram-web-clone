@@ -8,29 +8,18 @@ import { EmailIcon, EmailShareButton } from 'react-share'
 import Button from '@material-ui/core/Button'
 import CancelIcon from '@material-ui/icons/Cancel'
 import LinkIcon from '@material-ui/icons/Link'
+import Dialog from '@material-ui/core/Dialog'
+import CloseIcon from '@material-ui/icons/Close'
+
 
 
 import { MyDirectIcon } from '../../../MyIcons'
 
 
 
-const SharePost = ({ open, close, link, handleCopyPostLink }) => {
-    //const [linkSnackBar, setLinkSnackBar] = useState(false)
-
-
-    return (
-        <Drawer
-            anchor='bottom'
-            open={open}
-            onClose={close}
-        >
-            <div className='share-options-container'>
-                <div className='title-container'>
-                    <span></span>
-                    <p>Share</p>
-                </div>
-
-                <div className='contents-container' onClick={close}>
+const ShareContents = ({ link, handleCopyPostLink, close }) =>{
+    return(
+        <div className='contents-container'>
                     <div className='each-content'>
                         <MyDirectIcon height='24px' width='24px' /> <p>Share to Direct</p>
                     </div>
@@ -89,7 +78,33 @@ const SharePost = ({ open, close, link, handleCopyPostLink }) => {
                     </div>
 
                 </div>
+    )
+}
+
+
+
+const SharePost = ({ open, close, link, handleCopyPostLink }) => {
+    //const [linkSnackBar, setLinkSnackBar] = useState(false)
+
+
+    return (
+        <Drawer
+            anchor='bottom'
+            open={open}
+            onClose={close}
+        >
+            <div className='share-options-container'>
+                <div className='title-container'>
+                    <span></span>
+                    <p>Share</p>
+                </div>
+
                 
+                <ShareContents 
+                    link={link}
+                    handleCopyPostLink={handleCopyPostLink}
+                    close={close}
+                />
 
             </div>
 
@@ -99,3 +114,34 @@ const SharePost = ({ open, close, link, handleCopyPostLink }) => {
 
 
 export default SharePost
+
+
+
+
+export const SharePostDialog = ({ openDialog, handleCloseDialog, link, handleCopyPostLink }) =>{
+
+
+    return(
+        <Dialog
+            aria-labelledby='simple-dialog-title'
+            open={openDialog}
+            onClose={handleCloseDialog}
+        >
+            <div className='share-post-dialog-container'>
+                <div className='share-post-dialog-nav-container'>
+                    <p>Share to...</p>
+                    <CloseIcon onClick={handleCloseDialog}/>
+                </div>
+
+                <ShareContents
+                    link={link}
+                    handleCopyPostLink={handleCopyPostLink}
+                    close={handleCloseDialog}
+                />
+
+            </div>
+
+        </Dialog>
+
+    )
+}

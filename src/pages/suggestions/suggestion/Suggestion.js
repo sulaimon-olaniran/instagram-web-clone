@@ -36,8 +36,7 @@ const Suggestion = ({ user, profile }) =>{
     return(
         <div className='each-suggestion-container'>
 
-            <Link 
-                to={`/profile/${user.userName}/${user.userId}`}
+            <div
                 className='profile-container'
             >
                 <Avatar 
@@ -46,11 +45,22 @@ const Suggestion = ({ user, profile }) =>{
                 />
 
                 <div className='personal-details'>
-                    <h5>{user.fullName}</h5>
-                    <p>{user.userName}</p>
+                    <Link 
+                        to={`/profile/${user.userName}/${user.userId}`}
+                    >
+                        <h5>{user.fullName}</h5>
+                    </Link>
+
+
+                    <Link 
+                        to={`/profile/${user.userName}/${user.userId}`}
+                    >
+                        <p>{user.userName}</p>
+                    </Link>
+                    
                     <p>suggested for you</p>
                 </div>
-            </Link>
+            </div>
 
 
             <Button 

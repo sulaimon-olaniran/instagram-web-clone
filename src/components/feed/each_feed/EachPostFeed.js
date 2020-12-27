@@ -149,7 +149,7 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
     }
 
     const handleCopyPostLink = () =>{
-        const link = `http://localhost:3000/p/${post.postId}`
+        const link = `http://0s-instagram-clone/p/${post.postId}`
 
         navigator.clipboard.writeText(link)
         setLinkSnackBar(true)
@@ -167,6 +167,7 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
     if(fetching) return <FeedSkeleton buttonRef={buttonRef} />
     return (
         <div className='each-post-feed-container'>
+
             <MobileComments 
               openCommentModal={openComment}
               handleCloseModal={handleCloseComment}
@@ -174,6 +175,8 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
               posterProfile={posterProfile && posterProfile}
               postComments={postComments}
             />
+
+
             <MoreOptions
                 openDialog={openDialog}
                 handleCloseDialog={handleCloseDialog}
@@ -182,12 +185,16 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
                 openShare={handleOpenShareDrawer}
                 handleCopyPostLink={handleCopyPostLink}
             />
+
+
             <SharePost 
                 open={openShareDrawer}
                 close={handleCloseShareDrawer}
-                link={`http://localhost:3000/p/${post.postId}`}
+                link={`https://os-instagram-clone.netlify.app/p/${post.postId}`}
                 handleCopyPostLink={handleCopyPostLink}
             />
+
+
             <div className='top-details-container'>
 
                 <div className='user-container'>

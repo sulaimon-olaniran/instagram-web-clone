@@ -87,7 +87,9 @@ const RightSection = ({ users, profile, handleOpenProfileCard, followUser }) =>{
 
                 <div className='header-content'>
                     <h4>Suggestions for You</h4>
-                    <small>Sell All</small>
+                    <Link to='/explore/people/suggested'>
+                        <small>Sell All</small>
+                    </Link>
                 </div>
 
                 <div className='main-suggestions-container'>

@@ -9,6 +9,7 @@ import { firestoreConnect } from 'react-redux-firebase'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
 import TextareaAutosize from 'react-textarea-autosize'
+import Snackbar from '@material-ui/core/Snackbar'
 
 
 
@@ -20,6 +21,8 @@ import EachMorePost from './EachMorePost'
 import { commentOnPost, deletePost, likePost, unLikePost, savePost, unSavePost } from '../../../store/actions/PostsAction'
 import { followUser, unFollowUser } from '../../../store/actions/ProfileActions'
 import { handleViewStory, handleOpenProfileCard, handleCloseProfileCard } from '../../../store/actions/AppActions'
+import MoreOptions from '../../../components/feed/each_feed/more_options/MoreOptions'
+import { SharePostDialog } from '../../../components/feed/each_feed/share/SharePost'
 
 
 
@@ -38,6 +41,10 @@ const useStyles = makeStyles((theme) => ({
         width: theme.spacing(10),
         height: theme.spacing(10),
     },
+
+    cursorPointer :{
+        cursor : 'pointer',
+    }
 }));
 
 
@@ -48,6 +55,10 @@ const PcPost = ({ post, posterProfile, profile, posts, followUser, likePost, com
     const [moreUserPosts, setMoreUserPosts] = useState([])
     const [postComments, setPostComments] = useState([])
     const [commentText, setCommentText] = useState('')
+    const [linkSnackBar, setLinkSnackBar] = useState(false)
+    const [moreOptions, setMoreOptions] = useState(false)
+    const [sharePost, setSharePost] = useState(false)
+
     const inputRef = useRef(null)
     const classes = useStyles()
 
@@ -152,6 +163,8 @@ const PcPost = ({ post, posterProfile, profile, posts, followUser, likePost, com
         savePost(data)
     }
 
+
+
     const handleUnSavePost = () =>{
         const data = {
             userId : profile.userId,
@@ -159,6 +172,7 @@ const PcPost = ({ post, posterProfile, profile, posts, followUser, likePost, com
         }
         unSavePost(data)
     }
+
 
 
     const handleOpenProfilePopper = e =>{
@@ -169,13 +183,60 @@ const PcPost = ({ post, posterProfile, profile, posts, followUser, likePost, com
         handleOpenProfileCard(data)
     }
 
+
+
     const focusOnCommentInput = () =>{
         inputRef.current.focus()
     }
 
 
+    const handleOpenMoreOptionsDialog = () =>{
+        setMoreOptions(true)
+    }
+
+
+    const handleOpenSharePostDialog = () =>{
+        setSharePost(true)
+    }
+
+
+    const handleCloseDialog = () =>{
+        setMoreOptions(false)
+        setSharePost(false)
+    }
+
+
+    const handleCopyPostLink = () =>{
+        const link = `https://os-instagram-clone.netlify.app/p/${post.postId}`
+
+        navigator.clipboard.writeText(link)
+        setLinkSnackBar(true)
+    }
+
+
+    const handleCloseSnackBar = () =>{
+        setLinkSnackBar(false)
+    }
+
+
     return (
         <div className='pc-post-container' >
+            <MoreOptions
+                openDialog={moreOptions}
+                handleCloseDialog={handleCloseDialog}
+                posterId = {post && post.userId}
+                postId={post && post.postId}
+                //openShare={handleOpenShareDrawer}
+                handleCopyPostLink={handleCopyPostLink}
+                from='pc-post'
+            />
+
+            <SharePostDialog
+                openDialog={sharePost}
+                handleCloseDialog={handleCloseDialog}
+                link={`https://os-instagram-clone.netlify.app/p/${post.postId}`}
+                handleCopyPostLink={handleCopyPostLink}
+            />
             <div className='main-selected-post-container'>
 
                 <div className='main-post-file-container'>
@@ -221,7 +282,10 @@ const PcPost = ({ post, posterProfile, profile, posts, followUser, likePost, com
 
                         </div>
 
-                        <MoreHorizIcon fontSize='small' />
+                        <MoreHorizIcon fontSize='small'
+                            onClick={handleOpenMoreOptionsDialog}
+                            className={classes.cursorPointer}
+                        />
 
                     </div>
 
@@ -303,6 +367,7 @@ const PcPost = ({ post, posterProfile, profile, posts, followUser, likePost, com
                                 <ShareIcon
                                     width='24px'
                                     height='24px'
+                                    action={handleOpenSharePostDialog}
 
                                 />
                             </div>
@@ -338,7 +403,6 @@ const PcPost = ({ post, posterProfile, profile, posts, followUser, likePost, com
                                 value={commentText}
                                 onChange={handleTextInputChange}
                                 ref={inputRef}
-                            //onHeightChange={(height) => setTextAreaHeight(height)}
                             />
                             <Button
                                 onClick={handleSubmitComment}
@@ -379,6 +443,17 @@ const PcPost = ({ post, posterProfile, profile, posts, followUser, likePost, com
                 </div>
 
             </div>
+
+                <Snackbar
+                    open={linkSnackBar}
+                    message="Link Copied To Clipboard"
+                    anchorOrigin={{
+                        vertical: 'bottom',
+                        horizontal: 'left'
+                    }}
+                    onClose={handleCloseSnackBar}
+                    autoHideDuration={3000}
+                />
         </div>
     )
 }

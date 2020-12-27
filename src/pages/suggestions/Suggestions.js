@@ -33,7 +33,7 @@ const Suggestions = ({ as, auth, users, profile, history }) => {
     return (
         <div className='suggestions-container'
             style={{
-                paddingTop : as === 'component' ? '30px' : '7vh'
+                paddingTop : as === 'component' ? '30px' : '10px'
             }}
         >
             {as !== 'component' &&

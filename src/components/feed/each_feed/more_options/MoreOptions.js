@@ -10,7 +10,7 @@ import { unFollowUser } from '../../../../store/actions/ProfileActions'
 
 
 
-const MoreOptions = ({ openDialog, handleCloseDialog, handleCopyPostLink, openShare, posterId, userId, postId, deletePost, unFollowUser }) => {
+const MoreOptions = ({ openDialog, handleCloseDialog, handleCopyPostLink, openShare, posterId, userId, postId, deletePost, unFollowUser, from }) => {
 
     const handleDeletePost = () =>{
         deletePost(postId)
@@ -46,12 +46,13 @@ const MoreOptions = ({ openDialog, handleCloseDialog, handleCopyPostLink, openSh
                     <Button color='secondary' onClick={handleUnfollowUser}>Unfollow</Button>
                 </div>
 
+                { from !== 'pc-post' && 
                 <Link 
                     to={`/p/${postId}`}
                     className='content-container'
                 >
                     <Button >Go To Post</Button>
-                </Link>
+                </Link>}
 
                 <div className='content-container'>
                     <Button onClick={handleSharePost} >Share</Button>

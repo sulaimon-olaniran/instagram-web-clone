@@ -8,12 +8,19 @@ import { connect } from 'react-redux'
 //import TopPcNav from '../../../components/navbar/top_nav/TopPcNav'
 import Stories from '../../../components/stories/Stories'
 import RightSection from './right_section/RightSection'
+import Suggestions from '../../suggestions/Suggestions'
 import { handleCloseProfileCard } from '../../../store/actions/AppActions'
 
 
 
 
 const PcHome = ({ feedPosts, handleCloseProfileCard}) => {
+    //const feedPosts = []
+    if(feedPosts.length === 0) return (
+        <div className='pc-home-suggestions-container'>
+            <Suggestions />
+        </div>
+    )
     return(
         <div className='pc-home-container'>
             
