@@ -63,6 +63,7 @@ const PcPost = ({ post, posterProfile, profile, posts, followUser, likePost, com
     const classes = useStyles()
 
 
+
     const getPostComments = useCallback(() =>{
         db.collection('posts').doc(post && post.postId)
         .collection('comments').orderBy('time', 'desc')
@@ -200,9 +201,13 @@ const PcPost = ({ post, posterProfile, profile, posts, followUser, likePost, com
     }
 
 
-    const handleCloseDialog = () =>{
-        setMoreOptions(false)
+    const handleCloseSharePostDialog = () =>{
         setSharePost(false)
+    }
+
+
+    const handleCloseMoreOptionsDialog = () =>{
+        setMoreOptions(false)
     }
 
 
@@ -223,17 +228,17 @@ const PcPost = ({ post, posterProfile, profile, posts, followUser, likePost, com
         <div className='pc-post-container' >
             <MoreOptions
                 openDialog={moreOptions}
-                handleCloseDialog={handleCloseDialog}
+                handleCloseDialog={handleCloseMoreOptionsDialog}
                 posterId = {post && post.userId}
                 postId={post && post.postId}
-                //openShare={handleOpenShareDrawer}
+                openShare={handleOpenSharePostDialog}
                 handleCopyPostLink={handleCopyPostLink}
                 from='pc-post'
             />
 
             <SharePostDialog
                 openDialog={sharePost}
-                handleCloseDialog={handleCloseDialog}
+                handleCloseDialog={handleCloseSharePostDialog}
                 link={`https://os-instagram-clone.netlify.app/p/${post.postId}`}
                 handleCopyPostLink={handleCopyPostLink}
             />

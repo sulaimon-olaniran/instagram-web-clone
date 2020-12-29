@@ -292,3 +292,57 @@
         }
     }
 }
+
+
+@media(min-width : 600px) {
+    .pc-post-container{
+        width: 100%;
+
+        .main-selected-post-container{
+            height: 30rem;
+
+            .main-post-file-container{
+                width: 60%;
+            }
+        }
+
+
+        .other-posts-container{
+            padding-left: 20px;
+
+            .more-user-posts-container{
+                .each-more-user-post-container{
+                    margin-right: 20px;
+                }
+            }
+        }
+    }
+
+}
+
+
+@media(min-width : 900px) {
+    .pc-post-container{
+        width: 920px;
+
+        .main-selected-post-container{
+            height: 40rem;
+
+            .main-post-file-container{
+                width: 65%;
+            }
+        }
+
+
+        .other-posts-container{
+            padding-left: 0px;
+
+            .more-user-posts-container{
+                .each-more-user-post-container{
+                    margin-right: 25px;
+                }
+            }
+        }
+    }
+
+}

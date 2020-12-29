@@ -22,6 +22,7 @@ const EachComment = ({ from, comment, post, profile, likePostComment, unLikePost
     const [actionDialog, setActionDialog] = useState(false)
     const holdTimeRef = useRef(null)
 
+
     const getUserDetails = useCallback(() => {
         db.collection('users').doc(comment.userId)
             .onSnapshot(snapshot => {
@@ -47,7 +48,7 @@ const EachComment = ({ from, comment, post, profile, likePostComment, unLikePost
     const handleMouseDown = () => {
         holdTimeRef.current = setTimeout(() => {
             handleOpenActiondialog()
-        }, 2000)
+        }, 1500)
     }
 
     const handleMouseUp = () => {
@@ -157,6 +158,7 @@ const EachComment = ({ from, comment, post, profile, likePostComment, unLikePost
                     <div className='more-options'>
                         <MoreHorizIcon
                             fontSize='small'
+                            onClick={handleOpenActiondialog}
                         />
                     </div>
                 </div>

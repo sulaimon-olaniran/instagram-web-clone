@@ -9,7 +9,7 @@ import ReportFeedBack, { FeedBackDialog } from './feedback/FeedBack'
 
 
 
-const ReportModal = ({ openModal, handleCloseModal, closeDialog }) =>{
+const ReportModal = ({ openModal, handleCloseModal, closeDialog, text }) =>{
     const [openFeedbackModal, setOpenFeedbackModal] = useState(false)
 
     const handleOpenFeedbackModal = () =>{
@@ -43,7 +43,7 @@ const ReportModal = ({ openModal, handleCloseModal, closeDialog }) =>{
                 </div>
 
                 <div className='report-modal-header-container'>
-                      <p>Why are you reporting this account?</p>
+                      <p>Why are you reporting this {text}?</p>
                 </div>
 
                 <div className='report-modal-button-container'>
@@ -71,7 +71,7 @@ export default ReportModal
 
 
 
-export const ReportDialog = ({ handleCloseDialog, openDialog}) =>{
+export const ReportDialog = ({ handleCloseDialog, openDialog, text }) =>{
     const [feedBackDialog, setFeedBackDialog] = useState(false)
     const handleOpenFeedBackDialog = () =>{
         setFeedBackDialog(true)
@@ -97,7 +97,7 @@ export const ReportDialog = ({ handleCloseDialog, openDialog}) =>{
                 </div>
 
                 <div className='report-dialog-header-container'>
-                      <p>Why are you reporting this account?</p>
+                      <p>Why are you reporting this {text}?</p>
                 </div>
 
                 <div className='report-dialog-button-container'>

@@ -1,14 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Dialog from '@material-ui/core/Dialog'
 import Button from '@material-ui/core/Button'
 import { connect } from 'react-redux'
 
 
 import { deletePostComment } from '../../../../../store/actions/PostsAction'
+import ReportModal, { ReportDialog } from '../../../../profile/actions/brr-dialog/report/ReportModal'
 
 
 
 const CommentActionDialog = ({ openDialog, handleCloseDialog, deletePostComment, comment, post, profile }) => {
+    const [reportModal, setReportModal] = useState(false)
+    const [reportDialog, setReportDialog] = useState(false)
+
 
     const handleDeleteComment = () => {
         const data = {
@@ -22,39 +26,83 @@ const CommentActionDialog = ({ openDialog, handleCloseDialog, deletePostComment,
     }
 
 
+    const handleOpenReportModal = () =>{
+        setReportModal(true)
+    }
+
+
+    const handleOpenReportDialog = () =>{
+        setReportDialog(true)
+        handleCloseDialog()
+    }
+
+    const handleCloseReport = () =>{
+        setReportModal(false)
+        setReportDialog(false)
+    }
+
+
     return (
-        <Dialog
-            aria-labelledby='simple-dialog-title'
-            open={openDialog}
-            onClose={handleCloseDialog}
-        >
-            <div className='delete-comment-dialog-container'>
-                <div className='button-container'>
-                    <Button color='secondary'>
-                        Report
-                    </Button>
-                </div>
+        <React.Fragment>
+            <ReportModal
+                openModal={reportModal}
+                handleCloseModal={handleCloseReport}
+                closeDialog={handleCloseDialog}
+            />
 
-                {profile.userId === post.userId || profile.userId === comment.userId ?
-                    <div className='button-container'>
-                        <Button
+            <ReportDialog
+                openDialog={reportDialog}
+                handleCloseDialog={handleCloseReport}
+                text='comment'
+            />
+            <Dialog
+                aria-labelledby='simple-dialog-title'
+                open={openDialog}
+                onClose={handleCloseDialog}
+                text='comment'
+            >
+                <div className='delete-comment-dialog-container'>
+
+                <div className='button-container mobile'>
+                        <Button 
                             color='secondary'
-                            onClick={handleDeleteComment}
+                            onClick={handleOpenReportModal}
                         >
-                            Delete
-                    </Button>
+                            Report
+                        </Button>
                     </div>
-                    : null
-                }
 
-                <div className='button-container'>
-                    <Button onClick={handleCloseDialog}>
-                        Cancel
-                    </Button>
+
+                    <div className='button-container pc'>
+                        <Button 
+                            color='secondary'
+                            onClick={handleOpenReportDialog}
+                        >
+                            Report
+                        </Button>
+                    </div>
+
+                    {profile.userId === post.userId || profile.userId === comment.userId ?
+                        <div className='button-container'>
+                            <Button
+                                color='secondary'
+                                onClick={handleDeleteComment}
+                            >
+                                Delete
+                        </Button>
+                        </div>
+                        : null
+                    }
+
+                    <div className='button-container'>
+                        <Button onClick={handleCloseDialog}>
+                            Cancel
+                        </Button>
+                    </div>
                 </div>
-            </div>
 
-        </Dialog>
+            </Dialog>
+        </React.Fragment>
     )
 }
 

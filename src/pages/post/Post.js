@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react'
-
+import { Redirect } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 
 import { db } from '../../firebase/Firebase'
@@ -8,7 +9,7 @@ import MobilePost from './mobile/MobilePost'
 import PcPost from './pc/PcPost'
 
 
-const Post = ({ match }) =>{
+const Post = ({ match, auth }) =>{
     const [fetchingPost, setFetchingPost] = useState(true)
     const [post, setPost] = useState({})
     const [posterProfile, setPosterProfile] = useState({})
@@ -35,6 +36,7 @@ const Post = ({ match }) =>{
     }, [handleFetchPost])
 
 
+    if(!auth.uid) return <Redirect to='/' />
     if(fetchingPost) return <LogoLoader />
     return(
         <div className='post-container'>
@@ -50,4 +52,10 @@ const Post = ({ match }) =>{
 }
 
 
-export default Post
+const mapStateToProps = (state) =>{
+    return{
+        auth : state.firebase.auth,
+    }
+}
+
+export default connect(mapStateToProps)(Post)

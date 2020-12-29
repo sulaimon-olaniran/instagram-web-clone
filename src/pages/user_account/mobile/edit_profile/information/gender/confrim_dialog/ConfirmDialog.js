@@ -36,7 +36,7 @@ const ConfirmDialog = ({ openDialog, handleCloseDialog, handleCloseModal }) =>{
                         <Button
                             onClick={handleCloseDialog}
                         >
-                            NO
+                            No
                         </Button>
                     </div>
                 </div>

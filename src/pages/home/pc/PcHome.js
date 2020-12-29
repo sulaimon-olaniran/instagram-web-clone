@@ -13,10 +13,11 @@ import { handleCloseProfileCard } from '../../../store/actions/AppActions'
 
 
 
-
-const PcHome = ({ feedPosts, handleCloseProfileCard}) => {
+const PcHome = ({ feedPosts }) => {
     //const feedPosts = []
-    if(feedPosts.length === 0) return (
+
+
+    if(feedPosts !== null && feedPosts.length === 0) return (
         <div className='pc-home-suggestions-container'>
             <Suggestions />
         </div>

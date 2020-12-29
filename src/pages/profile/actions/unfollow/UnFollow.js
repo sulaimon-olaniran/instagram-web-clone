@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const UnFollowDialog = ({ handleCloseDialog, openDialog, unFollowUser }) => {
+const UnFollowDialog = ({ handleCloseDialog, openDialog, unFollowUser, userProfile }) => {
     const handleUnFollowUser = () =>{
         unFollowUser()
         handleCloseDialog()
@@ -24,10 +24,10 @@ const UnFollowDialog = ({ handleCloseDialog, openDialog, unFollowUser }) => {
             <div className='unfollow-dialog-container'>
                 <Avatar
                     className={classes.large}
-                    src='https://source.unsplash.com/random/600x600/?woman'
+                    src={userProfile.profilePhoto}
                 />
 
-                <p>Unfollow Olami_dipup0</p>
+                <p>Unfollow {userProfile.userName}</p>
 
                 <div className='unfollow-buttons-container'>
                     <div className='unfollow-dialog-button-container'>

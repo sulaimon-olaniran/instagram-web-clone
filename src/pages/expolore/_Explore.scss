@@ -52,12 +52,38 @@
     }
 }
 
-@media(min-width : 700px) {
+@media(min-width : 600px) {
     .explore-page-container{
 
         .top-button-container{
             display: none;
         }
+
+        .explore-contents-container{
+            width: 100%;
+
+            .MuiGridList-root{
+                width: 100%;
+                justify-content: space-around;
+                padding-top: 25px;
+
+                .MuiGridListTile-root{
+                    height: 250px !important;
+                    width: 31% !important;
+                    margin-bottom: 15px;
+
+                }
+            }
+        }
+    }
+
+}
+
+
+
+@media(min-width : 900px) {
+    .explore-page-container{
+
 
         .explore-contents-container{
             width: 920px;

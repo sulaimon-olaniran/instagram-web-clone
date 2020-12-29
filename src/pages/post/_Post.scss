@@ -3,7 +3,11 @@
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    background-color: rgb(247, 247, 247);
+
+    .mobile-post{
+        width: 100%;
+        height: 100%;
+    }
 
     .pc-post{
         display: none;
@@ -13,11 +17,15 @@
 
 
     
-@media(min-width : 960px) {
+@media(min-width : 600px) {
     .post-container{
+        background-color: rgb(247, 247, 247);
         padding-top: 4rem;
         .pc-post{
-            display: block;
+            display: flex;
+            height: 100%;
+            width: 100%;
+            justify-content: center;
         }
     
         .mobile-post{

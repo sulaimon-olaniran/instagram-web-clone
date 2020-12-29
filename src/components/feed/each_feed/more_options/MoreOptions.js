@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Dialog from '@material-ui/core/Dialog'
 import Button from '@material-ui/core/Button'
@@ -7,10 +7,15 @@ import { connect } from 'react-redux'
 
 import { deletePost } from '../../../../store/actions/PostsAction'
 import { unFollowUser } from '../../../../store/actions/ProfileActions'
+import ReportModal, { ReportDialog } from '../../../../pages/profile/actions/brr-dialog/report/ReportModal'
 
 
 
-const MoreOptions = ({ openDialog, handleCloseDialog, handleCopyPostLink, openShare, posterId, userId, postId, deletePost, unFollowUser, from }) => {
+const MoreOptions = ({ openDialog, handleCloseDialog, handleCopyPostLink, openShare, posterId, profile, postId, deletePost, unFollowUser, from }) => {
+    const [reportModal, setReportModal] = useState(false)
+    const [reportDialog, setReportDialog] = useState(false)
+
+    const { userId } = profile
 
     const handleDeletePost = () =>{
         deletePost(postId)
@@ -29,72 +34,125 @@ const MoreOptions = ({ openDialog, handleCloseDialog, handleCopyPostLink, openSh
 
         unFollowUser(data)
     }
+
+
+    const handleOpenReportModal = () =>{
+        setReportModal(true)
+    }
+
+
+    const handleOpenReportDialog = () =>{
+        setReportDialog(true)
+        handleCloseDialog()
+    }
+
+    const handleCloseReport = () =>{
+        setReportModal(false)
+        setReportDialog(false)
+    }
+
     return (
-        <Dialog
-            aria-labelledby='simple-dialog-title'
-            open={openDialog}
-            onClose={handleCloseDialog}
-        >
-            { userId && userId !== posterId ?
-            <div className='not-user-dialog-contents-container'>
-                <div className='content-container'>
-                    <Button color='secondary'>Report</Button>
+        <React.Fragment>
+            <ReportModal
+                openModal={reportModal}
+                handleCloseModal={handleCloseReport}
+                closeDialog={handleCloseDialog}
+                text='post'
+            />
+
+            <ReportDialog
+                openDialog={reportDialog}
+                handleCloseDialog={handleCloseReport}
+                text='post'
+            />
+
+
+            <Dialog
+                aria-labelledby='simple-dialog-title'
+                open={openDialog}
+                onClose={handleCloseDialog}
+            >
+                { userId && userId !== posterId ?
+                <div className='not-user-dialog-contents-container'>
+                    <div className='content-container mobile'>
+                        <Button 
+                            color='secondary'
+                            onClick={handleOpenReportModal}
+                        >
+                            Report
+                        </Button>
+                    </div>
+
+                    <div className='content-container pc'>
+                        <Button 
+                            color='secondary'
+                            onClick={handleOpenReportDialog}
+                        >
+                            Report
+                        </Button>
+                    </div>
+
+                    {/* unfollow should only be visible when user is followed, unfollow confirmation dialog */}
+                    
+                    {
+                        profile && profile.following.includes(posterId && posterId) &&
+
+                        <div className='content-container'>
+                            <Button color='secondary' onClick={handleUnfollowUser}>Unfollow</Button>
+                        </div>
+                    }
+
+                    { from !== 'pc-post' && 
+                    <Link 
+                        to={`/p/${postId}`}
+                        className='content-container'
+                    >
+                        <Button >Go To Post</Button>
+                    </Link>}
+
+                    <div className='content-container'>
+                        <Button onClick={handleSharePost} >Share</Button>
+                    </div>
+
+                    <div className='content-container'>
+                        <Button onClick={handleCopyPostLink} >Copy Link</Button>
+                    </div>
+
+                    <div className='content-container'>
+                        <Button onClick={handleCloseDialog}>Cancel</Button>
+                    </div>
+
                 </div>
 
-                {/* unfollow should only be visible when user is followed, unfollow confirmation dialog */}
-                <div className='content-container'>
-                    <Button color='secondary' onClick={handleUnfollowUser}>Unfollow</Button>
-                </div>
+                :
 
-                { from !== 'pc-post' && 
-                <Link 
-                    to={`/p/${postId}`}
-                    className='content-container'
-                >
-                    <Button >Go To Post</Button>
-                </Link>}
+                <div className='user-dialog-contents-container'>
+                    <div className='content-container'>
+                        <Button color='secondary' onClick={handleDeletePost}>Delete</Button>
+                    </div>
 
-                <div className='content-container'>
-                    <Button onClick={handleSharePost} >Share</Button>
-                </div>
+                    <Link 
+                        to={`/p/${postId}`}
+                        className='content-container'
+                    >
+                        <Button >Go To Post</Button>
+                    </Link>
 
-                <div className='content-container'>
-                    <Button onClick={handleCopyPostLink} >Copy Link</Button>
-                </div>
+                    <div className='content-container'>
+                        <Button onClick={handleCloseDialog}>Cancel</Button>
+                    </div>
+                </div>}
 
-                <div className='content-container'>
-                    <Button onClick={handleCloseDialog}>Cancle</Button>
-                </div>
-
-            </div>
-
-            :
-
-            <div className='user-dialog-contents-container'>
-                <div className='content-container'>
-                    <Button color='secondary' onClick={handleDeletePost}>Delete</Button>
-                </div>
-
-                <Link 
-                    to={`/p/${postId}`}
-                    className='content-container'
-                >
-                    <Button >Go To Post</Button>
-                </Link>
-
-                <div className='content-container'>
-                    <Button onClick={handleCloseDialog}>Cancel</Button>
-                </div>
-            </div>}
-
-        </Dialog>
+            </Dialog>
+        </React.Fragment>
     )
 }
 
 const mapStateToProps = (state) => {
     //console.log(state)
     return {
-        userId : state.firebase.profile.userId
+        userId : state.firebase.profile.userId,
+        profile : state.firebase.profile
     }
 }
 

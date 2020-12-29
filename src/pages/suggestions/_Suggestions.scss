@@ -47,7 +47,7 @@
 }
 
 
-@media(min-width : 960px) {
+@media(min-width : 600px) {
     .suggestions-container{
         padding: 0;
         background-color: rgb(247, 247, 247);
@@ -61,6 +61,15 @@
             width: 600px;
             background-color: white;
             margin-top: 7vh;
+        }
+    }
+}
+
+@media(min-width : 900px) {
+    .suggestions-container{
+
+        .suggestions-contents-container{
+            margin-top: 10vh;
         }
     }
 }

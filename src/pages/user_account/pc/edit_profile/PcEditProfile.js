@@ -80,9 +80,10 @@ const PcEditProfile = ({ profile, location }) => {
                 <div className='main-contents-container'>
                     {
                         activeComponent === 'profile' ?
-                            <EditProfileTheme profile={profile} />
-                            :
-                            <FormikChangePassword />
+                        
+                        <EditProfileTheme profile={profile} />
+                        :
+                        <FormikChangePassword />
                     }
 
                 </div>

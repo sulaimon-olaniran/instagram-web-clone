@@ -37,4 +37,38 @@
 }
 
 
+@media(min-width : 600px) {
+    .pc-home-container{
+        .pc-home-contents-container{
+            width: 600px;
+
+            .pc-home-stories-container{
+                width: 100%;
+            }
+
+            .pc-home-feedposts-container{
+                width: 100%
+            }
+        }
+    }
+}
+
+
+@media(min-width : 900px) {
+    .pc-home-container{
+        .pc-home-contents-container{
+            width: 920px;
+
+            .pc-home-stories-container{
+                width: 65%;
+            }
+
+            .pc-home-feedposts-container{
+                width: 65%
+            }
+        }
+    }
+}
+
+
 @import './right_section/RightSection';

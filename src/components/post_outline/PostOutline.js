@@ -32,8 +32,6 @@ const PostOutline = ({ post }) =>{
 
     }, [ getPostComments])
 
-    console.log('arrived at outline post')
-    console.log(post)
 
 
 

@@ -93,3 +93,18 @@
         }
     }
 }
+
+
+@media(min-width : 600px) {
+    .right-section-container{
+        display: none;
+    }
+}
+
+
+
+@media(min-width : 900px) {
+    .right-section-container{
+        display: flex;
+    }
+}

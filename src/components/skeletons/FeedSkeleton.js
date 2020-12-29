@@ -1,14 +1,5 @@
 import React from 'react'
-//import PropTypes from 'prop-types'
 import { makeStyles } from '@material-ui/core/styles'
-import Card from '@material-ui/core/Card'
-import CardHeader from '@material-ui/core/CardHeader'
-import CardContent from '@material-ui/core/CardContent'
-// import CardMedia from '@material-ui/core/CardMedia'
-// import Avatar from '@material-ui/core/Avatar'
-// import Typography from '@material-ui/core/Typography'
-import IconButton from '@material-ui/core/IconButton'
-import MoreVertIcon from '@material-ui/icons/MoreVert'
 import Skeleton from '@material-ui/lab/Skeleton'
 
 const useStyles = makeStyles((theme) => ({
@@ -21,45 +12,101 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+
+
+
 const FeedSkeleton = () => {
-  
-  const classes = useStyles()
+
 
   return (
-    <Card className={classes.card}>
-        <button
-            style={{display : 'hidden'}}
-        >
+    <div className='feed-skeleton-container'>
+        <div className='feed-skeleton-header-container'>
+            <Skeleton
+              height={40}
+              width={40}
+              variant='circle'
+              animation='wave'
+            />
 
-        </button>
-      <CardHeader
-        avatar={
-            <Skeleton animation="wave" variant="circle" width={40} height={40} />
-        }
-        action={
-            <IconButton aria-label="settings">
-              <MoreVertIcon />
-            </IconButton>
-        }
-        
-        title={
-            <Skeleton animation="wave" height={10} width="80%" style={{ marginBottom: 6 }} />
-        }
+            <Skeleton
+              variant='text'
+              animation='wave'
+            />
+        </div>
 
-        subheader={<Skeleton animation="wave" height={10} width="40%" /> }
-      />
-      
-        <Skeleton animation="wave" variant="rect" className={classes.media} />
-      
+        <div className='feed-skeleton-file-container'>
+            <Skeleton
+              variant='rect'
+              animation='wave'
+            />
+        </div>
 
-      <CardContent>
-          <React.Fragment>
-            <Skeleton animation="wave" height={10} style={{ marginBottom: 6 }} />
-            <Skeleton animation="wave" height={10} width="80%" />
-          </React.Fragment>
-      </CardContent>
-    </Card>
+        <div className='feed-skeleton-bottom-container'>
+            <Skeleton
+              variant='rect'
+              animation='wave'
+            />
+        </div>
+
+    </div>
   );
 }
 
 export default FeedSkeleton
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// const FeedSkeleton = () => {
+
+//   const classes = useStyles()
+
+//   return (
+//     <Card className={classes.card}>
+//       <CardHeader
+//         avatar={
+//           <Skeleton animation="wave" variant="circle" width={40} height={40} />
+//         }
+//         action={
+//           <IconButton aria-label="settings">
+//             <MoreVertIcon />
+//           </IconButton>
+//         }
+
+//         title={
+//           <Skeleton animation="wave" height={10} width="80%" style={{ marginBottom: 6 }} />
+//         }
+
+//         subheader={<Skeleton animation="wave" height={10} width="40%" />}
+//       />
+
+//       <Skeleton animation="wave" variant="rect" className={classes.media} />
+
+
+//       <CardContent>
+//         <React.Fragment>
+//           <Skeleton animation="wave" height={10} style={{ marginBottom: 6 }} />
+//           <Skeleton animation="wave" height={10} width="80%" />
+//         </React.Fragment>
+//       </CardContent>
+//     </Card>
+//   );
+// }
+
+// export default FeedSkeleton

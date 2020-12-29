@@ -16,7 +16,6 @@ import Stories from '../../../components/stories/Stories'
 import PostsFeed from '../../../components/feed/PostsFeed'
 import CreateButton from '../../../components/create_story/CreateButton'
 import MobileWelcome from '../../welcome/mobile/MobileWelcome'
-import LogoLoader from '../../../components/loaders/LogoLoader'
 import StoryAvatar from '../../../components/avatar/StoryAvatar'
 import { handleViewStory } from '../../../store/actions/AppActions'
 
@@ -34,10 +33,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const MobileHome = ({ feedPosts, fetchingFeedPosts, profile, handleViewStory }) => {
+const MobileHome = ({ feedPosts, profile, handleViewStory }) => {
     const classes = useStyles()
     //console.log(users)
-    if (fetchingFeedPosts) return <LogoLoader />
+    
     return (
         <div className='mobile-home-container'>
 
@@ -57,7 +56,7 @@ const MobileHome = ({ feedPosts, fetchingFeedPosts, profile, handleViewStory }) 
             </div>
 
             
-            {!fetchingFeedPosts && feedPosts.length > 0 ?
+            {feedPosts !== null && feedPosts.length > 0 ?
                 <React.Fragment>
                     <div className='stories-container'>
                         <HorizontalScroller>
@@ -110,12 +109,6 @@ const MobileHome = ({ feedPosts, fetchingFeedPosts, profile, handleViewStory }) 
     )
 }
 
-const mapStateToProps = (state) => {
-    return {
-        posts: state.posts.feedPosts,
-        profile : state.firebase.profile
-    }
-}
 
 
 const mapDispatchToProps = (dispatch) =>{
@@ -124,4 +117,4 @@ const mapDispatchToProps = (dispatch) =>{
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(MobileHome)
+export default connect(null, mapDispatchToProps)(MobileHome)

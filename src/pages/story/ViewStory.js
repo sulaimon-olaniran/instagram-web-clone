@@ -39,29 +39,29 @@ const ViewStory = ({ handleCloseStory, stories, viewStory, storyUser, auth }) =>
 
     }, [storyUser, stories])
     //console.log(data)
-    const storiesData = data && data.map(data =>{
+    const storiesData = data && data.map(data => {
         return {
-            url : data.fileUrl,
-            duration : 5000,
-            storyId : data.storyId,
-            header : {
-                heading : storyUser && storyUser.userName,
-                subheading : moment(data.time).fromNow(),
-                profileImage : storyUser && storyUser.profilePhoto
+            url: data.fileUrl,
+            duration: 5000,
+            storyId: data.storyId,
+            header: {
+                heading: storyUser && storyUser.userName,
+                subheading: moment(data.time).fromNow(),
+                profileImage: storyUser && storyUser.profilePhoto
             }
         }
     })
 
-    const getCurrentStoryId = index =>{
+    const getCurrentStoryId = index => {
         indexRef.current = index
     }
 
-    const handleOpenDeleteDialog = (id) =>{
+    const handleOpenDeleteDialog = (id) => {
         setSelectedStory(id)
         setDeleteDialog(true)
     }
 
-    const handleCloseDeleteDialog = () =>{
+    const handleCloseDeleteDialog = () => {
         setSelectedStory(null)
         setDeleteDialog(false)
     }
@@ -81,34 +81,37 @@ const ViewStory = ({ handleCloseStory, stories, viewStory, storyUser, auth }) =>
         >
             <Slide direction="up" in={viewStory} mountOnEnter unmountOnExit>
                 <div className='story-container'>
-                    <DeleteStoryDialog 
-                        openDialog={deleteDialog}
-                        handleCloseDialog={handleCloseDeleteDialog}
-                        storyId={selectedStory}
-                    />
-
-                    <div className='top-section-container'>
-                        <CloseIcon fontSize='large' color='action' onClick={handleCloseStory} />
-                    </div>
-
-                    { storyUser && storyUser.userId === auth.uid &&
-                    <div className='bottom-more-button-container'>
-                        <MoreHorizIcon
-                            fontSize='large'
-                            onClick={() => handleOpenDeleteDialog(indexRef.current)}
+                    <div className='story-contents-container'>
+                        <DeleteStoryDialog
+                            openDialog={deleteDialog}
+                            handleCloseDialog={handleCloseDeleteDialog}
+                            storyId={selectedStory}
                         />
-                    </div>
-                    }
 
-                    {data &&
-                        <Stories
-                            stories={storiesData}
-                            defaultInterval={5000}
-                            width='100%'
-                            height='100%'
-                            onStoryStart={index => getCurrentStoryId(storiesData[index].storyId)}
-                            onAllStoriesEnd={handleCloseStory}
-                        />}
+                        <div className='top-section-container'>
+                            <CloseIcon fontSize='large' color='action' onClick={handleCloseStory} />
+                        </div>
+
+                        {storyUser && storyUser.userId === auth.uid &&
+                            <div className='bottom-more-button-container'>
+                                <MoreHorizIcon
+                                    fontSize='large'
+                                    onClick={() => handleOpenDeleteDialog(indexRef.current)}
+                                />
+                            </div>
+                        }
+
+                        {data &&
+                            <Stories
+                                stories={storiesData}
+                                defaultInterval={5000}
+                                width='100%'
+                                height='100%'
+                                onStoryStart={index => getCurrentStoryId(storiesData[index].storyId)}
+                                onAllStoriesEnd={handleCloseStory}
+                            />}
+
+                    </div>
                 </div>
             </Slide>
         </Modal>
@@ -117,18 +120,18 @@ const ViewStory = ({ handleCloseStory, stories, viewStory, storyUser, auth }) =>
 
 
 
-const mapStateToProps = state =>{
-    return{
+const mapStateToProps = state => {
+    return {
         stories: state.firestore.ordered.stories,
-        viewStory : state.application.viewStory,
-        storyUser : state.application.storyUser,
-        auth : state.firebase.auth
+        viewStory: state.application.viewStory,
+        storyUser: state.application.storyUser,
+        auth: state.firebase.auth
     }
 }
 
-const mapDispatchToProps = dispatch =>{
-    return{
-        handleCloseStory : () => dispatch(handleUnviewStory())
+const mapDispatchToProps = dispatch => {
+    return {
+        handleCloseStory: () => dispatch(handleUnviewStory())
     }
 }
 

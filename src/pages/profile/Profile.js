@@ -91,11 +91,13 @@ const Profile = ({ match, auth, posts, profile, followUser, unFollowUser, handle
                 openDialog={unfollowDialog}
                 handleCloseDialog={handleCloseDialog}
                 unFollowUser={handleUnFollowUser}
+                userProfile={userProfile && userProfile}
             />
 
             <BlockReportRestrictDialog
                 openDialog={blockDialog}
                 handleCloseDialog={handleCloseDialog}
+                userProfile={userProfile && userProfile}
             />
 
             <div className='mobile-profile'>

@@ -34,8 +34,42 @@
 }
 
 
-@media(min-width : 960px) {
+
+
+@media(min-width : 600px) {
     .top-pc-nav-container{
         display: flex;
+
+        .nav-contents{
+            width: 100%;
+            padding: 0 25px;
+
+            .nav-content-links-container{
+                width: 30%;
+            }
+        }
+    }
+}
+
+
+@media(max-width : 800px) and (orientation: landscape) {
+    .top-pc-nav-container{
+        display: none;
+    }
+}
+
+
+@media(min-width : 900px) {
+    .top-pc-nav-container{
+        display: flex;
+
+        .nav-contents{
+            width: 920px;
+            padding: 0 25px;
+
+            .nav-content-links-container{
+                width: 25%;
+            }
+        }
     }
 }

@@ -9,7 +9,7 @@ import BlockDialog from './block/Block'
 
 
 
-const BlockReportRestrictDialog = ({ handleCloseDialog, openDialog }) =>{
+const BlockReportRestrictDialog = ({ handleCloseDialog, openDialog, userProfile }) =>{
     const [openReportModal, setOpenReportModal] = useState(false)
     const [openRestrictDrawer, setOpenRestrictDrawer] = useState(false)
     const [openBlockDialog, setOpenBlockDialog] = useState(false)
@@ -52,12 +52,14 @@ const BlockReportRestrictDialog = ({ handleCloseDialog, openDialog }) =>{
                 <BlockDialog 
                    openDialog={openBlockDialog}
                    handleCloseDialog={handleClose}
+                   userProfile={userProfile}
                 />
 
                 <ReportModal 
                    openModal={openReportModal}
                    handleCloseModal={handleClose}
                    closeDialog={handleCloseDialog} //close innitial dialog 
+                   text='account'
                 />
 
                 <RestrictDrawer 
@@ -73,6 +75,7 @@ const BlockReportRestrictDialog = ({ handleCloseDialog, openDialog }) =>{
                 <ReportDialog
                     openDialog={reportDialog}
                     handleCloseDialog={handleClose}
+                    text='account'
                 />
 
                 <div className="brr-button-container">

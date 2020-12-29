@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
 import Avatar from '@material-ui/core/Avatar'
@@ -31,7 +31,7 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
     const [fetching, setFetching] = useState(true)
     const [linkSnackBar, setLinkSnackBar] = useState(false)
     //const [isFollowing, setIsFollowing] = useState(null)
-    const buttonRef = useRef(null)
+    // const buttonRef = useRef(null)
 
     const handleOpenComment = () =>{
         setOpenComment(true)
@@ -164,7 +164,9 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
         handleOpenProfileCard(data)
     }
 
-    if(fetching) return <FeedSkeleton buttonRef={buttonRef} />
+    //const fetcher = true
+
+    if(fetching) return <FeedSkeleton  />
     return (
         <div className='each-post-feed-container'>
 
@@ -245,7 +247,7 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
 
             <div className='post-media-container'>
                 <img 
-                    ref={buttonRef}
+                    //ref={buttonRef}
                     src={post && post.fileUrl} alt='POST_FILE' 
                 />
             </div>

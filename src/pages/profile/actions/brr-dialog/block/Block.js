@@ -4,11 +4,11 @@ import Button from '@material-ui/core/Button'
 
 
 
-const BlockDialogFeedback = ({ open, close}) =>{
+const BlockDialogFeedback = ({ open, close, userProfile}) =>{
     return(
         <Dialog onClose={close} aria-labelledby="simple-dialog-title" open={open}>
                  <div className='block-dialog-feedback-container'>
-                          <h3>Blocked Olami_dipupo.</h3>
+                          <h3>Blocked {userProfile.userName}.</h3>
                           <p>You can unblock them anytime from their profile</p>
                           <div>
                               <Button onClick={close}>Dismiss</Button>
@@ -19,7 +19,7 @@ const BlockDialogFeedback = ({ open, close}) =>{
 }
 
 
-const BlockDialog = ({ handleCloseDialog, openDialog }) =>{
+const BlockDialog = ({ handleCloseDialog, openDialog, userProfile }) =>{
     const [openFeedback, setOpenFeedback] = useState(false)
 
     const handleOpenFeedback = () =>{
@@ -34,7 +34,7 @@ const BlockDialog = ({ handleCloseDialog, openDialog }) =>{
     return(
         <Dialog onClose={handleCloseDialog} aria-labelledby="simple-dialog-title" open={openDialog}>
             <div className='block-dialog-container'>
-                <h3>Block Olami_dipupo ?</h3>
+                <h3>Block {userProfile.userName} ?</h3>
                 <p>They won't be able to find your profile, posts or story on instagram. Instagram won't let them know you blocked them.</p>
 
                 <div className='block-dialog-buttons-container'>
@@ -48,6 +48,7 @@ const BlockDialog = ({ handleCloseDialog, openDialog }) =>{
                 <BlockDialogFeedback 
                    open={openFeedback}
                    close={handleCloseFeedback}
+                   userProfile={userProfile}
                 />
             </div>
         </Dialog>

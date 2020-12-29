@@ -7,12 +7,13 @@ import { compose } from 'redux'
 
 import MobileHome from './mobile/MobileHome'
 import PcHome from './pc/PcHome'
+import LogoLoader from '../../components/loaders/LogoLoader'
 
 
 
 const Home = ({ users, profile, posts, setCurrentPage }) => {
-    const [followingPosts, setFollowingPosts] = useState([])
-    const [fetching, setFetching] = useState(true)
+    const [followingPosts, setFollowingPosts] = useState(null)
+
 
 
     const getAllFollowingPosts = useCallback(() => {
@@ -27,7 +28,7 @@ const Home = ({ users, profile, posts, setCurrentPage }) => {
         Promise.all([promises])
         .then(() =>{
             setFollowingPosts(allPosts)
-            setFetching(false)
+            
         })
         
     }, [posts, profile])
@@ -40,12 +41,14 @@ const Home = ({ users, profile, posts, setCurrentPage }) => {
 
     }, [getAllFollowingPosts, setCurrentPage])
 
+    if (!profile.isLoaded) return <LogoLoader />
+
     return (
         <React.Fragment>
             <div className='mobile-home'>
                 <MobileHome
                     feedPosts={followingPosts}
-                    fetchingFeedPosts={fetching}
+                    profile={profile}
                 />
             </div>
             

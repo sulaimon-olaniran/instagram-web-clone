@@ -1,4 +1,5 @@
 import React from 'react'
+import { withRouter } from 'react-router-dom'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 
 
@@ -20,4 +21,4 @@ const MobilePost = ({ post, history }) =>{
 }
 
 
-export default MobilePost
+export default withRouter(MobilePost)
