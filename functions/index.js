@@ -30,6 +30,7 @@ exports.followUserNotification = functions.https.onCall((data, context) =>{
         time : time,
         userId : userId,
         notification : notification,
+        notificationId : docId,
         seen : false,
         type : 'followed'
     })
@@ -52,6 +53,7 @@ exports.likedPostNotification = functions.https.onCall((data, context) =>{
         userId : userId,
         postId : postId,
         notification : notification,
+        notificationId : docId,
         seen : false,
         type : 'liked_post'
     })
@@ -75,6 +77,7 @@ exports.commentOnPostNotification = functions.https.onCall((data, context) =>{
         userId : userId,
         postId : postId,
         notification : notification,
+        notificationId : docId,
         seen : false,
         type : 'post_comment',
         comment : comment
@@ -98,6 +101,7 @@ exports.likedPostCommentNotification = functions.https.onCall((data, context) =>
         userId : userId,
         postId : postId,
         notification : notification,
+        notificationId : docId,
         seen : false,
         type : 'liked_comment',
         comment : comment

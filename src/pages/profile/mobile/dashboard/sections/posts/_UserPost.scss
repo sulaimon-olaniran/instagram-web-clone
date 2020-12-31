@@ -18,7 +18,7 @@
 
 
 
-@media(min-width : 700px) {
+@media(min-width : 560px) {
     .user-post-container{
 
 
@@ -38,5 +38,24 @@
         
     }
 
+
+}
+
+@media(max-width : 800px) and (orientation: landscape) {
+    .user-post-container{
+        padding: 25px 0;
+        .MuiGridList-root{
+            padding: 0;
+
+            .MuiGridListTile-root{
+                margin: 0;
+                padding: 0;
+                width: 31% !important;
+                height: 250px !important;
+                margin-left: 2%;
+                margin-bottom: 15px;
+            }
+        }
+    }
 
 }

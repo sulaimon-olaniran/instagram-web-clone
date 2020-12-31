@@ -30,12 +30,10 @@ const Suggestions = ({ as, auth, users, profile, history }) => {
 
     if (!auth.uid) return <Redirect to='/' />
 
+    const styleName = as === 'component' ? 'component' : 'page'
+
     return (
-        <div className='suggestions-container'
-            style={{
-                paddingTop : as === 'component' ? '30px' : '10px'
-            }}
-        >
+        <div className={`suggestions-container ${styleName}`} >
             {as !== 'component' &&
                 <div className='suggestions-nav-container'>
                     <ArrowBackIosIcon onClick={() => history.goBack()} />

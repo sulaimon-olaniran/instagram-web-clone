@@ -52,6 +52,15 @@
     }
 }
 
+@media(max-width : 800px) and (orientation: landscape) {
+    .pc-edit-profile-main-container{
+        .pc-edit-profile-sub-container{
+            width: 100%;
+            min-height: 100vh;
+        }
+    }
+}
+
 
 @media(min-width : 900px) {
     .pc-edit-profile-main-container{

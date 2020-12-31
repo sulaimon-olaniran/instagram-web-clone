@@ -17,7 +17,8 @@ const PcActivityMenu = ({ anchorEl, handleClose, auth, profile }) => {
 
     const grabAllUserNotifications = useCallback(() => {
 
-        auth.isLoaded && !auth.isEmpty && db.collection('users').doc(auth.uid)
+        auth.isLoaded && !auth.isEmpty && 
+        db.collection('users').doc('9G6R635DzajdJA0ht6Ng')
             .collection('notifications').orderBy('time', 'desc')
             .onSnapshot(snapshot => {
                 const notifications = []
@@ -26,8 +27,9 @@ const PcActivityMenu = ({ anchorEl, handleClose, auth, profile }) => {
                 })
 
                 setActivities(notifications)
+               
             })
-    }, [auth])
+    }, [ auth ])
 
 
     useEffect(() => {
@@ -44,18 +46,16 @@ const PcActivityMenu = ({ anchorEl, handleClose, auth, profile }) => {
             keepMounted
             open={Boolean(anchorEl)}
             onClose={handleClose}
-            anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "right"
-            }}
+
             transformOrigin={{
-                vertical: "bottom",
-                horizontal: "right"
+                vertical: 'top',
+                horizontal: 'right',
             }}
 
             PaperProps={{
                 style: {
                     maxHeight: '20rem',
+                    width : '35rem'
                 },
             }}
         >
@@ -64,10 +64,11 @@ const PcActivityMenu = ({ anchorEl, handleClose, auth, profile }) => {
                     activities.length > 0 ?
                         activities.map((activity, i) => {
                             return (
-                                    <EachActivity
-                                        activity={activity}
-                                        profile={profile}
-                                    />
+                                <EachActivity
+                                    activity={activity}
+                                    profile={profile}
+                                    key={activity.notificationId}
+                                />
                             )
                         })
                         :

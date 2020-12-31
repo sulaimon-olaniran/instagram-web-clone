@@ -1,0 +1,10 @@
+.activity-skeleton-container{
+    width: 100%;
+    min-height: 3rem;
+    margin: 10px;
+
+    .MuiSkeleton-rect{
+        width: 100%;
+        min-height: 3rem;
+    }
+}

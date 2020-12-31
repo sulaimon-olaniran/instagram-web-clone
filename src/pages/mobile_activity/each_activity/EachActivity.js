@@ -10,6 +10,7 @@ import { db } from '../../../firebase/Firebase'
 import { followUser, unFollowUser } from '../../../store/actions/ProfileActions'
 import { handleViewStory } from '../../../store/actions/AppActions'
 import StoryAvatar from '../../../components/avatar/StoryAvatar'
+import ActivitySkeleton from '../../../components/skeletons/activity/ActivitySkeleton'
 
 
 
@@ -17,20 +18,21 @@ const EachActivity = ({ activity, profile, followUser, unFollowUser, handleViewS
     const [notifier, setNotifier] = useState({})
     const [post, setPost] = useState({}) //get the post from which activity occured
     //console.log(activity)
+    const [fetching, setFetching] = useState(true)
 
     const getNotifierAccount = useCallback(() => {
         const docId = activity && activity.userId
         db.collection('users').doc(docId).get()
         .then(doc =>{
             setNotifier(doc.data())
-            activity && activity.type !=='followed'  && 
+            return activity && activity.type !=='followed'  && 
             db.collection('posts').doc(activity && activity.postId)
             .get().then(doc =>{
                 setPost(doc.data())
             })
         })
         .then(() =>{
-            console.log('all done')
+            setFetching(false)
         })
            
     }, [activity])
@@ -57,6 +59,7 @@ const EachActivity = ({ activity, profile, followUser, unFollowUser, handleViewS
         unFollowUser(data)
     }
 
+    if(fetching) return <ActivitySkeleton />
     return (
         <React.Fragment>
             <div className='each-mobile-activity-container'>

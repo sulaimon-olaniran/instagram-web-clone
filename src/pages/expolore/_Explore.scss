@@ -34,7 +34,7 @@
 
     .explore-contents-container{
         width: 100%;
-        margin-top: 4rem;
+        margin-top: 3.5rem;
         min-height: 93vh;
         margin-bottom: 8vh;
         display: flex;
@@ -52,7 +52,7 @@
     }
 }
 
-@media(min-width : 600px) {
+@media(min-width : 560px) {
     .explore-page-container{
 
         .top-button-container{
@@ -77,6 +77,20 @@
         }
     }
 
+}
+
+@media(max-width : 800px) and (orientation: landscape) {
+    .explore-page-container{
+        .top-button-container{
+            display: flex;
+            height: 2rem;
+            padding-bottom: 3rem;
+
+            button{
+                height: 2rem;
+            }
+        }
+    }
 }
 
 

@@ -18,5 +18,16 @@
 }
 
 
+@media(max-width : 800px) and (orientation: landscape) {
+    .pc-user-account{
+        display: none;
+    }
+
+    .mobile-user-account{
+        display: flex;
+    }
+}
+
+
 @import './mobile/MobileUserAccount';
 @import './pc/PcUserAccount';

@@ -21,6 +21,11 @@ import StoryAvatar from '../../../components/avatar/StoryAvatar'
 
 
 const useStyles = makeStyles((theme) => ({
+    xLarge : {
+        width: theme.spacing(18),
+        height: theme.spacing(18),
+    },
+
     large: {
         width: theme.spacing(10),
         height: theme.spacing(10),
@@ -95,7 +100,106 @@ const MobileProfile = ({ history, profile, userProfile, userPosts, handleViewSto
             </div>
 
 
-            <div className='user-information-container'>
+
+            <div className='user-information-container landscape'>
+                {userProfile && !userProfile.stories.length > 0 ?
+                    <Avatar
+                        className={classes.xLarge}
+                        src={userProfile && userProfile.profilePhoto}
+                    />
+                    :
+                    <StoryAvatar
+                        src={userProfile && userProfile.profilePhoto}
+                        height='144px'
+                        width='144px'
+                        action={() => handleViewStory(userProfile)}
+                    />
+                }
+
+                <div className='user-account-details'>
+                    <section className='top-details-section'>
+                        <p>{userProfile && userProfile.userName}</p>
+                        {profile && profile.following.includes(userProfile && userProfile.userId) ?
+                            <React.Fragment>
+                                <Button
+                                    variant='outlined'
+                                    size='small'
+                                    className={classes.messageButton}
+                                >
+                                    Message
+                                </Button>
+
+                                <Button
+                                    variant='outlined'
+                                    size='medium'
+                                    className={classes.unFollowButton}
+                                    onClick={openUnFollowDialog}
+                                >
+                                    <PersonIcon className={classes.tiny} />
+                                    <CheckIcon className={classes.tiny} />
+                                </Button>
+
+                            </React.Fragment>
+
+                            :
+
+                            <Button
+                                variant='contained'
+                                onClick={handleFollowUser}
+                                color='primary'
+                                className={classes.followButton}
+                            >
+                                Follow
+                            </Button>}
+
+                        <MoreHorizIcon
+                            onClick={openBlockDialog}
+                        />
+                    </section>
+
+
+
+
+                    <section className='post-follows-section'>
+                        <Button>
+                            <div>
+                                <p>{userPosts && userPosts.length}</p>
+                                <small>posts</small>
+                            </div>
+                        </Button>
+
+                        <Button onClick={openFollowersModal} >
+                            <div>
+                                <p>{userProfile && userProfile.followers.length}</p>
+                                <small>followers</small>
+                            </div>
+                        </Button>
+
+                        <Button onClick={openFollowingModal}>
+                            <div>
+                                <p>{userProfile && userProfile.following.length}</p>
+                                <small>following</small>
+                            </div>
+                        </Button>
+                    </section>
+
+
+                    <section className='bottom-details-section'>
+                        <h3>{userProfile && userProfile.fullName}</h3>
+                        <p>{userProfile && userProfile.bio}</p>
+                        <a href={userProfile && userProfile.website} target="_blank" rel="noopener noreferrer">
+                            {userProfile && userProfile.website}
+                        </a>
+                    </section>
+                </div>
+            </div>
+
+
+
+
+
+
+            <div className='user-information-container portrait'>
 
                 <div className='first-section-container'>
                     {  userProfile && !userProfile.stories.length > 0 ?

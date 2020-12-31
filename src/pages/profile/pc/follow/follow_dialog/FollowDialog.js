@@ -29,7 +29,8 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const FollowDialog = ({ handleCloseDialog, openDialog, unFollowUser, followUser, removeFollower, profile, followsData, from, header }) => {
+const FollowDialog = ({ handleCloseDialog, openDialog, unFollowUser, 
+    followUser, removeFollower, profile, followsData, from, header }) => {
     const classes = useStyles()
 
 

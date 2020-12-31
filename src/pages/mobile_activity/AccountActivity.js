@@ -11,11 +11,11 @@ import Suggestions from '../suggestions/Suggestions'
 
 const MobileAccountActivity = ({ profile, setCurrentPage, auth }) =>{
     const [activities, setActivities] = useState([])
-    console.log(auth)
+
 
     const grabAllUserNotifications = useCallback(() =>{
       
-        auth.isLoaded && !auth.isEmpty && db.collection('users').doc(auth.uid)
+        auth.isLoaded && !auth.isEmpty && db.collection('users').doc('9G6R635DzajdJA0ht6Ng')
         .collection('notifications').orderBy('time', 'desc')
         .onSnapshot(snapshot =>{
             const notifications = []
@@ -24,8 +24,17 @@ const MobileAccountActivity = ({ profile, setCurrentPage, auth }) =>{
             })
 
             setActivities(notifications)
+            notifications.map(notification =>{
+                return db.collection('users').doc('9G6R635DzajdJA0ht6Ng')
+                .collection('notifications').doc(notification.notificationId)
+                .update({
+                    seen : true
+                })
+            })
         })
     }, [ auth])
+
+
 
 
     useEffect(() =>{
@@ -47,7 +56,7 @@ const MobileAccountActivity = ({ profile, setCurrentPage, auth }) =>{
                     return(
                         <EachActivity 
                             activity={activity} 
-                            key={i} 
+                            key={activity.notificationId} 
                             profile={profile}
                         />
                     )

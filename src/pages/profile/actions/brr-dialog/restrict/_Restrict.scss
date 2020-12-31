@@ -110,3 +110,10 @@
         text-transform: capitalize;
     }
 }
+
+
+@media(max-width : 800px) and (orientation: landscape) {
+    .restrict-drawer-container{
+        height: 80vh;
+    }
+}

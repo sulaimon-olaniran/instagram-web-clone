@@ -15,6 +15,12 @@ import Following from '../../profile/mobile/follow/Following'
 
 
 const useStyles = makeStyles((theme) => ({
+    xLarge : {
+
+        width: theme.spacing(18),
+        height: theme.spacing(18),
+    },
+
     large: {
         width: theme.spacing(10),
         height: theme.spacing(10),
@@ -113,7 +119,77 @@ const MobileUserAccount = ({ userPosts, userData }) => {
 
             </div>
 
-            <div className='user-profile-details-container'>
+
+
+
+            {/* user account for landscape mode in mobile................................... */}
+
+            <div className='user-account-information-container landscape'>
+                <Avatar
+                    className={classes.xLarge}
+                    src={userData.profilePhoto}
+                />
+
+                <div className='user-account-details-container'>
+                    <section className='first-section'>
+                        <p>{userData.userName}</p>
+                        <Button
+                            variant='outlined'
+                            onClick={openEditProfileModal}
+                        >
+                            Edit Profile
+                        </Button>
+
+                    </section>
+
+
+                    <section className='second-section'>
+                        <Button>
+                            <div>
+                                <p>{ userPosts.length }</p>
+                                <small>posts</small>
+                            </div>
+                        </Button>
+
+                        <Button
+                            onClick={openFollowersModal}
+                        >
+                            <div>
+                                <p>{userData && userData.followers.length}</p>
+                                <small>Followers</small>
+                            </div>
+                        </Button>
+
+                        <Button
+                            onClick={openFollowingModal}
+                        >
+                            <div>
+                                <p>{userData && userData.following.length}</p>
+                                <small>Following</small>
+                            </div>
+                        </Button>
+                    </section>
+
+                    <section className='third-section'>
+                        <h3>{userData.fullName}</h3>
+                        <p>{userData.bio}</p>
+                        <a href={userData.website} target="_blank" rel="noopener noreferrer">
+                            {userData.website}
+                        </a>
+                    </section>
+                    
+                </div>
+
+            </div>
+
+
+
+
+
+
+            {/*mobile profile for portrait mode....................................................................... */}
+
+            <div className='user-profile-details-container portrait'>
 
                 <div className='user-profile-header-container'>
                     <Avatar

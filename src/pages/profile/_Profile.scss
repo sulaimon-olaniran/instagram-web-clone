@@ -17,6 +17,16 @@
 
 }
 
+@media(max-width : 800px) and (orientation: landscape) {
+    .pc-profile{
+        display: none;
+    }
+
+    .mobile-profile{
+        display: flex;
+    }
+}
+
 
 @import './mobile/MobileProfile';
 @import './pc/PcProfile';

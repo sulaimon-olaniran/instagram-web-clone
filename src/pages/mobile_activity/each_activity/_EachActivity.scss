@@ -65,5 +65,21 @@
 hr{
     width: 80%;
     margin: 3px 10px 3px auto;
+    border: none;
+    border-bottom: 1px solid;
+    border-color: rgb(228, 228, 228);
     
+}
+
+
+
+@media(max-width : 800px) and (orientation: landscape) {
+    .each-mobile-activity-container{
+        .notification-information{
+            width: 95%;
+        }
+    }
+    hr{
+        width: 100%;
+    }
 }
