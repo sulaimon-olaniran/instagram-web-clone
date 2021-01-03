@@ -36,8 +36,9 @@ const TopPcNav = ({ inputValue, searchResults, profile, auth }) => {
     const [activities, setActivities] = useState([])
     //const [popover, setPopover] = useState(false)
     const classes = useStyles()
+    
 
-    const showNavBar = auth.isLoaded && auth.uid ? 'flex' : 'none'
+    const showNavBar = auth.isLoaded && auth.isEmpty ? 'show-nav' : 'hide-nav'
 
 
 
@@ -105,9 +106,7 @@ const TopPcNav = ({ inputValue, searchResults, profile, auth }) => {
 
     return (
         <div 
-            className='top-pc-nav-container'
-            style={{ display: showNavBar }}
-        >
+            className={`top-pc-nav-container ${showNavBar}`}>
 
             {activityMenu !== null &&
              <PcActivityMenu

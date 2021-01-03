@@ -7,6 +7,7 @@ import PostsReducer from './PostsReducer'
 import ProfileReducer from './ProfileReducer'
 import AppReducer from './AppReducer'
 import StoryReducer from './StoryReducer'
+import MessengerReducer from './MessengerReducer'
 
 
 
@@ -17,7 +18,8 @@ const RootReducer = combineReducers({
     profile : ProfileReducer,
     application : AppReducer,
     firestore : firestoreReducer,
-    firebase : firebaseReducer
+    firebase : firebaseReducer,
+    messenger : MessengerReducer,
 })
 
 

@@ -1,0 +1,37 @@
+.delete-chat-dialog-container{
+    width: 300px;
+    height: 15rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 25px;
+
+    h3{
+        font-weight: 500;
+    }
+
+    p{
+        font-size: 0.9rem;
+        width: 70%;
+        text-align: center;
+    }
+
+    .delete-chat-buttons-container{
+        width: 100%;
+        height: 6rem;
+
+        div{
+            width: 100%;
+            height: 3rem;
+            border-top: 1px solid lightgray;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            button{
+                text-transform: initial;
+            }
+        }
+    }
+}

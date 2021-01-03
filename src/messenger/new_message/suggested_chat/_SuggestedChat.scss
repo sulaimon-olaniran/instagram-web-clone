@@ -1,0 +1,37 @@
+.suggested-chat-container{
+    width: 100%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    margin-top: 25px;
+
+    .each-suggested-chat-user-container{
+        height: 4rem;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 15px;
+
+        .user-detail-section{
+            min-width: 30%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+
+            .user-detail-names{
+                margin-left: 10px;
+                p, small{
+                    margin: 0;
+                }
+            }
+        }
+
+        .circle{
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            border: 1px solid lightgray;
+        }
+    }
+}

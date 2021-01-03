@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import Badge from '@material-ui/core/Badge'
 import Avatar from '@material-ui/core/Avatar'
 import AddCircleIcon from '@material-ui/icons/AddCircle'
@@ -46,13 +47,14 @@ const MobileHome = ({ feedPosts, profile, handleViewStory }) => {
                 />
 
                 <img src={instagram_text_logo} alt="INSTAGRAM" />
-
-                <Badge badgeContent={4} color="secondary">
-                    <MyDirectIcon
-                        height='24px'
-                        width='24px'
-                    />
-                </Badge>
+                <Link to='/direct/inbox'>
+                    <Badge badgeContent={4} color="secondary">
+                        <MyDirectIcon
+                            height='24px'
+                            width='24px'
+                        />
+                    </Badge>
+                </Link>
             </div>
 
             

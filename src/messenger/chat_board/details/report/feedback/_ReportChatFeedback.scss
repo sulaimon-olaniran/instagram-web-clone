@@ -1,0 +1,128 @@
+.report-chat-feedback-container{
+    width: 100%;
+    height: 100%;
+
+    .report-chat-feedback-nav-container{
+        width: 100%;
+        height: 3rem;
+        display: flex;
+        padding: 0 15px;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid lightgray;
+
+        p{
+            font-weight: 500;
+            margin: 0;
+            font-size: 1rem;
+        }
+    }
+
+
+    .report-chat-feedback-contents-container{
+        width: 100%;
+        min-height: 20rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 25px;
+
+        p{
+            width: 95%;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+            color: gray;
+        }
+
+        button{
+            width: 95%;
+            text-transform: initial;
+            background-color: #0095f6;
+            color: white;
+        }
+
+        h6{
+            width: 95%;
+            font-size: 0.9rem;
+            color: rgb(62, 62, 62);
+            margin-bottom: 10px;
+        }
+
+        ul{
+            width: 95%;
+            padding-left: 20px;
+
+            li{
+                display: list-item;
+                font-size: 0.9rem;
+                margin-bottom: 10px;
+                color: gray;
+                list-style-type: disc;
+            }
+
+        }
+    }
+
+
+}
+
+
+.report-confirmation-container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .report-confirmation-nav-container{
+        width: 100%;
+        height: 3rem;
+        display: flex;
+        padding: 0 15px;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid lightgray;
+        margin-bottom: 25px;
+
+        p{
+            font-weight: 500;
+            width: 55%;
+            text-align: right;
+            margin: 0;
+            font-size: 1rem;
+        }
+    
+    }
+
+    p{
+        width: 95%;
+        margin-bottom: 20px;
+        font-size: 0.9rem;
+        color: gray;
+        padding-right: 5px;
+
+        .link-span{
+            color: #0095f6;
+        }
+
+        span{
+            color: rgb(43, 43, 43);
+            font-weight: 500;
+        }
+    }
+
+    button{
+        width: 95%;
+        text-transform: initial;
+        background-color: #0095f6;
+        color: white;
+    }
+
+    h6{
+        width: 95%;
+        font-size: 0.9rem;
+        color: rgb(62, 62, 62);
+        margin-bottom: 10px;
+        font-weight: 500;
+    }
+}

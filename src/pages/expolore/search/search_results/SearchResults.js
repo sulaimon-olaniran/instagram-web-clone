@@ -12,16 +12,6 @@ import SpinnerLoader from '../../../../components/loaders/spinner/SpinnerLoader'
 import { hideSearchResults } from '../../../../store/actions/AppActions'
 
 
-// const useStyles = makeStyles((theme) => ({
-//     xLarge: {
-//         width: theme.spacing(18),
-//         height: theme.spacing(18),
-//     },
-
-//     button: {
-//         width: '100%',
-//     },
-// }));
 
 
 
@@ -31,7 +21,6 @@ const SearchResults = ({ inputValue, users, hideSearchResults, profile }) =>{
     //const classes = useStyles()
 
 
-    console.log(inputValue)
     const handleSearchOutput = useCallback(() =>{
         const matchedUsers = []
         users && users.forEach(user =>{

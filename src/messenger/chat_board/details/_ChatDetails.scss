@@ -1,0 +1,96 @@
+.chat-details-container{
+    width: 100%;
+    height: 100%;
+
+    .chat-details-nav-container{
+        width: 100%;
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid lightgray;
+        padding: 20px;
+
+        p{
+            width: 60%;
+            font-weight: 500;
+        }
+    }
+
+    .chat-details-mute-message-container{
+        width: 100%;
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        padding-left: 15px;
+        border-bottom: 1px solid lightgray;
+
+        p{
+            font-size: 0.8rem;
+        }
+    }
+
+
+    .chat-details-members-container{
+        width: 100%;
+        height: 8rem;
+        border-bottom: 1px solid lightgray;
+        padding-left: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        h4{
+            font-weight: 400;
+        }
+
+        .chat-details-profile-container{
+            height: 60%;
+            width: 100%;
+            display: flex;
+            align-items: center;
+
+            .chat-details-names-container{
+                margin-left: 10px;
+                height: 100%;
+                width: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+
+                p{
+                    font-weight: 500;
+                }
+                small{
+                    color: rgb(160, 160, 160);
+                }
+            }
+
+        }
+    }
+
+
+    .chat-details-actions-container{
+        width: 100%;
+        height: 8rem;
+        border-bottom: 1px solid lightgray;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        justify-content: space-around;
+        padding-left: 15px;
+
+        button{
+            text-transform: initial;
+            color: rgba(var(--i30,237,73,86),1);
+            font-weight: 400;
+        }
+    }
+}
+
+
+
+
+
+@import './report/ReportChatAccount';
+@import './delete/DeleteChatDialog';

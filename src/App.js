@@ -27,6 +27,7 @@ import Post from './pages/post/Post'
 import TopPcNav from './components/navbar/top_nav/TopPcNav'
 import PcEditProfile from './pages/user_account/pc/edit_profile/PcEditProfile'
 import MobileSearch from './pages/mobile_search/MobileSearch'
+import Messenger from './messenger/Messenger'
 
 
 
@@ -57,6 +58,7 @@ function App({ auth, storyAdded, closeStorySnackBar }) {
             <Route path='/profile/:username/:id' exact component={Profile} />
             <Route path='/p/:postId/' exact component={Post} />
             <Route path='/accounts/edit' exact component={PcEditProfile} />
+            <Route path='/direct/inbox' exact component={Messenger} />
             <Route exact path='/account/:username/:userId'  component={ () => <UserAccount setCurrentPage={setCurrentPage}/>} />
             <Route path='/accounts/password/change' exact component={FormikChangePassword} />
             <Route path='/account/activity' exact component={() => <MobileAccountActivity setCurrentPage={setCurrentPage}/>} />
