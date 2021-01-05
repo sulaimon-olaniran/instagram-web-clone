@@ -1,0 +1,23 @@
+.each-chat-container{
+    width: 100%;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+
+    .each-chat-details-container{
+        min-width: 50px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-left: 15px;
+
+        p{
+            font-weight: 500;
+        }
+
+        small{
+            color: gray;
+        }
+    }
+}

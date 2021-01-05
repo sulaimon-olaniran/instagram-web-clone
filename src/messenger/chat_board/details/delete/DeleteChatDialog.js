@@ -1,13 +1,19 @@
 import React from 'react'
 import Dialog from '@material-ui/core/Dialog'
 import { Button } from '@material-ui/core'
+import { connect } from 'react-redux'
+
+
+
+
+import { deleteChat } from '../../../../store/actions/MessengerAction'
 
 
 
 
 
 
-const DeleteChatDialog = ({ openDialog, handleCloseDialog }) =>{
+const DeleteChatDialog = ({ openDialog, handleCloseDialog, deleteChat }) =>{
     return(
         <Dialog
             aria-labelledby='simple-dialog-title'
@@ -45,5 +51,19 @@ const DeleteChatDialog = ({ openDialog, handleCloseDialog }) =>{
 }
 
 
+const mapStateToProps = state =>{
+    return{
 
-export default DeleteChatDialog
+    }
+}
+
+
+const mapDispatchToProps = dispatch =>{
+    return{
+        deleteChat : data => dispatch(deleteChat(data))
+    }
+}
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(DeleteChatDialog)

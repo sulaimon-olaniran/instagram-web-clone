@@ -63,7 +63,7 @@ const Home = ({ users, profile, posts, setCurrentPage }) => {
 
 
 const mapStateToProps = (state) => {
-   //console.log(state)
+   console.log(state)
     return {
         users: state.firestore.ordered.users,
         posts: state.firestore.ordered.posts,
@@ -75,5 +75,5 @@ const mapStateToProps = (state) => {
 
 export default compose(
     connect(mapStateToProps),
-    firestoreConnect(() => ['posts', 'users'])
+    firestoreConnect(() => ['posts', 'users', 'chats'])
 )(Home)

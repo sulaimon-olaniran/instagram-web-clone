@@ -1,16 +1,21 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Avatar } from '@material-ui/core'
 import { ArrowBackIosOutlined } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles'
 import TextareaAutosize from 'react-textarea-autosize'
 import Button from '@material-ui/core/Button'
+import { connect } from 'react-redux'
 
 
 
 import { ChatActionsIcon } from '../../components/MyIcons'
 import { UnLikedIcon, PhotoIcon } from '../../components/MyIcons'
 import ChatDetails from './details/ChatDetails'
+import { db, storage } from '../../firebase/Firebase'
+import { sendMessage, deleteMessage, likeMessage, unlikeMessage, } from '../../store/actions/MessengerAction'
+import LogoLoader from '../../components/loaders/LogoLoader'
+import ChatMessagesBody from './chat_body/ChatBody'
 
 
 
@@ -25,12 +30,21 @@ const useStyles = makeStyles((theme) => ({
         width: theme.spacing(4),
         height: theme.spacing(4),
     },
+
+    xTiny : {
+        width: theme.spacing(3),
+        height: theme.spacing(3),}
 }))
 
 
-const ChatBoard = ({ user, closeChatBoard }) => {
+const ChatBoard = ({ selectedAccount, closeChatBoard, sendMessage, deleteMessage, likeMessage, unlikeMessage, profile, creatingChat, sendingMessage }) => {
     const [messageText, setMessageText] = useState('')
     const [showDetails, setShowDetails] = useState(false)
+    const [imageFile, setImageFile] = useState(null)
+    const [imageBlob, setImageBlob] = useState(null)
+    const [chatMessages, setChatMessages] = useState(null)
+    const [fetchingMessages, setFetchingMessages] = useState(null)
+    const [sendingImage, setSendingImage] = useState(false)
     const classes = useStyles()
 
 
@@ -48,7 +62,135 @@ const ChatBoard = ({ user, closeChatBoard }) => {
         setShowDetails(false)
     }
 
-    if (showDetails) return <ChatDetails handleHideDetails={handleHideDetails} user={user} />
+    const handleFileInputChange = e => {
+        if (e.target.files[0]) {
+            setImageFile(e.target.files[0])
+            setImageBlob(URL.createObjectURL(e.target.files[0]))
+        }
+    }
+
+
+    const interlocutors = [selectedAccount.userId, profile.userId]
+    const chatId = interlocutors.sort().join(':')
+
+
+    const handleFetchChatMessages = useCallback(() =>{
+            setFetchingMessages(true)
+            db.collection('users').doc(profile.userId)
+            .collection('chats').doc(chatId).collection('messages')
+            .orderBy('timeStamp', 'asc').onSnapshot(snapshots =>{
+                const messages = []
+                snapshots.forEach(snapshot =>{
+                    messages.push(snapshot.data())
+                })
+
+                setChatMessages(messages)
+                setFetchingMessages(false)
+            })
+    }, [ chatId, profile ])
+
+    const handleSendImageFileToChat = useCallback(() => {
+        if (imageFile === null) {
+            return null
+        }
+        // setSendingImage(true)
+        // const uploadTask = storage.ref(`chat_images/${imageFile.name}`)
+        // uploadTask.put(imageFile)
+        //     .then(() => {
+        //         return storage.ref('chat_images').child(imageFile.name).getDownloadURL()
+        //     })
+        //     .then(url => {
+        //         const data = {
+        //             message: url,
+        //             messageType: 'image',
+        //             sender: profile.userId,
+        //             interlocutors: interlocutors,
+        //             chatId: chatId,
+        //         }
+        //         //send message as image.........
+        //         setSendingImage(false)
+        //         sendMessage(data)
+        //     })
+        //     .catch(error => {
+        //         console.log(error)
+        //         setSendingImage(false)
+        //     })
+        console.log(imageFile)
+        setImageFile(null)
+    }, [imageFile])
+
+    useEffect(() => {
+        handleSendImageFileToChat()
+        handleFetchChatMessages()
+
+    }, [handleSendImageFileToChat])
+
+
+    const handleSendHeartToChat = () => {
+        const data = {
+            message: '&hearts',
+            messageType: 'heart',
+            sender: profile.userId,
+            interlocutors: interlocutors,
+            chatId: chatId,
+        }
+
+        sendMessage(data)
+    }
+
+
+    const handleSendTextToChat = () => {
+        const data = {
+            message: messageText,
+            messageType: 'text',
+            sender: profile.userId,
+            interlocutors: interlocutors,
+            chatId: chatId,
+        }
+        sendMessage(data)
+    }
+
+
+
+    const handleDeleteMessage = (message) => {
+        const data = {
+            chatId: chatId,
+            messageId: message.messageId,
+            interlocutors: interlocutors,
+        }
+
+        deleteMessage(data)
+    }
+
+
+    const handleLikeMessage = (message) => {
+        const data = {
+            chatId: chatId,
+            messageId: message.messageId,
+            interlocutors: interlocutors,
+            userId: profile.userId
+        }
+        likeMessage(data)
+    }
+
+
+    const handleUnlikeMessage = (message) => {
+        const data = {
+            chatId: chatId,
+            messageId: message.messageId,
+            interlocutors: interlocutors,
+            userId: profile.userId
+        }
+        unlikeMessage(data)
+
+    }
+
+
+    //console.log(chatMessages)
+
+
+    if (creatingChat) return <LogoLoader />
+    if (showDetails) return <ChatDetails handleHideDetails={handleHideDetails} user={selectedAccount} />
 
     return (
         <div className='chat-board-container'>
@@ -59,15 +201,15 @@ const ChatBoard = ({ user, closeChatBoard }) => {
                         onClick={closeChatBoard}
                     />
 
-                    <Link to={`/profile/${user.userName}/${user.userId}`}>
+                    <Link to={`/profile/${selectedAccount.userName}/${selectedAccount.userId}`}>
                         <Avatar
-                            src={user.profilePhoto}
+                            src={selectedAccount.profilePhoto}
                             className={classes.tiny}
                         />
                     </Link>
 
-                    <Link to={`/profile/${user.userName}/${user.userId}`}>
-                        <p>{user.userName}</p>
+                    <Link to={`/profile/${selectedAccount.userName}/${selectedAccount.userId}`}>
+                        <p>{selectedAccount.userName}</p>
 
                     </Link>
                 </section>
@@ -84,8 +226,18 @@ const ChatBoard = ({ user, closeChatBoard }) => {
 
 
             <div className='chat-board-chat-contents-container'>
-
+                <ChatMessagesBody 
+                    chatMessages={chatMessages}
+                    sendingImage={sendingImage}
+                    imageBlob={imageBlob}
+                    sendingMessage={sendingMessage}
+                    profile={profile && profile}
+                    classes={classes}
+                    user={selectedAccount}
+                />
             </div>
+
+
 
 
 
@@ -106,6 +258,7 @@ const ChatBoard = ({ user, closeChatBoard }) => {
                     {messageText !== '' ?
                         <Button
                             size='small'
+                            onClick={handleSendTextToChat}
                         >
                             Send
                     </Button>
@@ -114,14 +267,24 @@ const ChatBoard = ({ user, closeChatBoard }) => {
 
                         <div className='icons-container'>
 
-                            <PhotoIcon
-                                width='24px'
-                                height='24px'
-                            />
+                            <label>
+                                <input
+                                    type="file"
+                                    onChange={handleFileInputChange}
+                                    accept="image/png, .jpeg, .jpg, image/gif"
+                                    style={{ display: 'none' }}
+                                />
+                                <PhotoIcon
+                                    width='24px'
+                                    height='24px'
+                                    action={handleSendImageFileToChat}
+                                />
+                            </label>
 
                             <UnLikedIcon
                                 width='24px'
                                 height='24px'
+                                action={handleSendHeartToChat}
                             />
                         </div>}
 
@@ -133,4 +296,29 @@ const ChatBoard = ({ user, closeChatBoard }) => {
 
 
 
-export default ChatBoard
+const mapStateToProps = state => {
+    return {
+        profile: state.firebase.profile,
+        selectedAccount: state.messenger.selectedAccount,
+        messageError: state.messenger.messageError,
+        sendingMessage: state.messenger.sendingMessage,
+        deletingMessage: state.messenger.deletingMessage,
+        likingMessage: state.messenger.likingMessage,
+        creatingChat: state.messenger.creatingChat,
+        unlikingMessage: state.messenger.unlikeMessage,
+    }
+}
+
+
+const mapDispatchToProps = dispatch => {
+    return {
+        sendMessage: data => dispatch(sendMessage(data)),
+        deleteMessage: data => dispatch(deleteMessage(data)),
+        likeMessage: data => dispatch(likeMessage(data)),
+        unlikeMessage: data => dispatch(unlikeMessage(data))
+    }
+}
+
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChatBoard)

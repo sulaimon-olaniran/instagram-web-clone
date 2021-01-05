@@ -10,7 +10,7 @@ import { closeChatBoard } from '../../../store/actions/MessengerAction'
 
 
 
-const MobileChatBoardModal = ({ selectedAccount, closeChatBoard, openChatBoard }) =>{
+const MobileChatBoardModal = ({  closeChatBoard, openChatBoard }) =>{
     return(
 
         <Modal
@@ -23,7 +23,6 @@ const MobileChatBoardModal = ({ selectedAccount, closeChatBoard, openChatBoard }
         >
             <div className='mobile-chat-board-modal-container'>
                 <ChatBoard 
-                    user={selectedAccount}
                     closeChatBoard={closeChatBoard}
                 />
             </div>
@@ -35,7 +34,6 @@ const MobileChatBoardModal = ({ selectedAccount, closeChatBoard, openChatBoard }
 
 const mapStateToProps = state =>{
     return{
-        selectedAccount : state.messenger.selectedAccount,
         openChatBoard : state.messenger.openChatBoard
     }
 }

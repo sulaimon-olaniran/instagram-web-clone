@@ -9,11 +9,12 @@ import { ArrowBackIosSharp } from '@material-ui/icons'
 
 import { CreateMessageIcon } from '../../components/MyIcons'
 import CreateChatModal from './create_chat/CreateChatModal'
+import ChatList from '../chat_list/ChatList'
 
 
 
 
-const MobileMessenger = ({ history }) =>{
+const MobileMessenger = ({ history, userChats, fetching }) =>{
     const [createChat, setCreateChat] = useState(false)
 
 
@@ -44,6 +45,7 @@ const MobileMessenger = ({ history }) =>{
             </div>
 
 
+             {!fetching && userChats.length === 0 ?
             <div className='no-messages-container'>
                     <h1>No Messages</h1>
                     <Button
@@ -53,6 +55,11 @@ const MobileMessenger = ({ history }) =>{
                         Start a Message
                     </Button>
             </div>
+                :
+            <div className='mobile-chat-lists-container'>
+                <ChatList userChats={userChats} />
+            </div>
+            }
 
         </div>
     )

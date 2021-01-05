@@ -4,19 +4,23 @@ import { Button } from '@material-ui/core'
 import { connect } from 'react-redux'
 import { firestoreConnect } from 'react-redux-firebase'
 import { compose } from 'redux'
+
+
+
+import { openChatBoard, createChat } from '../../store/actions/MessengerAction'
 import SuggestedChat from './suggested_chat/SuggestedChat'
 
 
 
-import { openChatBoard } from '../../store/actions/MessengerAction'
 
-
-
-
-const NewMessageTheme = ({ close, users, openChatBoard }) => {
+const NewMessageTheme = ({ close, users, openChatBoard, createChat, profile }) => {
     const [matchedUsers, setMatchedUsers] = useState([])
     const [searchInput, setSearchInput] = useState('')
     const [selectedUser, setSelectedUser] = useState(null)
+
+
+    const interlocutors = [ selectedUser && selectedUser.userId, profile && profile.userId]
+    const chatId = interlocutors.sort().join(':')
 
 
     const handleSearchInputChange = (event) =>{
@@ -54,6 +58,13 @@ const NewMessageTheme = ({ close, users, openChatBoard }) => {
 
 
     const handleOpenChatBoard = () =>{
+        const data ={
+            interlocutors : interlocutors,
+            chatId : chatId,
+            createdBy : profile.userId,
+            coUser : selectedUser.userId
+        }
+        createChat(data)
         openChatBoard(selectedUser)
         close()
     }
@@ -122,6 +133,7 @@ const mapStateToProps = state => {
     //console.log(state)
      return {
         users: state.firestore.ordered.users,
+        profile: state.firebase.profile,
         
      }
  }
@@ -130,7 +142,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => () =>{
     return{
-        openChatBoard : user => dispatch(openChatBoard(user))
+        openChatBoard : user => dispatch(openChatBoard(user)),
+        createChat : data => dispatch(createChat(data))
     }
 }
 

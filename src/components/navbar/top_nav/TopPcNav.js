@@ -38,7 +38,7 @@ const TopPcNav = ({ inputValue, searchResults, profile, auth }) => {
     const classes = useStyles()
     
 
-    const showNavBar = auth.isLoaded && auth.isEmpty ? 'show-nav' : 'hide-nav'
+    const showNavBar = auth.isLoaded && !auth.isEmpty ? 'show-nav' : 'hide-nav'
 
 
 
