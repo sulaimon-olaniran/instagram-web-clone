@@ -28,6 +28,7 @@ import TopPcNav from './components/navbar/top_nav/TopPcNav'
 import PcEditProfile from './pages/user_account/pc/edit_profile/PcEditProfile'
 import MobileSearch from './pages/mobile_search/MobileSearch'
 import Messenger from './messenger/Messenger'
+import ChatBoard from './messenger/chat_board/ChatBoard'
 
 
 
@@ -61,6 +62,7 @@ function App({ auth, storyAdded, closeStorySnackBar }) {
             <Route path='/direct/inbox' exact component={Messenger} />
             <Route exact path='/account/:username/:userId'  component={ () => <UserAccount setCurrentPage={setCurrentPage}/>} />
             <Route path='/accounts/password/change' exact component={FormikChangePassword} />
+            <Route path='/direct/t/chat' exact component={ChatBoard} />
             <Route path='/account/activity' exact component={() => <MobileAccountActivity setCurrentPage={setCurrentPage}/>} />
             <BottomNav currentPage={currentPage} />
           </React.Fragment>

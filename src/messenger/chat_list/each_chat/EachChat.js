@@ -1,4 +1,5 @@
 import React, { useState, useCallback, useEffect} from 'react'
+import { Link } from 'react-router-dom'
 import { Avatar } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
 
@@ -28,6 +29,7 @@ const EachChat = ({ user, handleOpenChatBoard }) =>{
         <div 
             className='each-chat-container'
             onClick={() =>{handleOpenChatBoard(user)}}
+            to='/direct/t/chat'
         >
             <Avatar src={user.profilePhoto} className={classes.Large} />
 

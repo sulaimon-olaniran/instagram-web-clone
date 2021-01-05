@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
         overflowY : 'scroll',
         marginTop : '106px'
     },
-}));
+}))
 
 
 const MobileComments = ({ post, postComments, posterProfile, openCommentModal, handleCloseModal, profile, commentOnPost }) => {

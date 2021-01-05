@@ -2,6 +2,7 @@ import React from 'react'
 import Modal from '@material-ui/core/Modal'
 import ChatBoard from '../../chat_board/ChatBoard'
 import { connect } from 'react-redux'
+import { makeStyles } from '@material-ui/core/styles'
 
 
 
@@ -10,13 +11,22 @@ import { closeChatBoard } from '../../../store/actions/MessengerAction'
 
 
 
+const useStyles = makeStyles((theme) => ({
+    modal: {
+        position : 'absolute',
+    },
+}))
+
+
+
 const MobileChatBoardModal = ({  closeChatBoard, openChatBoard }) =>{
+    const classes = useStyles()
     return(
 
         <Modal
             aria-labelledby="transition-modal-title"
             aria-describedby="transition-modal-description"
-            //className={classes.modal}
+            className={classes.modal}
             open={openChatBoard}
             onClose={closeChatBoard}
             closeAfterTransition

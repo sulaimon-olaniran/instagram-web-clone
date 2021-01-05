@@ -48,6 +48,7 @@ const ChatBoard = ({ selectedAccount, closeChatBoard, sendMessage, deleteMessage
     const classes = useStyles()
 
 
+
     const handleTextInputChange = e => {
         setMessageText(e.target.value)
     }
@@ -70,7 +71,7 @@ const ChatBoard = ({ selectedAccount, closeChatBoard, sendMessage, deleteMessage
     }
 
 
-    const interlocutors = [selectedAccount.userId, profile.userId]
+    const interlocutors = [selectedAccount && selectedAccount.userId, profile && profile.userId]
     const chatId = interlocutors.sort().join(':')
 
 
@@ -93,37 +94,40 @@ const ChatBoard = ({ selectedAccount, closeChatBoard, sendMessage, deleteMessage
         if (imageFile === null) {
             return null
         }
-        // setSendingImage(true)
-        // const uploadTask = storage.ref(`chat_images/${imageFile.name}`)
-        // uploadTask.put(imageFile)
-        //     .then(() => {
-        //         return storage.ref('chat_images').child(imageFile.name).getDownloadURL()
-        //     })
-        //     .then(url => {
-        //         const data = {
-        //             message: url,
-        //             messageType: 'image',
-        //             sender: profile.userId,
-        //             interlocutors: interlocutors,
-        //             chatId: chatId,
-        //         }
-        //         //send message as image.........
-        //         setSendingImage(false)
-        //         sendMessage(data)
-        //     })
-        //     .catch(error => {
-        //         console.log(error)
-        //         setSendingImage(false)
-        //     })
-        console.log(imageFile)
-        setImageFile(null)
+        setSendingImage(true)
+
+        const uploadTask = storage.ref(`chat_images/${imageFile.name}`)
+
+        uploadTask.put(imageFile)
+        .then(() => {
+            return storage.ref('chat_images').child(imageFile.name).getDownloadURL()
+        })
+        .then(url => {
+            const data = {
+                message: url,
+                messageType: 'image',
+                sender: profile.userId,
+                interlocutors: interlocutors,
+                chatId: chatId,
+            }
+            //send message as image.........
+            setSendingImage(false)
+            sendMessage(data)
+            setImageFile(null) 
+        })
+        .catch(error => {
+            console.log(error)
+            setSendingImage(false)
+            setImageFile(null)
+        })
+        
     }, [imageFile])
 
     useEffect(() => {
         handleSendImageFileToChat()
         handleFetchChatMessages()
 
-    }, [handleSendImageFileToChat])
+    }, [ handleSendImageFileToChat, handleFetchChatMessages ])
 
 
     const handleSendHeartToChat = () => {
@@ -148,6 +152,7 @@ const ChatBoard = ({ selectedAccount, closeChatBoard, sendMessage, deleteMessage
             chatId: chatId,
         }
         sendMessage(data)
+        setMessageText('')
     }
 
 
@@ -225,7 +230,7 @@ const ChatBoard = ({ selectedAccount, closeChatBoard, sendMessage, deleteMessage
 
 
 
-            <div className='chat-board-chat-contents-container'>
+            <React.Fragment>
                 <ChatMessagesBody 
                     chatMessages={chatMessages}
                     sendingImage={sendingImage}
@@ -235,7 +240,7 @@ const ChatBoard = ({ selectedAccount, closeChatBoard, sendMessage, deleteMessage
                     classes={classes}
                     user={selectedAccount}
                 />
-            </div>
+            </React.Fragment>
 
 
 
