@@ -1,18 +1,35 @@
+import React, { useRef, useEffect, useCallback } from 'react'
 import { Avatar } from '@material-ui/core'
-import React, { useRef, useEffect } from 'react'
 import ClipLoader from "react-spinners/ClipLoader"
 
 
 
-
+import { db } from '../../../firebase/Firebase'
 import { LikedIcon } from '../../../components/MyIcons'
 
 
 
 
-const ChatMessagesBody = ({ chatMessages, sendingImage, imageBlob, sendingMessage, profile, user, classes }) =>{
+const ChatMessagesBody = ({ chatMessages, sendingImage, imageBlob, sendingMessage, profile, user, classes, chatId }) =>{
 
     const scrollRef = useRef(null)
+
+    // const handleSetMessagesToSeen = useCallback(() =>{
+    //     chatMessages && chatMessages.map((message =>{
+    //         return message.sender === user.userId && message.seen === false ?
+    //             db.collection('users').doc(user.userId).collection('chats')
+    //             .doc(chatId).collection('messages').doc(message.messageId)
+    //             .update({
+    //                 seen : true,
+    //             })
+    //             .then(() =>{
+    //                 console.log('seen success')
+    //             })
+    //             .catch(error => console.log(error))
+    //         : null
+    //     }))
+
+    // }, [ chatMessages, user, chatId ])
 
 
     useEffect(() =>{
@@ -22,7 +39,12 @@ const ChatMessagesBody = ({ chatMessages, sendingImage, imageBlob, sendingMessag
                 top: scrollRef.current.offsetTop
             })
         }
-    }, [ chatMessages])
+
+        //handleSetMessagesToSeen()
+    }, [ chatMessages ])
+
+
+    const lastMessage = chatMessages && chatMessages.slice(-1).pop()
 
     
     return(
@@ -30,7 +52,6 @@ const ChatMessagesBody = ({ chatMessages, sendingImage, imageBlob, sendingMessag
             
             {
                 chatMessages !== null && chatMessages.map(message =>{
-
                     const messageStyle = message.sender === profile.userId ? 'right-hand-side' : 'left-hand-side'
                     return(
                         <div 
@@ -77,6 +98,12 @@ const ChatMessagesBody = ({ chatMessages, sendingImage, imageBlob, sendingMessag
                                      <img src={message.message} alt='file' />
 
                                     </div>
+                                </div>
+                            }
+
+                            {lastMessage && lastMessage.messageId === message.messageId && lastMessage.sender === profile.userId && lastMessage.seen === false &&
+                                <div className='message-seen-container'>
+                                    <small>seen</small>
                                 </div>
                             }
 

@@ -233,6 +233,7 @@ const ChatBoard = ({ selectedAccount, closeChatBoard, sendMessage, deleteMessage
             <React.Fragment>
                 <ChatMessagesBody 
                     chatMessages={chatMessages}
+                    chatId={chatId}
                     sendingImage={sendingImage}
                     imageBlob={imageBlob}
                     sendingMessage={sendingMessage}

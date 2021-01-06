@@ -15,6 +15,12 @@
         min-height: 2rem;
         margin-bottom: 8px;
 
+        .message-seen-container{
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+        }
+
        
         
         .each-chat-message-text-container, .each-chat-message-heart-container{
@@ -77,6 +83,11 @@
         .left-hand-side{
             justify-content: flex-start;
             align-items: flex-end;
+
+            .text-container{
+                background-color: white;
+                border: 1px solid rgb(239, 239, 239);
+            }
 
             .MuiAvatar-root{
                 margin-right: 5px;

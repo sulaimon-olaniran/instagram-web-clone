@@ -13,7 +13,7 @@ import { closeChatBoard } from '../../../store/actions/MessengerAction'
 
 const useStyles = makeStyles((theme) => ({
     modal: {
-        position : 'absolute',
+        position : 'absolute !important',
     },
 }))
 
