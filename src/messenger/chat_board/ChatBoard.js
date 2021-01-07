@@ -251,6 +251,7 @@ const ChatBoard = ({ selectedAccount, closeChatBoard, users, sendMessage, delete
                     users={users}
                     handleLikeMessage={handleLikeMessage}
                     handleUnlikeMessage={handleUnlikeMessage}
+                    handleDeleteMessage={handleDeleteMessage}
                 />
             </React.Fragment>
 

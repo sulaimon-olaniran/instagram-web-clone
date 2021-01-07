@@ -13,7 +13,7 @@ import MessageReactionsDrawer from './reactions/ReactionsDrawer'
 
 const ChatMessagesBody = ({ 
     chatMessages, sendingImage, imageBlob, sendingMessage, profile, user, classes, chatId, 
-    users, handleLikeMessage, handleUnlikeMessage }) => {
+    users, handleLikeMessage, handleUnlikeMessage, handleDeleteMessage }) => {
 
     const [reactionsDrawer, setReactionsDrawer] = useState(false)
     const [selectedMessage, setSelectedMessage] = useState(null)
@@ -86,6 +86,7 @@ const ChatMessagesBody = ({
                             lastMessage={lastMessage}
                             handleOpenReactionsDrawer={handleOpenReactionsDrawer}
                             user={user}
+                            handleDeleteMessage={handleDeleteMessage}
                         />
                     )
                 })

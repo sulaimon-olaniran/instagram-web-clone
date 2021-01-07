@@ -1,0 +1,18 @@
+.unsend-report-dialog-container{
+    width: 250px;
+    height: 100px;
+
+    .unsend-report-dialog-button-container{
+        height: 50px;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-bottom: 1px solid lightgray;
+
+        button{
+            text-transform: initial;
+            color: gray;
+        }
+    }
+}

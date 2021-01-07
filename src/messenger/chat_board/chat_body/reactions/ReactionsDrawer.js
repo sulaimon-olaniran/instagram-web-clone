@@ -29,6 +29,12 @@ const MessageReactionsDrawer = ({ openDrawer, handleCloseDrawer, message, profil
     }, [ handleGetReactedUserProfile ])
 
 
+    const unLikeMessage = () =>{
+        handleUnlikeMessage(message)
+        handleCloseDrawer()
+    }
+
+
     return(
         <Drawer
             anchor='bottom'
@@ -52,7 +58,7 @@ const MessageReactionsDrawer = ({ openDrawer, handleCloseDrawer, message, profil
                                     <div 
                                         className='each-reacted-user-name'
                                         onClick={ user.userId === profile.userId ?
-                                            () => handleUnlikeMessage(message) : null
+                                            unLikeMessage : null
                                         }
                                     >
                                         <p>{user.userName}</p>

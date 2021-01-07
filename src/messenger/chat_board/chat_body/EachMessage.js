@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState } from 'react'
 import useDoubleClick from 'use-double-click'
 import { Avatar } from '@material-ui/core'
 
@@ -7,13 +7,16 @@ import { Avatar } from '@material-ui/core'
 
 
 import { LikedIcon } from '../../../components/MyIcons'
+import UnsendReportDialog from './unsend_report/UnsendReportDialog'
 
 
 
 
 
-const EachMessage = ({ message, classes, handleLikeMessage, profile, lastMessage, handleOpenReactionsDrawer, user }) =>{
+const EachMessage = ({ message, classes, handleLikeMessage, profile, lastMessage, handleOpenReactionsDrawer, user, handleDeleteMessage }) =>{
+    const [unsendReport, setUnsendReport] = useState(false) //to manipulate unsend report dialog
     const messageRef= useRef(null)
+    const holdTimeRef = useRef(null)
     
     useDoubleClick({
         onDoubleClick: e =>{
@@ -22,13 +25,37 @@ const EachMessage = ({ message, classes, handleLikeMessage, profile, lastMessage
         ref : messageRef,
         latency : 250
     })
+
+
+    const handleMouseDown = () => {
+        holdTimeRef.current = setTimeout(() => {
+            setUnsendReport(true)
+        }, 1500)
+    }
+
+    const handleMouseUp = () => {
+        clearTimeout(holdTimeRef.current)
+    }
+
+
+    const handleCloseUnsendReportDialog = () =>{
+        setUnsendReport(false)
+    }
     
     const messageStyle = message.sender === profile.userId ? 'right-hand-side' : 'left-hand-side'
     const likeStyle = message.sender === profile.userId ? 'right-hand-side-liked' : 'left-hand-side-liked'
 
     return(
         <div
-            className='each-chat-message-container'>
+            className='each-chat-message-container'
+        >
+            <UnsendReportDialog
+                openDialog={unsendReport}
+                handleCloseDialog={handleCloseUnsendReportDialog}
+                message={message}
+                handleDeleteMessage={handleDeleteMessage}
+                profile={profile}
+            />
 
             { message.messageType === 'text'
                 &&
@@ -40,6 +67,9 @@ const EachMessage = ({ message, classes, handleLikeMessage, profile, lastMessage
                     <div 
                         className='text-container'
                         ref={messageRef}
+                        onPointerDown={handleMouseDown}
+                        onPointerUp={handleMouseUp}
+
                     >
                         <p>{message.message}</p>
                     </div>
@@ -54,7 +84,12 @@ const EachMessage = ({ message, classes, handleLikeMessage, profile, lastMessage
                         message.sender !== profile.userId &&
                         <Avatar src={user.profilePhoto} className={classes.xTiny} />
                     }
-                    <div ref={messageRef}>
+                    <div 
+                        ref={messageRef}
+                        onPointerDown={handleMouseDown}
+                        onPointerUp={handleMouseUp}
+
+                    >
                     <LikedIcon
                         width='44px'
                         height='44px'
@@ -74,6 +109,9 @@ const EachMessage = ({ message, classes, handleLikeMessage, profile, lastMessage
                     <div 
                         className='image-container'
                         ref={messageRef}
+                        onPointerDown={handleMouseDown}
+                        onPointerUp={handleMouseUp}
+
                     >
                         <img src={message.message} alt='file' />
 
