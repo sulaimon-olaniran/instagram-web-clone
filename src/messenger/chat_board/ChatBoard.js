@@ -6,6 +6,9 @@ import { makeStyles } from '@material-ui/core/styles'
 import TextareaAutosize from 'react-textarea-autosize'
 import Button from '@material-ui/core/Button'
 import { connect } from 'react-redux'
+import { compose } from 'redux'
+import { firestoreConnect } from 'react-redux-firebase'
+import { v4 as uuidv4 } from 'uuid'
 
 
 
@@ -37,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 
-const ChatBoard = ({ selectedAccount, closeChatBoard, sendMessage, deleteMessage, likeMessage, unlikeMessage, profile, creatingChat, sendingMessage }) => {
+const ChatBoard = ({ selectedAccount, closeChatBoard, users, sendMessage, deleteMessage, likeMessage, unlikeMessage, profile, creatingChat, sendingMessage }) => {
     const [messageText, setMessageText] = useState('')
     const [showDetails, setShowDetails] = useState(false)
     const [imageFile, setImageFile] = useState(null)
@@ -109,6 +112,7 @@ const ChatBoard = ({ selectedAccount, closeChatBoard, sendMessage, deleteMessage
                 sender: profile.userId,
                 interlocutors: interlocutors,
                 chatId: chatId,
+                messageId : uuidv4()
             }
             //send message as image.........
             setSendingImage(false)
@@ -137,6 +141,7 @@ const ChatBoard = ({ selectedAccount, closeChatBoard, sendMessage, deleteMessage
             sender: profile.userId,
             interlocutors: interlocutors,
             chatId: chatId,
+            messageId : uuidv4()
         }
 
         sendMessage(data)
@@ -150,6 +155,7 @@ const ChatBoard = ({ selectedAccount, closeChatBoard, sendMessage, deleteMessage
             sender: profile.userId,
             interlocutors: interlocutors,
             chatId: chatId,
+            messageId : uuidv4()
         }
         sendMessage(data)
         setMessageText('')
@@ -176,7 +182,9 @@ const ChatBoard = ({ selectedAccount, closeChatBoard, sendMessage, deleteMessage
             userId: profile.userId
         }
         likeMessage(data)
+        //console.log(message)
     }
+
 
 
     const handleUnlikeMessage = (message) => {
@@ -240,6 +248,9 @@ const ChatBoard = ({ selectedAccount, closeChatBoard, sendMessage, deleteMessage
                     profile={profile && profile}
                     classes={classes}
                     user={selectedAccount}
+                    users={users}
+                    handleLikeMessage={handleLikeMessage}
+                    handleUnlikeMessage={handleUnlikeMessage}
                 />
             </React.Fragment>
 
@@ -305,6 +316,7 @@ const ChatBoard = ({ selectedAccount, closeChatBoard, sendMessage, deleteMessage
 const mapStateToProps = state => {
     return {
         profile: state.firebase.profile,
+        users: state.firestore.ordered.users,
         selectedAccount: state.messenger.selectedAccount,
         messageError: state.messenger.messageError,
         sendingMessage: state.messenger.sendingMessage,
@@ -325,6 +337,7 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(ChatBoard)
+export default compose(
+    connect(mapStateToProps, mapDispatchToProps),
+    firestoreConnect(() => ['users'])
+)(ChatBoard)

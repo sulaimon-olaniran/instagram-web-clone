@@ -1,5 +1,5 @@
 import firebase, { db } from '../../firebase/Firebase'
-
+//import { v4 as uuidv4 } from 'uuid'
 
 export const openChatBoard = (user) =>{
     return (dispatch, getState) =>{
@@ -63,25 +63,21 @@ export const deleteChat = (data) =>{
 
 
 export const sendMessage = (data) =>{
-    const { sender, chatId, messageType, message, interlocutors } = data
+    const { sender, chatId, messageType, message, interlocutors, messageId } = data
+    
     return (dispatch, getState) =>{
         dispatch({type : "SENDING_MESSAGE"})
 
         interlocutors.map(id =>{
             return db.collection('users').doc(id).collection('chats')
-            .doc(chatId).collection('messages').add({
+            .doc(chatId).collection('messages').doc(messageId).set({
                 timeStamp : Date.now(),
                 message : message,
                 messageType : messageType,
                 sender : sender,
                 seen : false,
                 likes : [],
-            })
-            .then(docRef =>{
-                return db.collection('users').doc(id).collection('chats')
-                .doc(chatId).collection('messages').doc(docRef.id).update({
-                    messageId : docRef.id
-                })
+                messageId : messageId,
             })
             .then(() =>{
                 dispatch({type : "MESSAGE_SEND_SUCCESS"})
