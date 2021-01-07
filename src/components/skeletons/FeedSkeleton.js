@@ -1,17 +1,5 @@
 import React from 'react'
-import { makeStyles } from '@material-ui/core/styles'
 import Skeleton from '@material-ui/lab/Skeleton'
-
-const useStyles = makeStyles((theme) => ({
-  card: {
-    maxWidth: '100%',
-    margin: theme.spacing(2),
-  },
-  media: {
-    height: 300,
-  },
-}));
-
 
 
 

@@ -12,8 +12,8 @@ const SpinnerLoader = ({ height }) =>{
             alignItems : 'center',
             justifyContent : 'center'
         }}>
-            {/* <ClipLoader /> */}
-            <svg viewBox='0 0 100 100'>
+            <ClipLoader />
+            {/* <svg viewBox='0 0 100 100'>
                 <rect fill="#fafafa" height='10' opacity='0' rx='5' ry='5'
                     transform='rotate(-90 50 50)' width='28' x='67' y='45'
                 />
@@ -51,7 +51,7 @@ const SpinnerLoader = ({ height }) =>{
                 <rect fill="#fafafa" height='10' opacity='0.875' rx='5' ry='5'
                     transform='rotate(225 50 50)' width='28' x='67' y='45'
                 />
-            </svg>
+            </svg> */}
 
         </div>
     )

@@ -53,6 +53,7 @@ const ChatList = ({ userChats, users, profile, openChatBoard }) =>{
                             user={user}
                             key={user.userId}
                             handleOpenChatBoard={handleOpenChatBoard}
+                            profile={profile}
                         />
                     )
                 })

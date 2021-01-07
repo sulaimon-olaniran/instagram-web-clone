@@ -125,7 +125,7 @@ const ChatBoard = ({ selectedAccount, closeChatBoard, users, sendMessage, delete
             setImageFile(null)
         })
         
-    }, [imageFile])
+    }, [imageFile, chatId, interlocutors, profile, sendMessage])
 
     useEffect(() => {
         handleSendImageFileToChat()
@@ -202,7 +202,7 @@ const ChatBoard = ({ selectedAccount, closeChatBoard, users, sendMessage, delete
     //console.log(chatMessages)
 
 
-    if (creatingChat) return <LogoLoader />
+    if (creatingChat || fetchingMessages) return <LogoLoader />
     if (showDetails) return <ChatDetails handleHideDetails={handleHideDetails} user={selectedAccount} />
 
     return (

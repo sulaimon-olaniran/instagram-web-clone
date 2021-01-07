@@ -38,7 +38,7 @@ const Messenger = ({ auth }) =>{
     }, [handleFetchAllUserChats])
 
 
-    if(fetching) return <LogoLoader />
+    //if(fetching) return <LogoLoader />
 
     return(
         <div className='messenger-container'>
