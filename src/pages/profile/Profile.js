@@ -10,12 +10,13 @@ import { db } from '../../firebase/Firebase'
 import LogoLoader from '../../components/loaders/LogoLoader'
 import { followUser, unFollowUser } from '../../store/actions/ProfileActions'
 import { handleViewStory } from '../../store/actions/AppActions'
+import { openChatBoard, selectUserToChatWith } from '../../store/actions/MessengerAction'
 import PcProfile from './pc/PcProfile'
 import UnFollowDialog from './actions/unfollow/UnFollow'
 import BlockReportRestrictDialog from './actions/brr-dialog/BRRDialog'
 
 
-const Profile = ({ match, auth, posts, profile, followUser, unFollowUser, handleViewStory }) =>{
+const Profile = ({ match, auth, posts, profile, followUser, unFollowUser, handleViewStory, selectChatUser, openChatBoard }) =>{
     const [fetchingData, setFetchingData] = useState(true)
     const [userProfile, setUserProfile] = useState({})
     const [userPosts, setUserPosts] = useState([])
@@ -42,6 +43,8 @@ const Profile = ({ match, auth, posts, profile, followUser, unFollowUser, handle
     }, [match, posts])
 
 
+
+
     useEffect(() => {
         getUserProfileData()
         
@@ -57,6 +60,8 @@ const Profile = ({ match, auth, posts, profile, followUser, unFollowUser, handle
         followUser(data)
     }
 
+
+
     const handleUnFollowUser = () => {
         const data = {
             accountId: userProfile.userId,
@@ -65,6 +70,8 @@ const Profile = ({ match, auth, posts, profile, followUser, unFollowUser, handle
 
         unFollowUser(data)
     }
+
+
 
 
     const openUnFollowDialog = () => {
@@ -110,6 +117,7 @@ const Profile = ({ match, auth, posts, profile, followUser, unFollowUser, handle
                     profile={profile}
                     openUnFollowDialog={openUnFollowDialog}
                     openBlockDialog={openBlockDialog}
+                    openChatBoard={openChatBoard}
                 />
             </div>
 
@@ -123,6 +131,7 @@ const Profile = ({ match, auth, posts, profile, followUser, unFollowUser, handle
                     profile={profile}
                     openUnFollowDialog={openUnFollowDialog}
                     openBlockDialog={openBlockDialog}
+                    selectChatUser={selectChatUser}
                 />
             </div>
 
@@ -131,6 +140,7 @@ const Profile = ({ match, auth, posts, profile, followUser, unFollowUser, handle
 }
 
 const mapStateToProps = (state) =>{
+    console.log(state)
     return{
         profile: state.firebase.profile,
         auth : state.firebase.auth,
@@ -144,7 +154,9 @@ const mapDispatchToProps = (dispatch) => {
     return {
         followUser: data => dispatch(followUser(data)),
         unFollowUser: data => dispatch(unFollowUser(data)),
-        handleViewStory : data => dispatch(handleViewStory(data))
+        handleViewStory : data => dispatch(handleViewStory(data)),
+        openChatBoard : user => dispatch(openChatBoard(user)),
+        selectChatUser : user => dispatch(selectUserToChatWith(user))
     }
 }
 

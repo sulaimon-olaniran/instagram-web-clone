@@ -1,20 +1,42 @@
 .messenger-container{
     width: 100%;
-    min-height: 100vh;
+    height: 100vh;
 
-    .mobile{
-        min-height: 100vh;
+    .mobile-messenger{
+        height: 100%;
         width: 100%;
         background-color: white;
     }
 
-    .pc{
+    .pc-messenger{
         display: none;
     }
 }
 
 
+
+@media(min-width : 600px) {
+    .messenger-container{
+        background-color: rgb(247, 247, 247);
+        .pc-messenger{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+    
+        .mobile-messenger{
+            display: none;
+        }
+
+    }
+}
+
+
 @import './mobile/MobileMessenger';
+@import './pc/PcMessenger';
 @import './new_message/NewMessage';
 @import './chat_board/ChatBoard';
 @import './chat_list/ChatList';

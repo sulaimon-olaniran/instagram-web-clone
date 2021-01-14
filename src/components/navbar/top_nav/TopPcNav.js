@@ -7,8 +7,10 @@ import { connect } from 'react-redux'
 
 
 import instagram_img from './assets/instagram_img.png'
-import { MyActiveHomeIcon, MyUnActiveHomeIcon, UnLikedIcon, MyDirectIcon, 
-MyActiveExploreIcon, MyUnActiveExploreIcon, WhiteLikedIcon } from '../../MyIcons'
+import {
+    MyActiveHomeIcon, MyUnActiveHomeIcon, UnLikedIcon, MyDirectIcon,
+    MyActiveExploreIcon, MyUnActiveExploreIcon, WhiteLikedIcon,
+} from '../../MyIcons'
 
 import PcSearchBox from '../../search_box/SearchBox'
 import PcActivityMenu from '../../pc_activity/PcActivityMenu'
@@ -30,13 +32,13 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const TopPcNav = ({ inputValue, searchResults, profile, auth }) => {
+const TopPcNav = ({ inputValue, searchResults, profile, auth, unReadMessages }) => {
     const [activityMenu, setActivityMenu] = useState(null)
     const [activeIcon, setActiveIcon] = useState(null)
     const [activities, setActivities] = useState([])
     //const [popover, setPopover] = useState(false)
     const classes = useStyles()
-    
+
 
     const showNavBar = auth.isLoaded && !auth.isEmpty ? 'show-nav' : 'hide-nav'
 
@@ -45,49 +47,51 @@ const TopPcNav = ({ inputValue, searchResults, profile, auth }) => {
 
     const elementRef = useRef(null)
 
-    
-    const grabAllUserNotifications = useCallback(() =>{
-        
+
+    const grabAllUserNotifications = useCallback(() => {
+
         auth.isLoaded && !auth.isEmpty && db.collection('users').doc('9G6R635DzajdJA0ht6Ng')
-        .collection('notifications').orderBy('time', 'desc')
-        .onSnapshot(snapshot =>{
-            const notifications = []
-            snapshot.forEach(doc =>{
-                const data = doc.data()
-                if(data.seen === false){
-                    notifications.push(doc.data())
-                }
+            .collection('notifications').orderBy('time', 'desc')
+            .onSnapshot(snapshot => {
+                const notifications = []
+                snapshot.forEach(doc => {
+                    const data = doc.data()
+                    if (data.seen === false) {
+                        notifications.push(doc.data())
+                    }
+                })
+
+                setActivities(notifications)
             })
-            
-            setActivities(notifications)
-        })
-    }, [ auth])
+    }, [auth])
 
 
 
-    useEffect(() =>{
+    //console.log(unReadMessages.length)
+
+    useEffect(() => {
         grabAllUserNotifications()
 
-    }, [ grabAllUserNotifications ])
+    }, [grabAllUserNotifications])
 
 
     const handleActiveIcon = active => {
         setActiveIcon(active)
     }
 
-    
-    const disableUnreadNotifications = () =>{
-        
-        activities.map(activity =>{
+
+    const disableUnreadNotifications = () => {
+
+        activities.map(activity => {
             return db.collection('users').doc('9G6R635DzajdJA0ht6Ng')
-            .collection('notifications').doc(activity.notificationId)
-            .update({
-                seen : true
-            })
+                .collection('notifications').doc(activity.notificationId)
+                .update({
+                    seen: true
+                })
         })
     }
 
-    
+
     const handleOpenActivityMenu = () => {
         setActivityMenu(elementRef.current)
         disableUnreadNotifications()
@@ -102,17 +106,17 @@ const TopPcNav = ({ inputValue, searchResults, profile, auth }) => {
 
 
 
-    
+
 
     return (
-        <div 
+        <div
             className={`top-pc-nav-container ${showNavBar}`}>
 
             {activityMenu !== null &&
-             <PcActivityMenu
-                anchorEl={activityMenu}
-                handleClose={handleCloseActivityMenu}
-            />}
+                <PcActivityMenu
+                    anchorEl={activityMenu}
+                    handleClose={handleCloseActivityMenu}
+                />}
             <div className='nav-contents'>
                 <Link to='/'>
                     <img src={instagram_img} alt="logo" />
@@ -139,13 +143,24 @@ const TopPcNav = ({ inputValue, searchResults, profile, auth }) => {
                     </Link>
 
 
-
-                    <Badge badgeContent={1} color="secondary">
-                        <MyDirectIcon
-                            height='24px'
-                            width='24px'
-                        />
-                    </Badge>
+                    <Link to='/direct/inbox'>
+                        {unReadMessages.length > 0 ?
+                            <Badge
+                                badgeContent={unReadMessages.length}
+                                color="secondary"
+                            >
+                                <MyDirectIcon
+                                    height='24px'
+                                    width='24px'
+                                />
+                            </Badge>
+                            :
+                            <MyDirectIcon
+                                height='24px'
+                                width='24px'
+                            />
+                        }
+                    </Link>
 
 
                     <Link
@@ -188,7 +203,7 @@ const TopPcNav = ({ inputValue, searchResults, profile, auth }) => {
                             <p>{activities.length}</p>
                         </div>}
                     </div>
-                        
+
 
                     <Link
                         to={`/account/${profile && profile.userName}/${profile && profile.userId}`}
@@ -213,7 +228,7 @@ const mapStateToProps = state => {
         inputValue: state.application.inputValue,
         searchResults: state.application.searchResults,
         profile: state.firebase.profile,
-        auth : state.firebase.auth,
+        auth: state.firebase.auth,
 
     }
 }

@@ -1,0 +1,47 @@
+.chat-shared-post-container{
+    width: 100%;
+    height: 100%;
+    background-color: rgb(228, 228, 228);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .chat-shared-post-top-section{
+        height: 4rem;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        padding-left: 15px;
+
+        p{
+            margin-left: 10px;
+            color: rgb(28, 28, 28);
+        }
+    }
+
+
+    .chat-shared-post-image-container{
+        width: 100%;
+        height: 20rem;
+
+        img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    .chat-shared-post-bottom-section{
+        min-height: 4rem;
+        width: 90%;
+        display: flex;
+        padding-top: 5px;
+
+        p{
+            color: rgb(28, 28, 28);
+            span{
+                color: gray;
+            }
+        }
+    }
+}

@@ -4,9 +4,20 @@ import { Avatar, Button } from '@material-ui/core'
 import { ArrowBackIosOutlined } from '@material-ui/icons'
 import { makeStyles } from '@material-ui/core/styles'
 import Checkbox from '@material-ui/core/Checkbox'
+
+
+
+
+
+import { DarkChatActionsIcon } from '../../../components/MyIcons'
 import BlockDialog from '../../../pages/profile/actions/brr-dialog/block/Block'
-import { ReportChatAccountModal } from './report/ReportAccount'
+import { ReportChatAccountModal, ReportChatAccoutDialog } from './report/ReportAccount'
 import DeleteChatDialog from './delete/DeleteChatDialog'
+
+
+
+
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -27,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
 const ChatDetails = ({ user, handleHideDetails }) => {
     const [blockDialog, setBlockDialog] = useState(false)
     const [reportModal, setReportModal] = useState(false)
+    const [reportDialog, setReportDialog] = useState(false)
     const [deleteChatDialog, setDeleteChatDialog] = useState(false)
     const classes = useStyles()
 
@@ -46,6 +58,14 @@ const ChatDetails = ({ user, handleHideDetails }) => {
 
     const handleCloseReportModal = () => {
         setReportModal(false)
+    }
+
+    const handleOpenReportDialog = () =>{
+        setReportDialog(true)
+    }
+
+    const handleCloseReportDialog = () =>{
+        setReportDialog(false)
     }
 
     const handleOpenDeleteChatDialog = () => {
@@ -71,14 +91,31 @@ const ChatDetails = ({ user, handleHideDetails }) => {
                 user={user}
             />
 
+            <ReportChatAccoutDialog
+                openDialog={reportDialog}
+                handleCloseDialog={handleCloseReportDialog}
+                user={user}
+            />
+
             <DeleteChatDialog
                 openDialog={deleteChatDialog}
                 handleCloseDialog={handleCloseDeleteChatDialog}
             />
 
             <div className='chat-details-nav-container'>
-                <ArrowBackIosOutlined onClick={handleHideDetails} />
+                <div className='mobile-icon'>
+                    <ArrowBackIosOutlined onClick={handleHideDetails} />
+                </div>
+                
                 <p>Details</p>
+
+                <div className='pc-icon'>
+                    <DarkChatActionsIcon
+                        height='24px'
+                        width='24px'
+                        action={handleHideDetails}
+                    />
+                </div>
             </div>
 
 
@@ -122,7 +159,14 @@ const ChatDetails = ({ user, handleHideDetails }) => {
             <div className='chat-details-actions-container'>
                 <Button onClick={handleOpenDeleteChatDialog}>Delete Chat</Button>
                 <Button onClick={handleOpenBlockDialog}>Block</Button>
-                <Button onClick={handleOpenReportModal}>Report</Button>
+                <div className='mobile-button'>
+                    <Button onClick={handleOpenReportModal}>Report</Button>
+                </div>
+
+                <div className='pc-button'>
+                    <Button onClick={handleOpenReportDialog}>Report</Button>
+                </div>
+                
             </div>
 
         </div>

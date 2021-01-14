@@ -20,6 +20,8 @@ import { handleViewStory, handleOpenProfileCard } from '../../../store/actions/A
 import FeedSkeleton from '../../skeletons/FeedSkeleton'
 import EachComment from '../../../pages/comments/mobile/each_comment/EachComment'
 import StoryAvatar from '../../avatar/StoryAvatar'
+import CreateChatModal from '../../../messenger/mobile/create_chat/CreateChatModal'
+import CreateChatDialog from '../../../messenger/pc/create_chat/CreateChatDialog'
 
 
 const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePost, unSavePost, handleViewStory, handleOpenProfileCard }) => {
@@ -30,6 +32,8 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
     const [postComments, setPostComments] = useState([])
     const [fetching, setFetching] = useState(true)
     const [linkSnackBar, setLinkSnackBar] = useState(false)
+    const [shareToDirectModal, setShareToDirectModal] = useState(false)
+    const [shareToDirectDialog, setShareToDirectDialog] = useState(false)
     //const [isFollowing, setIsFollowing] = useState(null)
     // const buttonRef = useRef(null)
 
@@ -164,7 +168,21 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
         handleOpenProfileCard(data)
     }
 
-    //const fetcher = true
+    
+    const handleOpenSharePostToDirect = () => {
+        const screenWidth = window.matchMedia('(min-width: 600px)')
+        if (screenWidth.matches) {
+            setShareToDirectDialog(true)
+        }
+        else {
+            setShareToDirectModal(true)
+        }
+    }
+
+    const handleCloseSharePostToDirect = () =>{
+        setShareToDirectDialog(false)
+        setShareToDirectModal(false)
+    }
 
     if(fetching) return <FeedSkeleton  />
     return (
@@ -194,6 +212,20 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
                 close={handleCloseShareDrawer}
                 link={`https://os-instagram-clone.netlify.app/p/${post.postId}`}
                 handleCopyPostLink={handleCopyPostLink}
+            />
+
+            <CreateChatModal
+                openModal={shareToDirectModal}
+                handleCloseModal={handleCloseSharePostToDirect}
+                from='post'
+                postId={post.postId}
+            />
+
+            <CreateChatDialog
+                openDialog={shareToDirectDialog}
+                handleCloseDialog={handleCloseSharePostToDirect}
+                from='post'
+                postId={post.postId}
             />
 
 
@@ -293,7 +325,7 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
                     <ShareIcon
                         width='24px'
                         height='24px'
-                        action={handleOpenShareDrawer}
+                        action={handleOpenSharePostToDirect}
                     />
 
                 </div>

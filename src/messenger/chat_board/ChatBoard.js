@@ -34,19 +34,21 @@ const useStyles = makeStyles((theme) => ({
         height: theme.spacing(4),
     },
 
-    xTiny : {
+    xTiny: {
         width: theme.spacing(3),
-        height: theme.spacing(3),}
+        height: theme.spacing(3),
+    }
 }))
 
 
-const ChatBoard = ({ selectedAccount, closeChatBoard, users, sendMessage, deleteMessage, likeMessage, unlikeMessage, profile, creatingChat, sendingMessage }) => {
+const ChatBoard = ({ selectedAccount, closeChatBoard, users, sendMessage, deleteMessage, 
+    likeMessage, unlikeMessage, profile, creatingChat, sendingMessage }) => {
+
     const [messageText, setMessageText] = useState('')
     const [showDetails, setShowDetails] = useState(false)
-    const [imageFile, setImageFile] = useState(null)
     const [imageBlob, setImageBlob] = useState(null)
     const [chatMessages, setChatMessages] = useState(null)
-    const [fetchingMessages, setFetchingMessages] = useState(null)
+    const [fetchingMessages, setFetchingMessages] = useState(true)
     const [sendingImage, setSendingImage] = useState(false)
     const classes = useStyles()
 
@@ -66,72 +68,70 @@ const ChatBoard = ({ selectedAccount, closeChatBoard, users, sendMessage, delete
         setShowDetails(false)
     }
 
-    const handleFileInputChange = e => {
-        if (e.target.files[0]) {
-            setImageFile(e.target.files[0])
-            setImageBlob(URL.createObjectURL(e.target.files[0]))
-        }
-    }
 
 
     const interlocutors = [selectedAccount && selectedAccount.userId, profile && profile.userId]
     const chatId = interlocutors.sort().join(':')
 
 
-    const handleFetchChatMessages = useCallback(() =>{
-            setFetchingMessages(true)
-            db.collection('users').doc(profile.userId)
+
+    const handleFileInputChange = e => {
+        if (e.target.files[0]) {
+            const imageFile = e.target.files[0]
+            setImageBlob(URL.createObjectURL(e.target.files[0]))
+
+            setSendingImage(true)
+
+            const uploadTask = storage.ref(`chat_images/${imageFile.name}`)
+
+            uploadTask.put(imageFile)
+                .then(() => {
+                    return storage.ref('chat_images').child(imageFile.name).getDownloadURL()
+                })
+                .then(url => {
+                    const data = {
+                        message: url,
+                        messageType: 'image',
+                        sender: profile.userId,
+                        interlocutors: interlocutors,
+                        chatId: chatId,
+                        messageId: uuidv4(),
+                        coUser : selectedAccount.userId
+                    }
+                    //send message as image.........
+                    setSendingImage(false)
+                    sendMessage(data)
+                })
+                .catch(error => {
+                    console.log(error)
+                    setSendingImage(false)
+                })
+            console.log("sending image file yoh")
+        }
+    }
+
+
+    const handleFetchChatMessages = useCallback(() => {
+        //setFetchingMessages(true)
+        db.collection('users').doc(profile.userId)
             .collection('chats').doc(chatId).collection('messages')
-            .orderBy('timeStamp', 'asc').onSnapshot(snapshots =>{
+            .orderBy('timeStamp', 'asc').onSnapshot(snapshots => {
                 const messages = []
-                snapshots.forEach(snapshot =>{
+                snapshots.forEach(snapshot => {
                     messages.push(snapshot.data())
                 })
 
                 setChatMessages(messages)
                 setFetchingMessages(false)
             })
-    }, [ chatId, profile ])
+    }, [chatId, profile])
 
-    const handleSendImageFileToChat = useCallback(() => {
-        if (imageFile === null) {
-            return null
-        }
-        setSendingImage(true)
-
-        const uploadTask = storage.ref(`chat_images/${imageFile.name}`)
-
-        uploadTask.put(imageFile)
-        .then(() => {
-            return storage.ref('chat_images').child(imageFile.name).getDownloadURL()
-        })
-        .then(url => {
-            const data = {
-                message: url,
-                messageType: 'image',
-                sender: profile.userId,
-                interlocutors: interlocutors,
-                chatId: chatId,
-                messageId : uuidv4()
-            }
-            //send message as image.........
-            setSendingImage(false)
-            sendMessage(data)
-            setImageFile(null) 
-        })
-        .catch(error => {
-            console.log(error)
-            setSendingImage(false)
-            setImageFile(null)
-        })
-        
-    }, [imageFile, chatId, interlocutors, profile, sendMessage])
+    
 
     useEffect(() => {
-        handleSendImageFileToChat()
         handleFetchChatMessages()
 
-    }, [ handleSendImageFileToChat, handleFetchChatMessages ])
+    }, [ handleFetchChatMessages])
 
 
     const handleSendHeartToChat = () => {
@@ -141,7 +141,8 @@ const ChatBoard = ({ selectedAccount, closeChatBoard, users, sendMessage, delete
             sender: profile.userId,
             interlocutors: interlocutors,
             chatId: chatId,
-            messageId : uuidv4()
+            messageId: uuidv4(),
+            coUser : selectedAccount.userId
         }
 
         sendMessage(data)
@@ -155,7 +156,8 @@ const ChatBoard = ({ selectedAccount, closeChatBoard, users, sendMessage, delete
             sender: profile.userId,
             interlocutors: interlocutors,
             chatId: chatId,
-            messageId : uuidv4()
+            messageId: uuidv4(),
+            coUser : selectedAccount.userId
         }
         sendMessage(data)
         setMessageText('')
@@ -210,9 +212,11 @@ const ChatBoard = ({ selectedAccount, closeChatBoard, users, sendMessage, delete
             <div className='chat-board-nav-container'>
 
                 <section className='left-side-nav-section'>
-                    <ArrowBackIosOutlined
-                        onClick={closeChatBoard}
-                    />
+                    <div className='mobile-icon'>
+                        <ArrowBackIosOutlined
+                            onClick={closeChatBoard}
+                        />
+                    </div>
 
                     <Link to={`/profile/${selectedAccount.userName}/${selectedAccount.userId}`}>
                         <Avatar
@@ -239,7 +243,7 @@ const ChatBoard = ({ selectedAccount, closeChatBoard, users, sendMessage, delete
 
 
             <React.Fragment>
-                <ChatMessagesBody 
+                <ChatMessagesBody
                     chatMessages={chatMessages}
                     chatId={chatId}
                     sendingImage={sendingImage}
@@ -295,7 +299,6 @@ const ChatBoard = ({ selectedAccount, closeChatBoard, users, sendMessage, delete
                                 <PhotoIcon
                                     width='24px'
                                     height='24px'
-                                    action={handleSendImageFileToChat}
                                 />
                             </label>
 

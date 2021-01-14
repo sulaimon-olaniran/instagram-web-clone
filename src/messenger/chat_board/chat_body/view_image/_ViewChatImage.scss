@@ -1,0 +1,27 @@
+.view-chat-image-container{
+    height: 100%;
+    width: 100%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+
+
+    img{
+        max-height: 90%;
+        max-width: 90%;
+        object-fit: contain;
+    }
+
+    .close-chat-view-image-modal{
+        position: absolute;
+        top: 5%;
+        right: 5%;
+        cursor: pointer;
+
+        .MuiSvgIcon-root{
+            color: white;
+        }
+    }
+}

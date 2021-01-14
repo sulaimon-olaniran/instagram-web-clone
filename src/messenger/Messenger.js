@@ -4,62 +4,87 @@ import { connect } from 'react-redux'
 
 
 import MobileMessenger from './mobile/MobileMessenger'
-import MobileChatBoardModal from './mobile/mobile_chatboard/MobileChatBoardModal'
 import { db } from '../firebase/Firebase'
 import LogoLoader from '../components/loaders/LogoLoader'
+import PcMessenger from './pc/PcMessenger'
 
 
 
 
-const Messenger = ({ auth }) =>{
+const Messenger = ({ auth, profile }) => {
     const [userChats, setUserChats] = useState([])
     const [fetching, setFetching] = useState(true)
-    
 
-    const handleFetchAllUserChats = useCallback(() =>{
+
+    const handleFetchAllUserChats = useCallback(() => {
 
         auth && db.collection('users').doc(auth.uid).collection('chats')
-        .onSnapshot(snapShots =>{
-            const chats = []
-            snapShots.forEach(snapshot =>{
-                chats.push(snapshot.data())
+            .onSnapshot(snapShots => {
+                const chats = []
+                snapShots.forEach(snapshot => {
+                    chats.push(snapshot.data())
+                })
+
+                setUserChats(chats)
+                setFetching(false)
             })
 
-            setUserChats(chats)
-            setFetching(false)
-        })
-        
-    }, [ auth ])
+    }, [auth])
 
 
-    useEffect(() =>{
+    const handleSetChatsToSeen = useCallback(() => {
+        auth.isLoaded && !auth.isEmpty &&
+            db.collection('users').doc(auth.uid).collection('chats')
+                .onSnapshot(snapshot => {
+                   
+                    snapshot.forEach(doc => {
+                        if(doc.data().unRead === true){
+                            doc.ref.update({
+                                unRead : false
+                            })
+                        }
+                    })
+
+
+                })
+
+    }, [auth])
+
+
+
+    useEffect(() => {
         handleFetchAllUserChats()
+        handleSetChatsToSeen()
 
-    }, [handleFetchAllUserChats])
+    }, [handleFetchAllUserChats, handleSetChatsToSeen])
 
 
-    //if(fetching) return <LogoLoader />
+    if (fetching) return <LogoLoader />
 
-    return(
+    return (
         <div className='messenger-container'>
-            <div className='mobile'>
+            <div className='mobile-messenger'>
                 <MobileMessenger userChats={userChats} fetching={fetching} />
             </div>
 
-            <div className='pc'>
-
+            <div className='pc-messenger'>
+                <PcMessenger
+                    userChats={userChats}
+                    profile={profile}
+                />
             </div>
 
-            <MobileChatBoardModal />
+            {/* <MobileChatBoardModal /> */}
 
         </div>
     )
 }
 
 
-const mapStateToProps = state =>{
-    return{
-        auth : state.firebase.auth,
+const mapStateToProps = state => {
+    return {
+        auth: state.firebase.auth,
+        profile: state.firebase.profile,
     }
 }
 

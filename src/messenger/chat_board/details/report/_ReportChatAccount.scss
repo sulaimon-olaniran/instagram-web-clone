@@ -6,7 +6,11 @@
 }
 
 
-
+.report-chat-account-dialog-container{
+    min-height: 15rem;
+    width: 600px;
+    overflow: hidden;
+}
 
 
 
@@ -23,6 +27,11 @@
         justify-content: space-between;
         border-bottom: 1px solid lightgray;
         padding: 0 20px;
+
+        .MuiSvgIcon-root{
+            cursor: pointer;
+        }
+        
         p{
             font-weight: 500;
         }
@@ -64,12 +73,23 @@
             padding: 0 15px;
             justify-content: space-between;
             align-items: center;
+            cursor: pointer;
 
             .MuiSvgIcon-root{
                 color: gray;
                 height: 0.9rem;
                 width: 0.9rem;
             }
+        }
+    }
+}
+
+
+
+@media(min-width : 600px) {
+    .report-chat-account-container{
+        .report-account-body-content-container{
+            height: 22rem;
         }
     }
 }

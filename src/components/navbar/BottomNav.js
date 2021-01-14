@@ -50,6 +50,8 @@ const BottomNav = ({ auth, profile, currentPage }) => {
     }, [auth])
 
 
+    
+
 
     useEffect(() => {
         grabAllUserNotifications()

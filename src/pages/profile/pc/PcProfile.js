@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
@@ -29,27 +30,27 @@ const useStyles = makeStyles((theme) => ({
         height: theme.spacing(2),
     },
 
-    followButton : {
-        backgroundColor : '#0095f6',
-        marginRight : '10px',
-        marginLeft : '15px',
+    followButton: {
+        backgroundColor: '#0095f6',
+        marginRight: '10px',
+        marginLeft: '15px',
     },
 
-    messageButton : {
-        marginRight : '10px',
-        marginLeft : '15px',
-        height : '30px'
+    messageButton: {
+        marginRight: '10px',
+        marginLeft: '15px',
+        height: '30px'
     },
 
-    unFollowButton : {
-        marginRight : '10px',
-        height : '30px'
+    unFollowButton: {
+        marginRight: '10px',
+        height: '30px'
     }
 }))
 
 
 
-const PcProfile = ({ profile, userProfile, userPosts, handleViewStory, handleFollowUser, openUnFollowDialog, openBlockDialog }) => {
+const PcProfile = ({ profile, userProfile, userPosts, handleViewStory, handleFollowUser, openUnFollowDialog, openBlockDialog, selectChatUser }) => {
     const classes = useStyles()
 
 
@@ -81,8 +82,11 @@ const PcProfile = ({ profile, userProfile, userPosts, handleViewStory, handleFol
                                     variant='outlined'
                                     size='small'
                                     className={classes.messageButton}
+                                    onClick={() => selectChatUser(userProfile)}
                                 >
-                                    Message
+                                    <Link to='/direct/inbox'>
+                                        Message
+                                    </Link>
                                 </Button>
 
                                 <Button
@@ -151,7 +155,7 @@ const PcProfile = ({ profile, userProfile, userPosts, handleViewStory, handleFol
                 user={userProfile && userProfile}
                 from='profile'
             />
-            
+
 
         </div>
     )

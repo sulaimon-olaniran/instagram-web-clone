@@ -10,10 +10,7 @@ import { connect } from 'react-redux'
 
 import instagram_text_logo from '../../assets/instagram_text_logo.png'
 import { MyDirectIcon, MyCameraIcon } from '../../../components/MyIcons'
-//import Posts from './posts/Posts'
-//import StoryAvatar from '../../../components/avatar/StoryAvatar'
 import Stories from '../../../components/stories/Stories'
-//import { feedPosts } from '../FakeData'
 import PostsFeed from '../../../components/feed/PostsFeed'
 import CreateButton from '../../../components/create_story/CreateButton'
 import MobileWelcome from '../../welcome/mobile/MobileWelcome'
@@ -34,9 +31,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const MobileHome = ({ feedPosts, profile, handleViewStory }) => {
+const MobileHome = ({ feedPosts, profile, handleViewStory, unReadMessages }) => {
+
     const classes = useStyles()
-    //console.log(users)
+
+
     
     return (
         <div className='mobile-home-container'>
@@ -47,14 +46,24 @@ const MobileHome = ({ feedPosts, profile, handleViewStory }) => {
                 />
 
                 <img src={instagram_text_logo} alt="INSTAGRAM" />
-                <Link to='/direct/inbox'>
-                    <Badge badgeContent={4} color="secondary">
-                        <MyDirectIcon
-                            height='24px'
-                            width='24px'
-                        />
-                    </Badge>
-                </Link>
+                    <Link to='/direct/inbox'>
+                        {unReadMessages.length > 0 ?
+                            <Badge
+                                badgeContent={unReadMessages.length}
+                                color="secondary"
+                            >
+                                <MyDirectIcon
+                                    height='24px'
+                                    width='24px'
+                                />
+                            </Badge>
+                            :
+                            <MyDirectIcon
+                                height='24px'
+                                width='24px'
+                            />
+                        }
+                    </Link>
             </div>
 
             

@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 
-const MobileProfile = ({ history, profile, userProfile, userPosts, handleViewStory, handleFollowUser, openUnFollowDialog, openBlockDialog }) => {
+const MobileProfile = ({ history, profile, userProfile, userPosts, handleViewStory, handleFollowUser, openUnFollowDialog, openBlockDialog, openChatBoard }) => {
     const [followingModal, setFollowingModal] = useState(false)
     const [followersModal, setFollowersModal] = useState(false)
     
@@ -69,7 +69,7 @@ const MobileProfile = ({ history, profile, userProfile, userPosts, handleViewSto
 
  
 
-    //console.log(match)
+    //following for opening mobile chatboard from the user's profile page
     
 
     return (
@@ -125,6 +125,7 @@ const MobileProfile = ({ history, profile, userProfile, userPosts, handleViewSto
                                     variant='outlined'
                                     size='small'
                                     className={classes.messageButton}
+                                    onClick={() => openChatBoard(userProfile)}
                                 >
                                     Message
                                 </Button>
@@ -228,6 +229,7 @@ const MobileProfile = ({ history, profile, userProfile, userPosts, handleViewSto
                                     <Button
                                         variant='outlined'
                                         size='small'
+                                        onClick={() => openChatBoard(userProfile)}
                                     >
                                         Message
                                 </Button>

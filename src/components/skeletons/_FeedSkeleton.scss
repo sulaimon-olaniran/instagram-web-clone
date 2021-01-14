@@ -38,3 +38,19 @@
         }
     }
 }
+
+
+
+
+
+
+.chat-list-skeleton-container{
+    width: 100%;
+    height: 4rem;
+    margin-bottom: 25px;
+
+    .MuiSkeleton-rect{
+        width: 100%;
+        height: 4rem;
+    }
+}

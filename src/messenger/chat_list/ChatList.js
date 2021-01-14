@@ -7,10 +7,10 @@ import EachChat from './each_chat/EachChat'
 
 
 
-import { openChatBoard } from '../../store/actions/MessengerAction'
+import { openChatBoard, selectUserToChatWith } from '../../store/actions/MessengerAction'
 
 
-const ChatList = ({ userChats, users, profile, openChatBoard }) =>{
+const ChatList = ({ userChats, users, profile, openChatBoard, selectChatUser }) =>{
     //console.log(userChats)
     const [usersDetail, setUsersDetail] = useState(null)
 
@@ -53,6 +53,7 @@ const ChatList = ({ userChats, users, profile, openChatBoard }) =>{
                             user={user}
                             key={user.userId}
                             handleOpenChatBoard={handleOpenChatBoard}
+                            selectChatUser={selectChatUser}
                             profile={profile}
                         />
                     )
@@ -66,6 +67,7 @@ const ChatList = ({ userChats, users, profile, openChatBoard }) =>{
 const mapDispatchToProps = dispatch =>{
     return{
         openChatBoard : user => dispatch(openChatBoard(user)),
+        selectChatUser : user => dispatch(selectUserToChatWith(user))
     }
 }
 

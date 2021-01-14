@@ -11,7 +11,7 @@ import LogoLoader from '../../components/loaders/LogoLoader'
 
 
 
-const Home = ({ users, profile, posts, setCurrentPage }) => {
+const Home = ({ users, profile, posts, setCurrentPage, unReadMessages }) => {
     const [followingPosts, setFollowingPosts] = useState(null)
 
 
@@ -49,6 +49,7 @@ const Home = ({ users, profile, posts, setCurrentPage }) => {
                 <MobileHome
                     feedPosts={followingPosts}
                     profile={profile}
+                    unReadMessages={unReadMessages}
                 />
             </div>
             
@@ -63,7 +64,7 @@ const Home = ({ users, profile, posts, setCurrentPage }) => {
 
 
 const mapStateToProps = (state) => {
-   console.log(state)
+   //console.log(state)
     return {
         users: state.firestore.ordered.users,
         posts: state.firestore.ordered.posts,

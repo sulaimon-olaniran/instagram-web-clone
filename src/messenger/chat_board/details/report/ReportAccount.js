@@ -1,8 +1,14 @@
 import React, { useState } from 'react'
 import Modal from '@material-ui/core/Modal'
+import Dialog from '@material-ui/core/Dialog'
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos'
 import CloseIcon from '@material-ui/icons/Close'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
+
+
+
+
+
 import ReportChatFeedBack from './feedback/ReportChatFeedBack'
 
 
@@ -200,6 +206,24 @@ export const ReportChatAccountModal = ({ openModal, handleCloseModal, user }) =>
             </div>
 
         </Modal>
+    )
+}
+
+
+
+
+export const ReportChatAccoutDialog = ({ openDialog, handleCloseDialog, user }) =>{
+    return(
+        <Dialog
+            aria-labelledby='simple-dialog-title'
+            open={openDialog}
+            onClose={handleCloseDialog}
+        >
+            <div className='report-chat-account-dialog-container'>
+                <ReportChatAccount close={handleCloseDialog} user={user} />
+            </div>
+
+        </Dialog>
     )
 }
 

@@ -6,6 +6,7 @@ import momemt from 'moment'
 
 
 import { db } from '../../../firebase/Firebase'
+import ChatListSkeleton from '../../../components/skeletons/ChatListSkeleton'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -22,79 +23,104 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const EachChat = ({ user, handleOpenChatBoard, profile }) =>{
+const EachChat = ({ user, handleOpenChatBoard, profile, selectChatUser }) => {
     const [chatMessages, setChatMessages] = useState(null)
     const [fetchingMessages, setFetchingMessages] = useState(null)
-    
+
+    //console.log(fetchingMessages)
+
     const classes = useStyles()
 
     const interlocutors = [user && user.userId, profile && profile.userId]
     const chatId = interlocutors.sort().join(':')
 
 
-    const handleFetchChatMessages = useCallback(() =>{
+    const handleFetchChatMessages = useCallback(() => {
         setFetchingMessages(true)
         db.collection('users').doc(profile.userId)
-        .collection('chats').doc(chatId).collection('messages')
-        .orderBy('timeStamp', 'asc').onSnapshot(snapshots =>{
-            const messages = []
-            snapshots.forEach(snapshot =>{
-                messages.push(snapshot.data())
+            .collection('chats').doc(chatId).collection('messages')
+            .orderBy('timeStamp', 'asc').onSnapshot(snapshots => {
+                const messages = []
+                snapshots.forEach(snapshot => {
+                    messages.push(snapshot.data())
+                })
+
+                setChatMessages(messages)
+                setFetchingMessages(false)
             })
-
-            setChatMessages(messages)
-            setFetchingMessages(false)
-        })
-    }, [ chatId, profile ])
+    }, [chatId, profile])
 
 
-    useEffect(() =>{
+    useEffect(() => {
         handleFetchChatMessages()
 
-    }, [ handleFetchChatMessages ])
+    }, [handleFetchChatMessages])
 
     const lastMessage = chatMessages && chatMessages.slice(-1).pop()
 
 
+    const goToChatBoard = () => {
+        const screenWidth = window.matchMedia('(min-width: 600px)')
+        if (screenWidth.matches) {
+            selectChatUser(user)
+        }
+        else {
+            handleOpenChatBoard(user)
+        }
+    }
 
-    return(
-        <div 
+    if(fetchingMessages) return <ChatListSkeleton />
+    return (
+        <div
             className='each-chat-container'
-            onClick={() =>{handleOpenChatBoard(user)}}
-            to='/direct/t/chat'
+            onClick={goToChatBoard}
         >
             <Avatar src={user.profilePhoto} className={classes.Large} />
 
             <div className='each-chat-details-container'>
                 <p>{user.userName}</p>
                 {
-                    lastMessage && lastMessage.type === 'text' && lastMessage.sender === profile 
-                    && profile.userId && <small>You sent a text · {momemt(lastMessage.timeStamp).fromNow()}</small>
+                    lastMessage && profile && lastMessage.messageType === 'text' && lastMessage.sender ===
+                    profile.userId && <small>You sent a text · {momemt(lastMessage.timeStamp).fromNow()}</small>
                 }
 
                 {
-                    lastMessage && lastMessage.type === 'text' && lastMessage.sender !== profile 
-                    && profile.userId && <small>{lastMessage.message.substring(0, 20)} · {momemt(lastMessage.timeStamp).fromNow()}</small>
+                    lastMessage && profile && lastMessage.messageType === 'text' && lastMessage.sender !== profile.userId &&
+                    <small>{lastMessage.message.substring(0, 20)} · {momemt(lastMessage.timeStamp).fromNow()}</small>
                 }
 
                 {
-                    lastMessage && lastMessage.type === 'photo' && lastMessage.sender === profile 
-                    && profile.userId && <small>You sent a photo · {momemt(lastMessage.timeStamp).fromNow()}</small>
+                    lastMessage && profile && lastMessage.messageType === 'image' && lastMessage.sender === profile.userId
+                    && <small>You sent a photo · {momemt(lastMessage.timeStamp).fromNow()}</small>
                 }
 
                 {
-                    lastMessage && lastMessage.type === 'text' && lastMessage.sender !== profile 
-                    && profile.userId && <small>Sent you a photo · {momemt(lastMessage.timeStamp).fromNow()}</small>
+                    lastMessage && profile && lastMessage.messageType === 'image' && lastMessage.sender !== profile.userId
+                    && <small>Sent you a photo · {momemt(lastMessage.timeStamp).fromNow()}</small>
                 }
 
-                {/* {
-                    lastMessage && lastMessage.type === 'text' && lastMessage.sender === profile 
-                    && profile.userId && <small>You sent a text · {momemt(message.timeStamp).fromNow()}</small>
-                } */}
+                {
+                    lastMessage && lastMessage.messageType === 'heart' &&
+                    <small><span role='img' aria-label='xxxx'>❤️</span> · {momemt(lastMessage.timeStamp).fromNow()}</small>
+                }
+
+                {
+                    lastMessage && profile && lastMessage.messageType === 'post' && lastMessage.sender !== profile.userId
+                    && <small>Shared a post · {momemt(lastMessage.timeStamp).fromNow()}</small>
+                }
+
+                {
+                    lastMessage && profile && lastMessage.messageType === 'post' && lastMessage.sender === profile.userId
+                    && <small>You shared a post · {momemt(lastMessage.timeStamp).fromNow()}</small>
+                }
 
             </div>
 
+            {lastMessage && lastMessage.seen === false && <div className='unread-message-sign' />}
+
+
         </div>
+
     )
 }
 

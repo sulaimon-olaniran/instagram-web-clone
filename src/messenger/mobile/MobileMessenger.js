@@ -32,6 +32,7 @@ const MobileMessenger = ({ history, userChats, fetching }) =>{
             <CreateChatModal
                 openModal={createChat}
                 handleCloseModal={handleCloseCreateChatModal}
+                from='chat'
             />
 
             <div className='mobile-messenger-nav-container'>

@@ -21,6 +21,13 @@
             padding: 0 15px;
             border-bottom: 1px solid lightgray;
 
+            .pc-icon{
+                display: none;
+                .MuiSvgIcon-root{
+                    cursor: pointer;
+                }
+            }
+
             p{
                 font-weight: 500;
             }
@@ -94,6 +101,34 @@
 
     }
 
+}
+
+
+
+@media(min-width : 600px) {
+    .new-message-container{
+        position: relative;
+        overflow: hidden;
+
+        .fixed-top-contents-container{
+            position: absolute;
+
+            .new-message-nav-container{
+                .mobile-icon{
+                    display: none;
+                }
+
+                .pc-icon{
+                    display: block;
+                }
+            }
+        }
+
+        .suggested-chat-accounts-container{
+            overflow-y: auto;
+            height: 23rem;
+        }
+    }
 }
 
 

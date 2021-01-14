@@ -8,7 +8,7 @@ import NewMessageTheme from '../../new_message/NewMessage'
 
 
 
-const CreateChatModal = ({handleCloseModal, openModal}) =>{
+const CreateChatModal = ({ handleCloseModal, openModal, from, postId }) =>{
     return(
         <Modal
             aria-labelledby="transition-modal-title"
@@ -21,6 +21,8 @@ const CreateChatModal = ({handleCloseModal, openModal}) =>{
             <div className='create-chat-modal-container'>
                 <NewMessageTheme 
                     close={handleCloseModal}
+                    from={from}
+                    postId={postId}
                 />
             </div>
 

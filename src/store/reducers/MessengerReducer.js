@@ -8,6 +8,7 @@ const initState = {
     likingMessage : false,
     unlikingMessage : false,
     deletingChat : false,
+    messageSent : false,
 
 }
 
@@ -32,10 +33,21 @@ const MessengerReducer = (state = initState, action) => {
             }
 
 
+
+        case 'SELECT_CHAT':
+            //console.log('closed story successfully')
+            return {
+                ...state,
+                openChatBoard: false,
+                selectedAccount: action.user,
+            }
+
+
         case 'CREATING_CHAT':
             console.log('creating the chat')
             return {
                 ...state,
+                creatingChat : true,
             }
 
 
@@ -43,6 +55,7 @@ const MessengerReducer = (state = initState, action) => {
             console.log('created chat successfully')
             return {
                 ...state,
+                creatingChat : false,
             }
 
 
@@ -50,6 +63,7 @@ const MessengerReducer = (state = initState, action) => {
             console.log('created chat failed')
             return {
                 ...state,
+                creatingChat : false,
             }
 
 
@@ -57,6 +71,7 @@ const MessengerReducer = (state = initState, action) => {
             //console.log('closed story successfully')
             return {
                 ...state,
+                deletingChat : true,
             }
 
 
@@ -64,6 +79,7 @@ const MessengerReducer = (state = initState, action) => {
             //console.log('closed story successfully')
             return {
                 ...state,
+                deletingChat : false,
             }
 
 
@@ -71,6 +87,7 @@ const MessengerReducer = (state = initState, action) => {
             //console.log('closed story successfully')
             return {
                 ...state,
+                deletingChat : false,
             }
 
 
@@ -78,6 +95,7 @@ const MessengerReducer = (state = initState, action) => {
             //console.log('closed story successfully')
             return {
                 ...state,
+                sendingMessage : true,
             }
 
 
@@ -85,6 +103,8 @@ const MessengerReducer = (state = initState, action) => {
             //console.log('closed story successfully')
             return {
                 ...state,
+                messageSent : true,
+                sendingMessage : false,
             }
 
 
@@ -92,6 +112,7 @@ const MessengerReducer = (state = initState, action) => {
             //console.log('closed story successfully')
             return {
                 ...state,
+                sendingMessage : false,
             }
 
 
@@ -99,6 +120,7 @@ const MessengerReducer = (state = initState, action) => {
             //console.log('closed story successfully')
             return {
                 ...state,
+                deletingMessage : true,
             }
 
 
@@ -106,6 +128,7 @@ const MessengerReducer = (state = initState, action) => {
             //console.log('closed story successfully')
             return {
                 ...state,
+                deletingMessage : false,
             }
 
 
@@ -113,6 +136,7 @@ const MessengerReducer = (state = initState, action) => {
             //console.log('closed story successfully')
             return {
                 ...state,
+                deletingMessage : false,
             }
 
 
@@ -120,6 +144,7 @@ const MessengerReducer = (state = initState, action) => {
             //console.log('closed story successfully')
             return {
                 ...state,
+                likingMessage : true,
             }
 
 
@@ -127,6 +152,7 @@ const MessengerReducer = (state = initState, action) => {
             //console.log('closed story successfully')
             return {
                 ...state,
+                likingMessage : false,
             }
 
 
@@ -134,6 +160,7 @@ const MessengerReducer = (state = initState, action) => {
             //console.log('closed story successfully')
             return {
                 ...state,
+                likingMessage : false,
             }
 
 
@@ -141,6 +168,7 @@ const MessengerReducer = (state = initState, action) => {
             //console.log('closed story successfully')
             return {
                 ...state,
+                unlikingMessage : true,
             }
 
 
@@ -148,6 +176,7 @@ const MessengerReducer = (state = initState, action) => {
             //console.log('closed story successfully')
             return {
                 ...state,
+                unlikingMessage : false,
             }
 
 
@@ -155,6 +184,7 @@ const MessengerReducer = (state = initState, action) => {
             //console.log('closed story successfully')
             return {
                 ...state,
+                unlikingMessage : false,
             }
 
 

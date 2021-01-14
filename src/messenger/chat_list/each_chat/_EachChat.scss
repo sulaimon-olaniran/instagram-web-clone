@@ -3,14 +3,16 @@
     height: 4rem;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    margin-bottom: 25px;
 
     .each-chat-details-container{
-        min-width: 50px;
+        min-width: 70%;
         height: 100%;
         display: flex;
         flex-direction: column;
         justify-content: center;
-        margin-left: 15px;
 
         p{
             font-weight: 500;
@@ -19,5 +21,13 @@
         small{
             color: gray;
         }
+    }
+
+
+    .unread-message-sign{
+        height: 8px;
+        width: 8px;
+        border-radius: 50%;
+        background-color: #0095f6;
     }
 }

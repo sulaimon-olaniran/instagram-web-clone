@@ -102,5 +102,25 @@
 }
 
 
+@media(min-width : 600px) {
+    .chat-board-container{
+        position: relative;
+        .chat-board-nav-container{
+            position: absolute;
+            height: 4rem;
+        }
+
+        .chat-board-input-container{
+            position: absolute;
+            form{
+                .icons-container{
+                    width: 15%
+                }
+            }
+        }
+    }
+}
+
+
 @import './details/ChatDetails';
 @import './chat_body/ChatBody';

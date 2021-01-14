@@ -16,3 +16,18 @@
         }
     }
 }
+
+
+
+.unsend-report-popper-container{
+    min-width: 100px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    background-color: black;
+
+    button{
+        color: white;
+        text-transform: initial;
+    }
+}
