@@ -8,26 +8,42 @@ import { compose } from 'redux'
 import MobileHome from './mobile/MobileHome'
 import PcHome from './pc/PcHome'
 import LogoLoader from '../../components/loaders/LogoLoader'
+import { handleOpenScamWarning } from '../../store/actions/AppActions'
 
 
 
-const Home = ({ users, profile, posts, setCurrentPage, unReadMessages }) => {
+const Home = ({ users, profile, posts, setCurrentPage, unReadMessages, showScamWarning }) => {
     const [followingPosts, setFollowingPosts] = useState(null)
 
+    const sortPostsBasedOnTime = (a, b) =>{
+        const comparisonA = a.time
+        const comparisonB = b.time
 
+        let comparisonsStatus = 0
+        if(comparisonA < comparisonB){
+            comparisonsStatus = 1
+        }
+        else{
+            comparisonsStatus = -1
+        }
+
+        return comparisonsStatus
+    }
 
     const getAllFollowingPosts = useCallback(() => {
 
         const allPosts = []
         const promises = profile.isLoaded  && !profile.isEmpty && posts && posts.map(post => {
-            return profile.following.length > 0 && profile.following.includes(post.userId) ?
+            return post.userId === profile.userId || profile.following.includes(post.userId) ?
             allPosts.push(post) : null
         
         })
 
+
         Promise.all([promises])
         .then(() =>{
-            setFollowingPosts(allPosts)
+            const sortedPosts = allPosts.sort(sortPostsBasedOnTime)
+            setFollowingPosts(sortedPosts)
             
         })
         
@@ -36,10 +52,12 @@ const Home = ({ users, profile, posts, setCurrentPage, unReadMessages }) => {
 
 
     useEffect(() => {
+
+        showScamWarning()
         getAllFollowingPosts()
         setCurrentPage('home')
 
-    }, [getAllFollowingPosts, setCurrentPage])
+    }, [getAllFollowingPosts, setCurrentPage, showScamWarning ])
 
     if (!profile.isLoaded) return <LogoLoader />
 
@@ -72,9 +90,15 @@ const mapStateToProps = (state) => {
     }
 }
 
+const mapDispatchToProps = dispatch =>{
+    return{
+        showScamWarning : () => dispatch(handleOpenScamWarning())
+    }
+}
+
 
 
 export default compose(
-    connect(mapStateToProps),
+    connect(mapStateToProps, mapDispatchToProps),
     firestoreConnect(() => ['posts', 'users', 'chats'])
 )(Home)

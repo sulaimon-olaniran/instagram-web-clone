@@ -4,22 +4,21 @@ import { Button } from '@material-ui/core'
 import { connect } from 'react-redux'
 import { firestoreConnect } from 'react-redux-firebase'
 import { compose } from 'redux'
-import Snackbar from '@material-ui/core/Snackbar'
 import { v4 as uuidv4 } from 'uuid'
 
 
 
 import { openChatBoard, selectUserToChatWith, sendMessage } from '../../store/actions/MessengerAction'
+import { openSharedPostSnackbar } from '../../store/actions/PostsAction'
 import SuggestedChat from './suggested_chat/SuggestedChat'
 
 
 
 
-const NewMessageTheme = ({ close, users, openChatBoard, from, selectChatUser, profile, postId, sendMessage }) => {
+const NewMessageTheme = ({ close, users, openChatBoard, from, selectChatUser, profile, postId, sendMessage, openSnackBar }) => {
     const [matchedUsers, setMatchedUsers] = useState([])
     const [searchInput, setSearchInput] = useState('')
     const [selectedUser, setSelectedUser] = useState(null)
-    const [sharedPost, setSharedPost] = useState(false)
     
 
 
@@ -88,15 +87,12 @@ const NewMessageTheme = ({ close, users, openChatBoard, from, selectChatUser, pr
         let message = async () => {return sendMessage(data)}
 
         message().then(() =>{
-            setSharedPost(true)
+            openSnackBar()
             close()
         })
     }
 
 
-    const closeSharePostSnackBar = () =>{
-        setSharedPost(false)
-    }
 
     return (
         <div className='new-message-container'>
@@ -175,19 +171,6 @@ const NewMessageTheme = ({ close, users, openChatBoard, from, selectChatUser, pr
             </div>
 
 
-
-            
-            <Snackbar
-                open={sharedPost}
-                message="Message successfully sent"
-                anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left'
-                }}
-                onClose={closeSharePostSnackBar}
-                autoHideDuration={3000}
-            />
-
         </div>
     )
 }
@@ -209,6 +192,7 @@ const mapDispatchToProps = dispatch => () => {
         openChatBoard: user => dispatch(openChatBoard(user)),
         selectChatUser: user => dispatch(selectUserToChatWith(user)),
         sendMessage: data => dispatch(sendMessage(data)),
+        openSnackBar : () => dispatch(openSharedPostSnackbar())
     }
 }
 

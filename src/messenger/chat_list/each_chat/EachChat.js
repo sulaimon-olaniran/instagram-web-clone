@@ -116,7 +116,7 @@ const EachChat = ({ user, handleOpenChatBoard, profile, selectChatUser }) => {
 
             </div>
 
-            {lastMessage && lastMessage.seen === false && <div className='unread-message-sign' />}
+            {lastMessage && lastMessage.sender !== profile.userId && lastMessage.read === false && <div className='unread-message-sign' />}
 
 
         </div>

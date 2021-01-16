@@ -20,6 +20,7 @@ import ViewStory from './pages/story/ViewStory'
 import FormikChangePassword from './pages/change_password/ChangePassoword'
 //import GradientLoader from './components/loaders/gradient/GradientLoader'
 import { closeStorySnackBar } from './store/actions/StoryAction'
+import { closeSharedPostSnackbar, closeCreatePostModal } from './store/actions/PostsAction'
 import Profile from './pages/profile/Profile'
 import UserAccount from './pages/user_account/UserAccount'
 import MobileAccountActivity from './pages/mobile_activity/AccountActivity'
@@ -31,10 +32,13 @@ import MobileSearch from './pages/mobile_search/MobileSearch'
 import Messenger from './messenger/Messenger'
 //import ChatBoard from './messenger/chat_board/ChatBoard'
 import MobileChatBoardModal from './messenger/mobile/mobile_chatboard/MobileChatBoardModal'
+import UploadModal from './components/upload/modal/UploadModal'
+import ScamWarningsDialog from './components/warnings/scam_warning/ScamWarningsDialog'
 
 
 
-function App({ auth, storyAdded, closeStorySnackBar }) {
+function App({ auth, storyAdded, closeStorySnackBar, sharedPost, closeSharePostSnackbar, 
+  createPostModal, fileUrl, filePreviewUrl, closeCreatePostModal, snackBarText }) {
 
   const [unReadMessages, setUnreadMessages] = useState([])
   const [currentPage, setCurrentPage] = useState('')
@@ -64,7 +68,7 @@ function App({ auth, storyAdded, closeStorySnackBar }) {
 
   }, [grabAllUserUnreadMessages])
 
-  const homeComponent = auth.uid ? <Home setCurrentPage={setCurrentPage}  unReadMessages={unReadMessages}/> : <FormikSignIn />
+  const homeComponent = auth.uid ? <Home setCurrentPage={setCurrentPage} unReadMessages={unReadMessages} /> : <FormikSignIn />
 
 
   //VIEW STORY AND COMMENTS NOT NEEDED AS LINKS ANYMORE
@@ -72,7 +76,17 @@ function App({ auth, storyAdded, closeStorySnackBar }) {
   return (
     <Router>
       <div className="App">
+
         <ViewStory />
+        <UploadModal
+            openModal={createPostModal}
+            handleCloseModal={closeCreatePostModal}
+            filePreviewUrl={filePreviewUrl}
+            fileUrl={fileUrl}
+            type='feed-post'
+        />
+
+
         <Switch>
           <Route path='/signup' exact component={FormikSignUp} />
           <Route path='/accounts/password/reset' exact component={ResetPassword} />
@@ -107,8 +121,24 @@ function App({ auth, storyAdded, closeStorySnackBar }) {
           onClose={closeStorySnackBar}
           autoHideDuration={3000}
         />
+
+        <Snackbar
+          open={sharedPost}
+          message={snackBarText}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left'
+          }}
+          onClose={closeSharePostSnackbar}
+          autoHideDuration={3000}
+        />
+        
         <ProfileCard />
+
         <MobileChatBoardModal />
+
+        <ScamWarningsDialog />
+
       </div>
     </Router>
   );
@@ -119,13 +149,21 @@ const mapStateToProps = (state) => {
   return {
     auth: state.firebase.auth,
     storyAdded: state.story.storyAdded,
+    sharedPost : state.posts.sharedPostSnackBar,
+    fileUrl : state.posts.fileUrl,
+    filePreviewUrl : state.posts.filePreviewUrl,
+    createPostModal : state.posts.createPostModal,
+    snackBarText : state.posts.snackBarText
+
   }
 }
 
 
 const mapDispatchToProps = dispatch => {
   return {
-    closeStorySnackBar: () => dispatch(closeStorySnackBar())
+    closeStorySnackBar: () => dispatch(closeStorySnackBar()),
+    closeSharePostSnackbar: () => dispatch(closeSharedPostSnackbar()),
+    closeCreatePostModal : () => dispatch(closeCreatePostModal())
   }
 }
 

@@ -44,7 +44,7 @@ const FileDetails = ({ filePreviewUrl, fileUrl, goToPreviousStep, createPost, us
         "style" : imageStyle,
         "comments" : [],
         "likes" : [],
-        "time" : '3 days ago'
+        "time" : Date.now()
     }
 
     const handleCreatePost = () =>{

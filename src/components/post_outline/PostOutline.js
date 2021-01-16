@@ -55,7 +55,7 @@ const PostOutline = ({ post }) =>{
                 </div>
             </div>
 
-            <img src={post.fileUrl} alt='file' />
+            <img src={post.fileUrl} alt='file' style={post.imageStyle && post.imageStyle} />
 
         </Link>
 

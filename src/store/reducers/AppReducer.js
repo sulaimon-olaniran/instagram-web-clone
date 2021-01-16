@@ -7,6 +7,7 @@ const initState = {
      searchResults : false,
      inputValue : '',
      popperActive: false,
+     scamWarning : false,
 }
 
 
@@ -73,6 +74,24 @@ const AppReducer = (state = initState, action) => {
                     anchorEl: null,
                     cardProfile: null,
                     popperActive : false
+                    
+               }
+
+
+          case 'OPEN_SCAM_DIALOG':
+               //console.log('hide search results')
+               return {
+                    ...state,
+                    scamWarning : true,
+               }
+
+          
+
+          case 'CLOSE_SCAM_DIALOG':
+               //alert('closed story successfully')
+               return {
+                    ...state,
+                    scamWarning : false,
                     
                }
 

@@ -98,6 +98,7 @@ const handleSendMessage = (dispatch, data, id) =>{
                         messageType: messageType,
                         sender: sender,
                         seen: false,
+                        read : false,
                         likes: [],
                         messageId: messageId,
                     })
@@ -117,6 +118,7 @@ const handleSendMessage = (dispatch, data, id) =>{
                 messageType: messageType,
                 sender: sender,
                 seen: false,
+                read : false,
                 likes: [],
                 messageId: messageId,
             })

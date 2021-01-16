@@ -1,12 +1,59 @@
-
-const initState = {}
+const initState = {
+     sharedPostSnackBar : false,
+     createPostModal : false,
+     fileUrl : null,
+     filePreviewUrl : null,
+     creatingPost : false,
+     createPostSnackbar : false,
+     snackBarText : '',
+}
 
 
 const PostsReducer = (state = initState, action) =>{
      switch (action.type){
+
+
+          case 'OPEN_CREATE_POST' :
+               
+               return {
+                    ...state,
+                    createPostModal : true,
+                    fileUrl : action.data.fileUrl,
+                    filePreviewUrl : action.data.filePreviewUrl
+               }
+
+
+          case 'CLOSE_CREATE_POST' :
+               localStorage.removeItem('imageRotation')
+               localStorage.removeItem('imageWidth')
+               localStorage.removeItem('filterStyle')
+               localStorage.removeItem('imageStyle')
+               return {
+                    ...state,
+                    createPostModal : false,
+               }
+
+
+          case 'CREATING_POST' :
+               
+               return {
+                    ...state,
+                    creatingPost : true,
+               }
+
+
           case 'CREATE_POST_SUCCESS' :
+               localStorage.removeItem('imageRotation')
+               localStorage.removeItem('imageWidth')
+               localStorage.removeItem('filterStyle')
+               localStorage.removeItem('imageStyle')
                console.log('created posts', action.post)
-               return state
+               return {
+                    ...state,
+                    sharedPostSnackBar : true,
+                    snackBarText : 'Your photo was added',
+                    createPostModal : false,
+               }
           
           case 'CREATE_POST_ERROR' :
                console.log('create project error', action.error)
@@ -83,6 +130,21 @@ const PostsReducer = (state = initState, action) =>{
           case 'UNLIKE_COMMENT_FAILED' :
                console.log('un-liking comment failed')
                return state
+
+          case 'OPEN_SHARED_POST' :
+               
+               return {
+                    ...state,
+                    sharedPostSnackBar : true,
+                    snackBarText : 'Post sent sucessfully'
+               }
+
+          case 'CLOSE_SHARED_POST' :
+               
+               return {
+                    ...state,
+                    sharedPostSnackBar : false,
+               }
      
           default : return state
      }

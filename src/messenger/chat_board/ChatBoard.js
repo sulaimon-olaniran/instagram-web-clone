@@ -106,7 +106,7 @@ const ChatBoard = ({ selectedAccount, closeChatBoard, users, sendMessage, delete
                     console.log(error)
                     setSendingImage(false)
                 })
-            console.log("sending image file yoh")
+            
         }
     }
 
@@ -256,6 +256,7 @@ const ChatBoard = ({ selectedAccount, closeChatBoard, users, sendMessage, delete
                     handleLikeMessage={handleLikeMessage}
                     handleUnlikeMessage={handleUnlikeMessage}
                     handleDeleteMessage={handleDeleteMessage}
+                    closeChatBoard={closeChatBoard}
                 />
             </React.Fragment>
 

@@ -18,7 +18,7 @@ const UnsendReportDialog = ({ openDialog, handleCloseDialog, message, profile, h
                 {profile && message.sender === profile.userId ?
                 <div className='unsend-report-dialog-button-container'>
                     <Button
-                        onClick={() => handleDeleteMessage(message)}
+                        onClick={handleDeleteMessage}
                     >
                         Unsend
                     </Button>

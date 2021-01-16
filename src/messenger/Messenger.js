@@ -7,11 +7,12 @@ import MobileMessenger from './mobile/MobileMessenger'
 import { db } from '../firebase/Firebase'
 import LogoLoader from '../components/loaders/LogoLoader'
 import PcMessenger from './pc/PcMessenger'
+import { handleOpenScamWarning } from '../store/actions/AppActions'
 
 
 
 
-const Messenger = ({ auth, profile }) => {
+const Messenger = ({ auth, profile, showScamWarning }) => {
     const [userChats, setUserChats] = useState([])
     const [fetching, setFetching] = useState(true)
 
@@ -55,8 +56,9 @@ const Messenger = ({ auth, profile }) => {
     useEffect(() => {
         handleFetchAllUserChats()
         handleSetChatsToSeen()
+        showScamWarning()
 
-    }, [handleFetchAllUserChats, handleSetChatsToSeen])
+    }, [handleFetchAllUserChats, handleSetChatsToSeen, showScamWarning])
 
 
     if (fetching) return <LogoLoader />
@@ -89,4 +91,12 @@ const mapStateToProps = state => {
 }
 
 
-export default connect(mapStateToProps)(Messenger)
+
+const mapDispatchToProps = dispatch =>{
+    return{
+        showScamWarning : () => dispatch(handleOpenScamWarning())
+    }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Messenger)

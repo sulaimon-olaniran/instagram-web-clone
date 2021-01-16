@@ -6,11 +6,12 @@ import { connect } from 'react-redux'
 import FileDetails from './details/FileDetails'
 import FileUploadStyle from './style/FileStyle'
 import { uploadProfilePicture } from '../../../store/actions/ProfileActions'
+import GradientLoader from '../../loaders/gradient/GradientLoader'
 
 
 
 
-const UploadModal = ({ openModal, handleCloseModal, type, filePreviewUrl, fileUrl, updateProfilePicture, profile }) => {
+const UploadModal = ({ openModal, handleCloseModal, type, filePreviewUrl, fileUrl, updateProfilePicture, profile, creatingPost }) => {
     const [activeStep, setActiveStep] = useState(0)
     const [canvasUrl, setCanvasUrl] = useState('')
     const imageFileRef = useRef(null)
@@ -87,6 +88,13 @@ const UploadModal = ({ openModal, handleCloseModal, type, filePreviewUrl, fileUr
             closeAfterTransition
         >
             <div className='upload-modal-container'>
+                {creatingPost &&
+                    <div className='creating-post-sign-container'>
+                        <GradientLoader />
+                        <p>Creating Post</p>
+                    </div>
+                }
+                
                 {
                     type === 'feed-post' ?
                         getStepContent(activeStep)
@@ -107,7 +115,8 @@ const UploadModal = ({ openModal, handleCloseModal, type, filePreviewUrl, fileUr
 
 const mapStateToProps = state => {
     return {
-        profile: state.firebase.profile
+        profile: state.firebase.profile,
+        creatingPost : state.posts.creatingPost
     }
 }
 

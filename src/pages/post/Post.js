@@ -7,9 +7,10 @@ import { db } from '../../firebase/Firebase'
 import LogoLoader from '../../components/loaders/LogoLoader'
 import MobilePost from './mobile/MobilePost'
 import PcPost from './pc/PcPost'
+import { handleOpenScamWarning } from '../../store/actions/AppActions'
 
 
-const Post = ({ match, auth }) =>{
+const Post = ({ match, auth, showScamWarning }) =>{
     const [fetchingPost, setFetchingPost] = useState(true)
     const [post, setPost] = useState({})
     const [posterProfile, setPosterProfile] = useState({})
@@ -32,8 +33,9 @@ const Post = ({ match, auth }) =>{
 
     useEffect(() =>{
         handleFetchPost()
+        showScamWarning()
 
-    }, [handleFetchPost])
+    }, [handleFetchPost, showScamWarning])
 
 
     if(!auth.uid) return <Redirect to='/' />
@@ -58,4 +60,11 @@ const mapStateToProps = (state) =>{
     }
 }
 
-export default connect(mapStateToProps)(Post)
+
+const mapDispatchToProps = dispatch =>{
+    return{
+        showScamWarning : () => dispatch(handleOpenScamWarning())
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Post)

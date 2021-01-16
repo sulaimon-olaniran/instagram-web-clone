@@ -17,10 +17,15 @@ import { MyDirectIcon } from '../../../MyIcons'
 
 
 
-const ShareContents = ({ link, handleCopyPostLink, close }) =>{
+const ShareContents = ({ link, handleCopyPostLink, close, openDirect }) =>{
+
+    const handleOpenDirect = () =>{
+        openDirect()
+        close()
+    }
     return(
         <div className='contents-container'>
-                    <div className='each-content'>
+                    <div className='each-content' onClick={handleOpenDirect}>
                         <MyDirectIcon height='24px' width='24px' /> <p>Share to Direct</p>
                     </div>
 
@@ -83,9 +88,8 @@ const ShareContents = ({ link, handleCopyPostLink, close }) =>{
 
 
 
-const SharePost = ({ open, close, link, handleCopyPostLink }) => {
+const SharePostDrawer = ({ open, close, link, handleCopyPostLink, openDirect }) => {
     //const [linkSnackBar, setLinkSnackBar] = useState(false)
-
 
     return (
         <Drawer
@@ -104,6 +108,7 @@ const SharePost = ({ open, close, link, handleCopyPostLink }) => {
                     link={link}
                     handleCopyPostLink={handleCopyPostLink}
                     close={close}
+                    openDirect={openDirect}
                 />
 
             </div>
@@ -113,12 +118,12 @@ const SharePost = ({ open, close, link, handleCopyPostLink }) => {
 }
 
 
-export default SharePost
+export default SharePostDrawer
 
 
 
 
-export const SharePostDialog = ({ openDialog, handleCloseDialog, link, handleCopyPostLink }) =>{
+export const SharePostDialog = ({ openDialog, handleCloseDialog, link, handleCopyPostLink, openDirect }) =>{
 
 
     return(
@@ -137,6 +142,7 @@ export const SharePostDialog = ({ openDialog, handleCloseDialog, link, handleCop
                     link={link}
                     handleCopyPostLink={handleCopyPostLink}
                     close={handleCloseDialog}
+                    openDirect={openDirect}
                 />
 
             </div>

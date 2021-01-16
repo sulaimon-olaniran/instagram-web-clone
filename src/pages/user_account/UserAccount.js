@@ -10,9 +10,10 @@ import { compose } from 'redux'
 import MobileUserAccount from './mobile/MobileUserAccount'
 import LogoLoader from '../../components/loaders/LogoLoader'
 import PcUserAccount from './pc/PcUserAccount'
+import { handleOpenScamWarning } from '../../store/actions/AppActions'
 
 
-const UserAccount = ({ auth, posts, profile, setCurrentPage }) =>{
+const UserAccount = ({ auth, posts, profile, setCurrentPage, showScamWarning }) =>{
     const [userPosts, setUserPosts] = useState([])
 
 
@@ -31,9 +32,10 @@ const UserAccount = ({ auth, posts, profile, setCurrentPage }) =>{
     
     useEffect(() =>{
         setCurrentPage('')
+        showScamWarning()
         getUserPosts()
         
-    }, [ setCurrentPage, getUserPosts])
+    }, [ setCurrentPage, getUserPosts, showScamWarning])
 
 
 
@@ -67,8 +69,15 @@ const mapStateToProps = (state) =>{
         posts: state.firestore.ordered.posts,
     }
 }
+
+
+const mapDispatchToProps = dispatch =>{
+    return{
+        showScamWarning : () => dispatch(handleOpenScamWarning())
+    }
+}
 export default compose(
-    connect(mapStateToProps),
+    connect(mapStateToProps, mapDispatchToProps),
     firestoreConnect(() => ['posts'])
 )(UserAccount)
 

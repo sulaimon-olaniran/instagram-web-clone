@@ -1,9 +1,8 @@
-import React, { useRef, useEffect, useCallback, useState } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import ClipLoader from "react-spinners/ClipLoader"
 
 
 
-import { db } from '../../../firebase/Firebase'
 import EachMessage from './EachMessage'
 import MessageReactionsDrawer, { MessageReactionsDialog } from './reactions/ReactionsDrawer'
 
@@ -11,31 +10,16 @@ import MessageReactionsDrawer, { MessageReactionsDialog } from './reactions/Reac
 
 const ChatMessagesBody = ({
     chatMessages, sendingImage, imageBlob, sendingMessage, profile, user, classes, chatId,
-    users, handleLikeMessage, handleUnlikeMessage, handleDeleteMessage }) => {
+    users, handleLikeMessage, handleUnlikeMessage, handleDeleteMessage, closeChatBoard }) => {
 
     const [reactionsDrawer, setReactionsDrawer] = useState(false)
     const [reactionsDialog, setReactionsDialog] = useState(false)
     const [selectedMessage, setSelectedMessage] = useState(null)
+    //const [timeStamps, setTimeStamps] = useState([])
     const scrollRef = useRef(null)
     const bottomRef = useRef(null)
 
 
-    const handleSetMessagesToSeen = useCallback(() => {
-        chatMessages && chatMessages.map((message => {
-            return message.sender === user.userId && message.seen === false ?
-                db.collection('users').doc(user.userId).collection('chats')
-                    .doc(chatId).collection('messages').doc(message.messageId)
-                    .update({
-                        seen: true,
-                    })
-                    .then(() => {
-                        console.log('seen success')
-                    })
-                    .catch(error => console.log(error))
-                : null
-        }))
-
-    }, [chatMessages, user, chatId])
 
 
     const scrollToBottom = () =>{
@@ -52,10 +36,9 @@ const ChatMessagesBody = ({
 
 
     useEffect(() => {
-
         scrollToBottom()
-        handleSetMessagesToSeen()
-    }, [ handleSetMessagesToSeen])
+        
+    }, [ chatMessages ])
 
 
     const lastMessage = chatMessages && chatMessages.slice(-1).pop()
@@ -79,6 +62,9 @@ const ChatMessagesBody = ({
         setSelectedMessage(null)
     }
 
+
+
+    const timeStamps = []
 
 
 
@@ -107,6 +93,7 @@ const ChatMessagesBody = ({
 
                 {
                     chatMessages !== null && chatMessages.map(message => {
+                        
                         return (
                             <EachMessage
                                 key={message.messageId}
@@ -119,6 +106,9 @@ const ChatMessagesBody = ({
                                 user={user}
                                 handleDeleteMessage={handleDeleteMessage}
                                 handleUnlikeMessage={handleUnlikeMessage}
+                                closeChatBoard={closeChatBoard}
+                                timeStamps={timeStamps}
+
                             />
                         )
                     })

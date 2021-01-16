@@ -8,7 +8,7 @@ import { db } from '../../../../firebase/Firebase'
 
 
 
-const ChatSharedPost = ({ postId }) =>{
+const ChatSharedPost = ({ postId, closeChatBoard }) =>{
     const [post, setPost] = useState({})
     const [poster, setPoster] = useState({})
     const [fetching, setFetching] = useState(true)
@@ -43,16 +43,23 @@ const ChatSharedPost = ({ postId }) =>{
         <div className='chat-shared-post-container'>
 
             <div className='chat-shared-post-top-section'>
-                <Link to={`/profile/${poster && poster.userName}/${poster && poster.userId}`}>
+                <Link 
+                    onClick={closeChatBoard}
+                    to={`/profile/${poster && poster.userName}/${poster && poster.userId}`}
+                >
                     <Avatar src={poster && poster.profilePhoto} />
                 </Link>
                 
-                <Link to={`/profile/${poster && poster.userName}/${poster && poster.userId}`}>
+                <Link 
+                    onClick={closeChatBoard}
+                    to={`/profile/${poster && poster.userName}/${poster && poster.userId}`}
+                >
                     <p>{poster && poster.userName}</p>
                 </Link>
             </div>
 
             <Link 
+                onClick={closeChatBoard}
                 className='chat-shared-post-image-container'
                 to={`/p/${postId && postId}`}
             >

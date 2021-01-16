@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
-//import useDoubleClick from 'use-double-click'
 import { connect } from 'react-redux'
 import moment from 'moment'
 import Snackbar from '@material-ui/core/Snackbar'
@@ -11,7 +10,7 @@ import Snackbar from '@material-ui/core/Snackbar'
 
 import { LikedIcon, UnLikedIcon, CommentIcon, ShareIcon, SavedIcon, UnSavedIcon } from '../../MyIcons'
 import MoreOptions from './more_options/MoreOptions'
-import SharePost from './share/SharePost'
+import SharePostDrawer, { SharePostDialog } from './share/SharePost'
 import MobileComments from '../../../pages/comments/mobile/MobileComments'
 import { db } from '../../../firebase/Firebase'
 import { followUser } from '../../../store/actions/ProfileActions'
@@ -22,11 +21,13 @@ import EachComment from '../../../pages/comments/mobile/each_comment/EachComment
 import StoryAvatar from '../../avatar/StoryAvatar'
 import CreateChatModal from '../../../messenger/mobile/create_chat/CreateChatModal'
 import CreateChatDialog from '../../../messenger/pc/create_chat/CreateChatDialog'
+import FeedImage from './feed_image/FeedImage'
 
 
 const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePost, unSavePost, handleViewStory, handleOpenProfileCard }) => {
     const [openDialog, setOpenDialog] = useState(false)
     const [openShareDrawer, setOpenShareDrawer] = useState(false)
+    const [openShareDialog, setOpenShareDialog] = useState(false)
     const [openComment, setOpenComment] = useState(false)
     const [posterProfile, setPosterProfile] = useState({})
     const [postComments, setPostComments] = useState([])
@@ -34,8 +35,8 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
     const [linkSnackBar, setLinkSnackBar] = useState(false)
     const [shareToDirectModal, setShareToDirectModal] = useState(false)
     const [shareToDirectDialog, setShareToDirectDialog] = useState(false)
-    //const [isFollowing, setIsFollowing] = useState(null)
-    // const buttonRef = useRef(null)
+    
+    
 
     const handleOpenComment = () =>{
         setOpenComment(true)
@@ -53,12 +54,19 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
         setOpenDialog(false)
     }
 
-    const handleOpenShareDrawer = () => {
-        setOpenShareDrawer(true)
+    const handleOpenShare = () => {
+        const screenWidth = window.matchMedia('(min-width: 600px)')
+        if (screenWidth.matches) {
+            setOpenShareDialog(true)
+        }
+        else{
+            setOpenShareDrawer(true)
+        }
     }
 
-    const handleCloseShareDrawer = () =>{
+    const handleCloseShare = () =>{
         setOpenShareDrawer(false)
+        setOpenShareDialog(false)
     }
 
     const getPosterProfile = useCallback( () =>{
@@ -93,17 +101,9 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
         setLinkSnackBar(false)
     }
 
-//    useDoubleClick({
-//         onSingleClick: e => {
-//           console.log(e, 'single click');
-//         },
-//         onDoubleClick: e => {
-//             profile && profile.likedPosts.includes(post && post.postId) ?
-//             handleUnLikePost() : handleLikePost()
-//         },
-//         //ref: buttonRef,
-//         latency: 250
-//     })
+
+
+   
 
 
     const handleFollowUser = () =>{
@@ -153,11 +153,11 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
     }
 
     const handleCopyPostLink = () =>{
-        const link = `http://0s-instagram-clone/p/${post.postId}`
+        const link = `http://os-instagram-clone/p/${post.postId}`
 
         navigator.clipboard.writeText(link)
         setLinkSnackBar(true)
-        handleCloseShareDrawer()
+        handleCloseShare()
     }
 
     const handleOpenProfilePopper = e =>{
@@ -202,16 +202,25 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
                 handleCloseDialog={handleCloseDialog}
                 posterId = {post && post.userId}
                 postId={post && post.postId}
-                openShare={handleOpenShareDrawer}
+                openShare={handleOpenShare}
                 handleCopyPostLink={handleCopyPostLink}
             />
 
 
-            <SharePost 
+            <SharePostDrawer 
                 open={openShareDrawer}
-                close={handleCloseShareDrawer}
+                close={handleCloseShare}
                 link={`https://os-instagram-clone.netlify.app/p/${post.postId}`}
                 handleCopyPostLink={handleCopyPostLink}
+                openDirect={handleOpenSharePostToDirect}
+            />
+
+            <SharePostDialog
+                openDialog={openShareDialog}
+                handleCloseDialog={handleCloseShare}
+                link={`https://os-instagram-clone.netlify.app/p/${post.postId}`}
+                handleCopyPostLink={handleCopyPostLink}
+                openDirect={handleOpenSharePostToDirect}
             />
 
             <CreateChatModal
@@ -226,6 +235,8 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
                 handleCloseDialog={handleCloseSharePostToDirect}
                 from='post'
                 postId={post.postId}
+                post={post && post}
+                profile={profile && profile}
             />
 
 
@@ -258,7 +269,8 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
                         </p>
                     </Link>
 
-                    { profile && !profile.following.includes(posterProfile && posterProfile.userId) &&
+                    { profile && !profile.following.includes(posterProfile && posterProfile.userId) 
+                    && profile.userId !== posterProfile.userId &&
                         <Button 
                             variant='contained'
                             color='primary'
@@ -277,12 +289,11 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
 
 
 
-            <div className='post-media-container'>
-                <img 
-                    //ref={buttonRef}
-                    src={post && post.fileUrl} alt='POST_FILE' 
-                />
-            </div>
+            <FeedImage
+                imageSource={post && post.fileUrl}
+                postStyle={post.style && post.style}
+                handleLikePost={handleLikePost}
+            />
 
 
             <div className='bottom-actions-container'>

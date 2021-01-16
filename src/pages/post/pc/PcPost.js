@@ -23,6 +23,8 @@ import { followUser, unFollowUser } from '../../../store/actions/ProfileActions'
 import { handleViewStory, handleOpenProfileCard, handleCloseProfileCard } from '../../../store/actions/AppActions'
 import MoreOptions from '../../../components/feed/each_feed/more_options/MoreOptions'
 import { SharePostDialog } from '../../../components/feed/each_feed/share/SharePost'
+import CreateChatDialog from '../../../messenger/pc/create_chat/CreateChatDialog'
+import FeedImage from '../../../components/feed/each_feed/feed_image/FeedImage'
 
 
 
@@ -58,6 +60,7 @@ const PcPost = ({ post, posterProfile, profile, posts, followUser, likePost, com
     const [linkSnackBar, setLinkSnackBar] = useState(false)
     const [moreOptions, setMoreOptions] = useState(false)
     const [sharePost, setSharePost] = useState(false)
+    const [shareToDirectDialog, setShareToDirectDialog] = useState(false)
 
     const inputRef = useRef(null)
     const classes = useStyles()
@@ -210,6 +213,15 @@ const PcPost = ({ post, posterProfile, profile, posts, followUser, likePost, com
         setMoreOptions(false)
     }
 
+    const handleOpenShareToDirect = () =>{
+        setShareToDirectDialog(true)
+    }
+
+
+    const handleCloseShareToDirect = () =>{
+        setShareToDirectDialog(false)
+    }
+
 
     const handleCopyPostLink = () =>{
         const link = `https://os-instagram-clone.netlify.app/p/${post.postId}`
@@ -241,12 +253,23 @@ const PcPost = ({ post, posterProfile, profile, posts, followUser, likePost, com
                 handleCloseDialog={handleCloseSharePostDialog}
                 link={`https://os-instagram-clone.netlify.app/p/${post.postId}`}
                 handleCopyPostLink={handleCopyPostLink}
+                openDirect={handleOpenShareToDirect}
             />
+
+            <CreateChatDialog
+                openDialog={shareToDirectDialog}
+                handleCloseDialog={handleCloseShareToDirect}
+                from='post'
+                postId={post.postId}
+            />
+
             <div className='main-selected-post-container'>
 
-                <div className='main-post-file-container'>
-                    <img src={post && post.fileUrl} alt='file' />
-                </div>
+                <FeedImage
+                    imageSource={post && post.fileUrl}
+                    postStyle={post && post.style}
+                    handleLikePost={handleLikePost}
+                />
 
 
                 <div className='main-post-details-container'>
@@ -372,7 +395,7 @@ const PcPost = ({ post, posterProfile, profile, posts, followUser, likePost, com
                                 <ShareIcon
                                     width='24px'
                                     height='24px'
-                                    action={handleOpenSharePostDialog}
+                                    action={handleOpenShareToDirect}
 
                                 />
                             </div>
@@ -433,6 +456,7 @@ const PcPost = ({ post, posterProfile, profile, posts, followUser, likePost, com
 
 
 
+            {moreUserPosts.length > 0 &&
             <div className='other-posts-container'>
                 <p>More posts from <span>{posterProfile && posterProfile.userName}</span></p>
 
@@ -448,6 +472,7 @@ const PcPost = ({ post, posterProfile, profile, posts, followUser, likePost, com
                 </div>
 
             </div>
+            }
 
                 <Snackbar
                     open={linkSnackBar}

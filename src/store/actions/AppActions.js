@@ -51,3 +51,18 @@ export const setPopperActiveFalse = () =>{
 
 
 
+export const handleOpenScamWarning = () =>{
+    return(dispatch, getState) =>{
+        dispatch({ type : 'OPEN_SCAM_DIALOG'})
+    }
+}
+
+
+export const handleCloseScamWarning = () =>{
+    return(dispatch, getState) =>{
+        dispatch({ type : 'CLOSE_SCAM_DIALOG'})
+    }
+}
+
+
+

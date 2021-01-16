@@ -1,7 +1,25 @@
 import firebase, { storage, db } from '../../firebase/Firebase'
 
+
+
+
+export const openCreatePostModal = (data) =>{
+    return (dispatch, getState) =>{
+        dispatch({ type : 'OPEN_CREATE_POST', data})
+    }
+}
+
+
+
+export const closeCreatePostModal = () =>{
+    return (dispatch, getState) =>{
+        dispatch({ type : 'CLOSE_CREATE_POST'})
+    }
+}
+
 export const createPost = (post, data) => {
     return (dispatch, getState, { getFirebase, getFirestore }) => {
+        dispatch({ type : 'CREATING_POST'})
         const { file, userId} = data
         const firestore = getFirestore()
         //const firebase = getFirebase()
@@ -271,5 +289,20 @@ export const unLikePostComment = (data) =>{
         .catch(error =>{
             dispatch({ type : 'UNLIKE_COMMENT_FAILED', error})
         })
+    }
+}
+
+
+
+export const openSharedPostSnackbar = () =>{
+    return (dispatch, getState) =>{
+        dispatch({ type : 'OPEN_SHARED_POST'})
+    }
+}
+
+
+export const closeSharedPostSnackbar = () =>{
+    return (dispatch, getState) =>{
+        dispatch({ type : 'CLOSE_SHARED_POST'})
     }
 }

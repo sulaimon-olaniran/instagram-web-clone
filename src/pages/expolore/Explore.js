@@ -11,6 +11,7 @@ import { compose } from 'redux'
 
 import { MyUnActiveSearchIcon } from '../../components/MyIcons'
 import SpinnerLoader from '../../components/loaders/spinner/SpinnerLoader'
+import { handleOpenScamWarning } from '../../store/actions/AppActions'
 import PostOutline from '../../components/post_outline/PostOutline'
 
 
@@ -28,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Explore = ({ setCurrentPage, posts }) => {
+const Explore = ({ setCurrentPage, posts, showScamWarning }) => {
     const [currentData, setCurrentData] = useState(18)
     const [loadMore, setLoadMore] = useState(false)
     const classes = useStyles();
@@ -52,13 +53,14 @@ const Explore = ({ setCurrentPage, posts }) => {
 
     useEffect(() => {
         setCurrentPage('explore')
+        showScamWarning()
         window.addEventListener('scroll', handleOnWindowScroll)
 
         return () => {
             window.removeEventListener('scroll', handleOnWindowScroll)
         }
 
-    }, [setCurrentPage, handleOnWindowScroll])
+    }, [setCurrentPage, handleOnWindowScroll, showScamWarning])
 
 
 
@@ -96,6 +98,9 @@ const Explore = ({ setCurrentPage, posts }) => {
         </div>
     )
 }
+
+
+
 const mapStateToProps = (state) => {
     //console.log(state)
     return {
@@ -105,7 +110,15 @@ const mapStateToProps = (state) => {
 
 
 
+const mapDispatchToProps = dispatch =>{
+    return{
+        showScamWarning : () => dispatch(handleOpenScamWarning())
+    }
+}
+
+
+
 export default compose(
-    connect(mapStateToProps),
+    connect(mapStateToProps, mapDispatchToProps),
     firestoreConnect(() => ['posts'])
 )(Explore)

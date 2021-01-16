@@ -1,0 +1,38 @@
+.scam-warning-dialog-container{
+    width: 100%;
+    height: 350px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 0;
+
+    h2{
+        font-weight: 400;
+        color: rgb(189, 44, 44);
+        text-align: center;
+        width: 100%;
+    }
+
+    p{
+        color:  rgb(215, 40, 40);
+        font-size: 1.1rem;
+    }
+
+    small{
+        width: 90%;
+        font-size: 1rem;
+    }
+
+    button{
+        color: salmon;
+    }
+}
+
+
+@media(min-width : 600px) {
+    .scam-warning-dialog-container{
+        width: 400px;
+        height: 300px;
+    }
+}

@@ -11,12 +11,13 @@ import LogoLoader from '../../components/loaders/LogoLoader'
 import { followUser, unFollowUser } from '../../store/actions/ProfileActions'
 import { handleViewStory } from '../../store/actions/AppActions'
 import { openChatBoard, selectUserToChatWith } from '../../store/actions/MessengerAction'
+import { handleOpenScamWarning } from '../../store/actions/AppActions'
 import PcProfile from './pc/PcProfile'
 import UnFollowDialog from './actions/unfollow/UnFollow'
 import BlockReportRestrictDialog from './actions/brr-dialog/BRRDialog'
 
 
-const Profile = ({ match, auth, posts, profile, followUser, unFollowUser, handleViewStory, selectChatUser, openChatBoard }) =>{
+const Profile = ({ match, auth, posts, profile, followUser, unFollowUser, handleViewStory, selectChatUser, openChatBoard, showScamWarning }) =>{
     const [fetchingData, setFetchingData] = useState(true)
     const [userProfile, setUserProfile] = useState({})
     const [userPosts, setUserPosts] = useState([])
@@ -47,8 +48,9 @@ const Profile = ({ match, auth, posts, profile, followUser, unFollowUser, handle
 
     useEffect(() => {
         getUserProfileData()
+        showScamWarning()
         
-    }, [getUserProfileData])
+    }, [getUserProfileData, showScamWarning])
 
 
     const handleFollowUser = () => {
@@ -156,7 +158,8 @@ const mapDispatchToProps = (dispatch) => {
         unFollowUser: data => dispatch(unFollowUser(data)),
         handleViewStory : data => dispatch(handleViewStory(data)),
         openChatBoard : user => dispatch(openChatBoard(user)),
-        selectChatUser : user => dispatch(selectUserToChatWith(user))
+        selectChatUser : user => dispatch(selectUserToChatWith(user)),
+        showScamWarning : () => dispatch(handleOpenScamWarning())
     }
 }
 

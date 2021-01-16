@@ -15,10 +15,12 @@ const UnsendReportPopper = ({ anchorEl, handleClose, profile, message, handleLik
         navigator.clipboard.writeText(message.message)
     }
 
-    const deleteMessage = () =>{
-        handleDeleteMessage(message)
-        handleClose()
+    const handleCopyPostLink = () =>{
+        const link = `http://os-instagram-clone/p/${message.message}`
+        navigator.clipboard.writeText(link)
     }
+
+    
 
     const likeMessage = () =>{
         handleLikeMessage(message)
@@ -72,6 +74,16 @@ const UnsendReportPopper = ({ anchorEl, handleClose, profile, message, handleLik
 
                 }
 
+{
+                message.messageType === 'post' &&
+                    <Button
+                        onClick={handleCopyPostLink}
+                    >
+                        Copy
+                    </Button>
+
+                }
+
                 {
                     message.sender !== profile.userId ?
                     <Button>
@@ -79,7 +91,7 @@ const UnsendReportPopper = ({ anchorEl, handleClose, profile, message, handleLik
                     </Button>
                     :
                     <Button
-                        onClick={deleteMessage}
+                        onClick={handleDeleteMessage}
                     >
                         Unsend
                     </Button>
