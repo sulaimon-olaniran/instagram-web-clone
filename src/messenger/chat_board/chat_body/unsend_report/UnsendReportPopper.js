@@ -13,11 +13,13 @@ const UnsendReportPopper = ({ anchorEl, handleClose, profile, message, handleLik
 
     const handleCopyText = () =>{
         navigator.clipboard.writeText(message.message)
+        handleClose()
     }
 
     const handleCopyPostLink = () =>{
         const link = `http://os-instagram-clone/p/${message.message}`
         navigator.clipboard.writeText(link)
+        handleClose()
     }
 
     

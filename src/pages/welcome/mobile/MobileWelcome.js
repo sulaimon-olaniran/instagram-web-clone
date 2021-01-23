@@ -9,7 +9,7 @@ import SuggestionsCarousel from '../../../components/sugestions_carousel/Suggest
 
 
 
-const MobileWelcome = ({ users, profile }) =>{
+const MobileWelcome = ({ users, profile, MobileTopNavigation, unReadMessages }) =>{
     const [suggestedUsers, setSuggestedUsers] = useState([])
     
     const { following, userId } = profile && profile
@@ -31,6 +31,7 @@ const MobileWelcome = ({ users, profile }) =>{
 
     return(
         <div className='mobile-welcome-page-container'>
+            <MobileTopNavigation unReadMessages={unReadMessages} />
             <h1>Welcome to Instagram</h1>
             <p>
                 When you follow people, you'll see the 

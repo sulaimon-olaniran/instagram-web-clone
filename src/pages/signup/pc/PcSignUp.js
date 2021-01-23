@@ -16,39 +16,38 @@ import PcVerificationDialog from './verification/PcVerification'
 
 
 
-const PcSignUp = ({ setFieldValue, handleBlur, touched, errors, values, handleVerificationCode, verificationCode }) => {
+const PcSignUp = ({ setFieldValue, handleBlur, touched, errors, values, handleVerificationCode, verificationCode, authError }) => {
     const [verificationDialog, setVerificationDialog] = useState(false)
     const [emailExist, setEmailExist] = useState(false)
     const [checkingEmail, setCheckingEmail] = useState(false)
 
-    const handleOpenVerificationDialog = () =>{
+    const handleOpenVerificationDialog = () => {
         setVerificationDialog(true)
     }
 
-    const handleCloseVerificationDialog = () =>{
+    const handleCloseVerificationDialog = () => {
         setVerificationDialog(false)
     }
 
-    const handleVerificationMessage = () =>{
+    const handleVerificationMessage = () => {
         setCheckingEmail(true)
         const checkIfEmailExists = firebase.functions().httpsCallable('checkIfEmailExists')
 
-        checkIfEmailExists({email : values.email})
-        .then(res =>{
-           console.log(res.data)
-           const isEmailExist = res.data
-            if(isEmailExist){
-                setEmailExist(true)
-                setCheckingEmail(false)
-            }
-            else{
-                setEmailExist(false) 
-                handleVerificationCode(values.email)   
-                handleOpenVerificationDialog()
-                setCheckingEmail(false)
-            }
-        })
-        .catch(error => console.log(error))
+        checkIfEmailExists({ email: values.email })
+            .then(res => {
+                const isEmailExist = res.data
+                if (isEmailExist) {
+                    setEmailExist(true)
+                    setCheckingEmail(false)
+                }
+                else {
+                    setEmailExist(false)
+                    handleVerificationCode(values.email)
+                    handleOpenVerificationDialog()
+                    setCheckingEmail(false)
+                }
+            })
+            .catch(error => console.log(error))
     }
 
 
@@ -104,7 +103,7 @@ const PcSignUp = ({ setFieldValue, handleBlur, touched, errors, values, handleVe
                         errorMessage={errors.password}
                     />
 
-                    
+
                     <Button
                         variant='contained'
                         color='primary'
@@ -116,10 +115,10 @@ const PcSignUp = ({ setFieldValue, handleBlur, touched, errors, values, handleVe
                         Sign Up
                     </Button>
 
-                    { checkingEmail && <ClipLoader />}
+                    {checkingEmail && <ClipLoader />}
 
-                    { emailExist && <small style={{color : 'red'}}>the email you provided has been used by another user</small>}
-
+                    {emailExist && <small style={{ color: 'red' }}>the email you provided has been used by another user</small>}
+                    {authError && <small style={{color: 'red'}}>{authError}</small>}
                     <small>By signing up, you agree to our Terms, Data Policy and Cookies Policy.</small>
                 </div>
 
@@ -129,7 +128,7 @@ const PcSignUp = ({ setFieldValue, handleBlur, touched, errors, values, handleVe
                 <p>Have an account ?<Link to='/'><Button color='primary' id='login_button'>Log In</Button></Link></p>
             </div>
 
-            <PcVerificationDialog 
+            <PcVerificationDialog
                 openDialog={verificationDialog}
                 handleCloseDialog={handleCloseVerificationDialog}
                 verificationCode={verificationCode}

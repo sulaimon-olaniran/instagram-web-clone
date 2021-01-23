@@ -6,17 +6,18 @@ import { connect } from 'react-redux'
 
 
 //import TopPcNav from '../../../components/navbar/top_nav/TopPcNav'
-import Stories from '../../../components/stories/Stories'
+//import Stories from '../../../components/stories/Stories'
 import RightSection from './right_section/RightSection'
 import Suggestions from '../../suggestions/Suggestions'
-import { handleCloseProfileCard } from '../../../store/actions/AppActions'
+import { handleCloseProfileCard, handleViewStory } from '../../../store/actions/AppActions'
+import StoryAvatar from '../../../components/avatar/StoryAvatar'
 
 
 
-const PcHome = ({ feedPosts }) => {
-    //const feedPosts = []
+const PcHome = ({ feedPosts, profile, handleViewStory, storyUsers }) => {
+  
 
-
+  
     if(feedPosts !== null && feedPosts.length === 0) return (
         <div className='pc-home-suggestions-container'>
             <Suggestions />
@@ -27,11 +28,35 @@ const PcHome = ({ feedPosts }) => {
             
             <div className='pc-home-contents-container'>
                 <RightSection />
+
+
+                {profile && profile.stories.length > 0 && storyUsers.length > 0 &&
                 <div className='pc-home-stories-container'>
                     <HorizontalScroller>
-                        <Stories />
+                        {profile && profile.stories.length > 0 &&
+                        <StoryAvatar
+                            src={profile && profile.profilePhoto}
+                            height='74px'
+                            width='74px'
+                            action={() => handleViewStory(profile)}
+                        />}
+                        
+
+                        {storyUsers.length > 0 && storyUsers.map(user =>{
+                            return(
+                                <StoryAvatar
+                                    key={user.userId}
+                                    src={user.profilePhoto}
+                                    height='74px'
+                                    width='74px'
+                                    action={() => handleViewStory(user)}
+                                />
+                            )
+                        })}
                     </HorizontalScroller>
-                </div>
+                </div>}
+
+
 
                 <div className='pc-home-feedposts-container'>
                     <PostsFeed
@@ -49,6 +74,7 @@ const PcHome = ({ feedPosts }) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         handleCloseProfileCard: () => dispatch(handleCloseProfileCard()),
+        handleViewStory: (data) => dispatch(handleViewStory(data))
     }
 }
 

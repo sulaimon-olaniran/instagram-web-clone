@@ -12,7 +12,7 @@ import MobileSignIn from '../mobile/MobileSignIn'
 
 
 
-const PcSignIn = ({ setFieldValue, handleBlur, touched, errors }) => {
+const PcSignIn = ({ setFieldValue, handleBlur, touched, errors, authError }) => {
     const [x, setX] = useState(0)
     const slideImages = [image_one, image_two, image_three, image_four, image_five]
 
@@ -57,6 +57,7 @@ const PcSignIn = ({ setFieldValue, handleBlur, touched, errors }) => {
                   handleBlur={handleBlur}
                   touched={touched}
                   errors={errors}
+                  authError={authError}
                 />
             </div>
 

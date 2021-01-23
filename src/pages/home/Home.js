@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React from 'react'
 import { firestoreConnect } from 'react-redux-firebase'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
@@ -13,7 +13,6 @@ import { handleOpenScamWarning } from '../../store/actions/AppActions'
 
 
 const Home = ({ users, profile, posts, setCurrentPage, unReadMessages, showScamWarning }) => {
-    const [followingPosts, setFollowingPosts] = useState(null)
 
     const sortPostsBasedOnTime = (a, b) =>{
         const comparisonA = a.time
@@ -30,50 +29,45 @@ const Home = ({ users, profile, posts, setCurrentPage, unReadMessages, showScamW
         return comparisonsStatus
     }
 
-    const getAllFollowingPosts = useCallback(() => {
 
-        const allPosts = []
-        const promises = profile.isLoaded  && !profile.isEmpty && posts && posts.map(post => {
-            return post.userId === profile.userId || profile.following.includes(post.userId) ?
-            allPosts.push(post) : null
-        
-        })
+    const filterOutFeedPosts = (data) =>{
+        return(
+            profile.following.includes(data.userId) || profile.userId === data.userId
+        ) 
+    }
 
 
-        Promise.all([promises])
-        .then(() =>{
-            const sortedPosts = allPosts.sort(sortPostsBasedOnTime)
-            setFollowingPosts(sortedPosts)
-            
-        })
-        
-    }, [posts, profile])
+    const filterOutUserWithStories = (data) =>{
+        return(
+            profile.following.includes(data.userId) && data.stories.length > 0
+        )
+    }
 
 
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        showScamWarning()
-        getAllFollowingPosts()
-        setCurrentPage('home')
+    //     console.log('hello world')
 
-    }, [getAllFollowingPosts, setCurrentPage, showScamWarning ])
+    // }, [])
 
-    if (!profile.isLoaded) return <LogoLoader />
-
+    if (posts === undefined || profile.isLoaded === false || users === undefined) return <LogoLoader />
     return (
         <React.Fragment>
             <div className='mobile-home'>
                 <MobileHome
-                    feedPosts={followingPosts}
+                    feedPosts={posts.filter(filterOutFeedPosts).sort(sortPostsBasedOnTime)}
                     profile={profile}
                     unReadMessages={unReadMessages}
+                    storyUsers={users.filter(filterOutUserWithStories)}
                 />
             </div>
             
             <div className='pc-home'>
                 <PcHome  
-                    feedPosts={followingPosts}
+                    feedPosts={posts.filter(filterOutFeedPosts).sort(sortPostsBasedOnTime)}
+                    profile={profile}
+                    storyUsers={users.filter(filterOutUserWithStories)}
                 />
             </div>
         </React.Fragment>

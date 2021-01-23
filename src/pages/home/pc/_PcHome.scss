@@ -19,6 +19,11 @@
             padding: 15px;
             background-color: white;
             border-radius: 5px;
+
+            .container{
+                overflow-x: auto;
+                height: 100%;
+            }
         }
 
         .pc-home-feedposts-container{
@@ -31,7 +36,6 @@
 
 .pc-home-suggestions-container{
     width: 600px;
-    margin-top: 8rem;
     background-color: white;
     padding-bottom: 20px;
 }

@@ -8,11 +8,12 @@ import { ValidationSchema } from './ValidationSchema'
 import MobileSignIn from './mobile/MobileSignIn'
 import PcSignIn from './pc/PcSignIn'
 import { handleOpenScamWarning } from '../../store/actions/AppActions'
+import GradientLoader from '../../components/loaders/gradient/GradientLoader'
 
 
 
 
-const SignIn = ({ setFieldValue, handleBlur, touched, errors, authError, showScamWarning }) => {
+const SignIn = ({ setFieldValue, handleBlur, touched, errors, authError, showScamWarning, signingIn }) => {
     
     useEffect(() =>{
         showScamWarning()
@@ -22,6 +23,7 @@ const SignIn = ({ setFieldValue, handleBlur, touched, errors, authError, showSca
 
     return (
         <Form>
+            {signingIn && <GradientLoader />}
             <div className='mobile-signup' >
                 <MobileSignIn
                     setFieldValue={setFieldValue}
@@ -38,6 +40,7 @@ const SignIn = ({ setFieldValue, handleBlur, touched, errors, authError, showSca
                     handleBlur={handleBlur}
                     touched={touched}
                     errors={errors}
+                    authError={authError}
                 />
             </div>
 
@@ -66,7 +69,8 @@ const FormikSignIn = withFormik({
 
 const mapStateToProps = (state) =>{
     return{
-        authError : state.auth.authError
+        authError : state.auth.authError,
+        signingIn : state.auth.signingIn
     }
 }
 

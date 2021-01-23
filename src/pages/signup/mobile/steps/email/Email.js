@@ -3,26 +3,29 @@ import { Field } from 'formik'
 import Textfield from '@material-ui/core/TextField'
 import Button from '@material-ui/core/Button'
 import firebase from '../../../../../firebase/Firebase'
+import { ClipLoader } from 'react-spinners'
+
 
 
 const Email = ({ touched, errors, setActiveStep, email, handleVerificationCode }) => {
     const [emailExist, setEmailExist] = useState(false)
-
+    const [checkingEmail, setCheckingEmail] = useState(false)
     
     const goToNextStep = () =>{
         //verify if email has not been used for another account before proceeding........
-
+        setCheckingEmail(true)
         const checkIfEmailExists = firebase.functions().httpsCallable('checkIfEmailExists')
      
         checkIfEmailExists({email : email})
         .then(res =>{
-           console.log(res.data)
            const isEmailExist = res.data
             if(isEmailExist){
                 setEmailExist(true)
+                setCheckingEmail(false)
             }
             else{
-                setEmailExist(false)    
+                setEmailExist(false)   
+                setCheckingEmail(false) 
                 setActiveStep(prev => prev + 1)
                 handleVerificationCode(email)
             }
@@ -49,7 +52,6 @@ const Email = ({ touched, errors, setActiveStep, email, handleVerificationCode }
             <div className='step-buttons-container'>
                 <Button
                     disabled={true}
-                    //className={classes.backButton}
                 >
                     Back
                 </Button>
@@ -63,6 +65,7 @@ const Email = ({ touched, errors, setActiveStep, email, handleVerificationCode }
                     Next
                 </Button>
             </div>
+            {checkingEmail && <ClipLoader />}
         </div>
     )
 }

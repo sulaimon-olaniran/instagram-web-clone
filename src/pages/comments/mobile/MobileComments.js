@@ -7,11 +7,17 @@ import TextareaAutosize from 'react-textarea-autosize'
 import Modal from '@material-ui/core/Modal'
 import { makeStyles } from '@material-ui/core/styles'
 import { connect } from 'react-redux'
+import moment from 'moment'
+
+
 
 
 import { MyDirectIcon } from '../../../components/MyIcons'
 import EachComment from './each_comment/EachComment'
 import { commentOnPost } from '../../../store/actions/PostsAction'
+
+
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -102,7 +108,7 @@ const MobileComments = ({ post, postComments, posterProfile, openCommentModal, h
                             <span>{posterProfile && posterProfile.userName}</span> {post && post.caption}
                         </p>
 
-                        <small>{post && post.time}</small>
+                        <small>{moment(post && post.time).fromNow()}</small>
                     </div>
                 </div>
 

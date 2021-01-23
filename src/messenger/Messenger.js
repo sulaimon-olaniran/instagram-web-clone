@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react'
+import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 
 
@@ -19,7 +20,7 @@ const Messenger = ({ auth, profile, showScamWarning }) => {
 
     const handleFetchAllUserChats = useCallback(() => {
 
-        auth && db.collection('users').doc(auth.uid).collection('chats')
+        auth.uid && db.collection('users').doc(auth.uid).collection('chats')
             .onSnapshot(snapShots => {
                 const chats = []
                 snapShots.forEach(snapshot => {
@@ -61,8 +62,10 @@ const Messenger = ({ auth, profile, showScamWarning }) => {
     }, [handleFetchAllUserChats, handleSetChatsToSeen, showScamWarning])
 
 
-    if (fetching) return <LogoLoader />
 
+
+    if(!auth.uid) return <Redirect to='/' />
+    if (fetching) return <LogoLoader />
     return (
         <div className='messenger-container'>
             <div className='mobile-messenger'>

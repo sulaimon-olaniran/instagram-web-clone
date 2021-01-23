@@ -3,6 +3,8 @@ const initState = {
      changingPassword : false,
      passwordSnackbar : false,
      snackbarText : '',
+     logingIn : false,
+     signingUp : false
 }
 
 
@@ -12,32 +14,50 @@ const AuthReducer = (state = initState, action) =>{
                console.log(action.error)
           return {
                ...state,
-               authError : action.error.message
+               authError : action.error.message,
+               logingIn : false,
+          }
+
+
+          case  'LOGING_IN' :
+          console.log('login success')
+          return {
+               ...state,
+               logingIn : true
           }
 
           case  'LOGIN_SUCCESS' :
           console.log('login success')
           return {
                ...state,
-               authError : null
+               authError : null,
+               loginIn : false,
           }
 
           case 'SIGNOUT_SUCCESS' :
-               console.log('signout successful')
+               //console.log('signout successful')
                return state
+
+
+          case 'SIGNING_UP' :
+               return{
+                    ...state,
+                    signingUp : true
+               }
 
           case 'SIGNUP_SUCCESS' :
                console.log('signup successfull')
                return{
                     ...state,
-                    authError : null
+                    signingUp : false
                }
 
           case 'SIGNUP_ERROR' :
-               console.log(action.error)
+               //console.log(action.error)
           return {
                ...state,
-               authError : action.error.message
+               authError : action.error.message,
+               signingUp : false
           }
 
           //

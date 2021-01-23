@@ -10,7 +10,7 @@ import { connect } from 'react-redux'
 
 import instagram_text_logo from '../../assets/instagram_text_logo.png'
 import { MyDirectIcon, MyCameraIcon } from '../../../components/MyIcons'
-import Stories from '../../../components/stories/Stories'
+//import Stories from '../../../components/stories/Stories'
 import PostsFeed from '../../../components/feed/PostsFeed'
 import CreateButton from '../../../components/create_story/CreateButton'
 import MobileWelcome from '../../welcome/mobile/MobileWelcome'
@@ -31,48 +31,63 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const MobileHome = ({ feedPosts, profile, handleViewStory, unReadMessages }) => {
+
+const MobileTopNavigation = ({ unReadMessages }) => {
+    return (
+
+        <div className='top-navigation-container'>
+            <CreateButton
+                component={<MyCameraIcon height='24px' width='24px' />}
+            />
+
+            <img src={instagram_text_logo} alt="INSTAGRAM" />
+            <Link to='/direct/inbox'>
+                {unReadMessages.length > 0 ?
+                    <Badge
+                        badgeContent={unReadMessages.length}
+                        color="secondary"
+                    >
+                        <MyDirectIcon
+                            height='24px'
+                            width='24px'
+                        />
+                    </Badge>
+                    :
+                    <MyDirectIcon
+                        height='24px'
+                        width='24px'
+                    />
+                }
+            </Link>
+        </div>
+
+    )
+}
+
+
+
+
+const MobileHome = ({ feedPosts, profile, handleViewStory, unReadMessages, storyUsers }) => {
 
     const classes = useStyles()
 
 
-    
+    if (feedPosts !== null && feedPosts.length === 0) return (
+        <MobileWelcome 
+            MobileTopNavigation={MobileTopNavigation} 
+            unReadMessages={unReadMessages} 
+        />
+    )
     return (
         <div className='mobile-home-container'>
 
-            <div className='top-navigation-container'>
-                <CreateButton 
-                    component={<MyCameraIcon height='24px' width='24px' />} 
-                />
+            <MobileTopNavigation unReadMessages={unReadMessages} />
 
-                <img src={instagram_text_logo} alt="INSTAGRAM" />
-                    <Link to='/direct/inbox'>
-                        {unReadMessages.length > 0 ?
-                            <Badge
-                                badgeContent={unReadMessages.length}
-                                color="secondary"
-                            >
-                                <MyDirectIcon
-                                    height='24px'
-                                    width='24px'
-                                />
-                            </Badge>
-                            :
-                            <MyDirectIcon
-                                height='24px'
-                                width='24px'
-                            />
-                        }
-                    </Link>
-            </div>
+            <React.Fragment>
+                <div className='stories-container'>
+                    <HorizontalScroller>
 
-            
-            {feedPosts !== null && feedPosts.length > 0 ?
-                <React.Fragment>
-                    <div className='stories-container'>
-                        <HorizontalScroller>
-
-                            {profile && profile.stories && !profile.stories.length > 0 ?
+                        {profile && profile.stories && !profile.stories.length > 0 ?
                             <CreateButton
                                 component={
                                     <Badge
@@ -90,7 +105,7 @@ const MobileHome = ({ feedPosts, profile, handleViewStory, unReadMessages }) => 
                                     </Badge>
                                 }
                             />
-                                :
+                            :
                             <div className='user-story-container'>
                                 <StoryAvatar
                                     src={profile && profile.profilePhoto}
@@ -100,21 +115,29 @@ const MobileHome = ({ feedPosts, profile, handleViewStory, unReadMessages }) => 
                                 />
                                 <small>Your Story</small>
                             </div>
-                            }
+                        }
+
+                        {storyUsers.length > 0 && storyUsers.map(user =>{
+                            return(
+                                <StoryAvatar
+                                    key={user.userId}
+                                    src={user.profilePhoto}
+                                    height='74px'
+                                    width='74px'
+                                    action={() => handleViewStory(user)}
+                                />
+                            )
+                        })}
 
 
-                            <Stories />
+                    </HorizontalScroller>
+                </div>
 
-                        </HorizontalScroller>
-                    </div>
+                <div className='main-contents-container'>
+                    <PostsFeed feedPosts={feedPosts} />
+                </div>
+            </React.Fragment>
 
-                    <div className='main-contents-container'>
-                        <PostsFeed feedPosts={feedPosts} />
-                    </div>
-                </React.Fragment>
-                :
-                <MobileWelcome />
-            }
 
         </div>
     )
@@ -122,9 +145,9 @@ const MobileHome = ({ feedPosts, profile, handleViewStory, unReadMessages }) => 
 
 
 
-const mapDispatchToProps = (dispatch) =>{
-    return{
-        handleViewStory : (data) => dispatch(handleViewStory(data))
+const mapDispatchToProps = (dispatch) => {
+    return {
+        handleViewStory: (data) => dispatch(handleViewStory(data))
     }
 }
 

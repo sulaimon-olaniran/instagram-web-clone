@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const Suggestion = ({ user, profile }) =>{
+const Suggestion = ({ user, profile, followUser }) =>{
     const classes = useStyles()
 
     const handleFollowUser = () =>{

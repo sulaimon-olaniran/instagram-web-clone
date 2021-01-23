@@ -28,22 +28,22 @@
     .right-section-profile-information{
         display: flex;
         width: 60%;
-        min-height: 5rem;
+        min-height: 4rem;
         justify-content: space-between;
     }
 
     .right-section-suggestions-container{
         width: 100%;
         height: 80%;
-        margin-top: 3rem;
+        margin-top: 2.5rem;
 
         .header-content{
             display: flex;
-            height: 20px;
+            height: 15px;
             width: 95%;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
 
             h4{
                 color: rgb(148, 148, 148);
@@ -62,7 +62,7 @@
 
             .each-right-section-suggestion{
                 width: 100%;
-                height: 4rem;
+                height: 3rem;
                 display: flex;
                 align-items: center;
                 justify-content: space-between;

@@ -33,7 +33,7 @@ import Messenger from './messenger/Messenger'
 //import ChatBoard from './messenger/chat_board/ChatBoard'
 import MobileChatBoardModal from './messenger/mobile/mobile_chatboard/MobileChatBoardModal'
 import UploadModal from './components/upload/modal/UploadModal'
-import ScamWarningsDialog from './components/warnings/scam_warning/ScamWarningsDialog'
+//import ScamWarningsDialog from './components/warnings/scam_warning/ScamWarningsDialog'
 
 
 
@@ -137,7 +137,7 @@ function App({ auth, storyAdded, closeStorySnackBar, sharedPost, closeSharePostS
 
         <MobileChatBoardModal />
 
-        <ScamWarningsDialog />
+        {/* <ScamWarningsDialog /> */}
 
       </div>
     </Router>

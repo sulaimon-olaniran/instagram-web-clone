@@ -47,7 +47,7 @@ function getSteps() {
 }
 
 
-const MobileSignUp = ({ setFieldValue, handleBlur, touched, errors, values, verificationCode, handleVerificationCode }) => {
+const MobileSignUp = ({ setFieldValue, handleBlur, touched, errors, values, verificationCode, handleVerificationCode, authError }) => {
     const classes = useStyles();
     const [activeStep, setActiveStep] = useState(0);
     const steps = getSteps();
@@ -153,6 +153,7 @@ const MobileSignUp = ({ setFieldValue, handleBlur, touched, errors, values, veri
                         </Field>
 
                         </div>
+                        {authError && <small style={{color: 'red'}}>{authError}</small>}
                         <small>By signing up, you agree to our Terms, Data Policy and Cookies Policy.</small>
                     </div>
                 ) : (

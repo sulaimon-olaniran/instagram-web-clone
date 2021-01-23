@@ -3,7 +3,7 @@ import firebase, { db }  from '../../firebase/Firebase'
 
 export const signUserIn = (credentials) =>{
     return (dispatch, getState) =>{
-
+        dispatch({ type : 'LOGING_IN'})
         firebase.auth().signInWithEmailAndPassword(
             credentials.email,
             credentials.password
@@ -31,7 +31,7 @@ export const signUserOut = () =>{
 
 export const signUserUp = (user) =>{
     return(dispatch, getState) => {
-
+        dispatch({ type : 'SIGNING_UP'})
         firebase.auth().createUserWithEmailAndPassword(
             user.email,
             user.password
@@ -48,6 +48,9 @@ export const signUserUp = (user) =>{
                 following : [],
                 savedPosts : [],
                 likedPosts : [],
+                likedComments : [],
+                stories : [],
+                blockedUsers : []
             })
         })
         .then(() =>{

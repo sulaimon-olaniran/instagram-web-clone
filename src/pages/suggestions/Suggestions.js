@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos'
 import Button from '@material-ui/core/Button'
 import { Link, Redirect } from 'react-router-dom'
@@ -7,30 +7,36 @@ import { compose } from 'redux'
 import { firestoreConnect } from 'react-redux-firebase'
 
 
-//import { suggestions } from './Fakedat'
 import Suggestion from './suggestion/Suggestion'
 
 
 const Suggestions = ({ as, auth, users, profile, history }) => {
-    const [suggestedUsers, setSuggestedUsers] = useState([])
+    //const [suggestedUsers, setSuggestedUsers] = useState([])
 
-    useEffect(() => {
-        const suggested = []
-        //console.log(users)
-        //console.log(profile)
-        users && users.forEach(user => {
-            profile && !profile.following.includes(user.userId) &&
-                profile.userId !== user.userId && suggested.push(user)
-        })
+    // useEffect(() => {
+    //     const suggested = []
+    //     users && users.map(user => {
+    //         return  profile && !profile.following.includes(user.userId) &&
+    //             profile.userId !== user.userId && suggested.push(user)
+    //     })
 
-        setSuggestedUsers(suggested)
-    }, [profile, users])
+    //     setSuggestedUsers(suggested)
+    // }, [profile, users])
 
-    //console.log(suggestedUsers)
+    const filterOutUserWithStories = (data) =>{
+        return(
+           profile && !profile.following.includes(data.userId) && profile.userId !== data.userId
+        )
+    }
 
-    if (!auth.uid) return <Redirect to='/' />
+
+    const suggestedUsers = users && users.filter(filterOutUserWithStories)
+    
 
     const styleName = as === 'component' ? 'component' : 'page'
+    
+
+    if (!auth.uid) return <Redirect to='/' />
 
     return (
         <div className={`suggestions-container ${styleName}`} >

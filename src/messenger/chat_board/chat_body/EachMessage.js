@@ -3,6 +3,7 @@ import useDoubleClick from 'use-double-click'
 import { Avatar, Button } from '@material-ui/core'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
 import moment from 'moment'
+//import ClickNHold from 'react-click-n-hold'
 
 
 
@@ -45,7 +46,7 @@ const EachMessage = ({ message, classes, handleLikeMessage, profile, lastMessage
                 seen: true,
             })
             .then(() => {
-                console.log('seen success')
+                //console.log('seen success')
             })
             .catch(error => console.log(error))
 
@@ -64,7 +65,7 @@ const EachMessage = ({ message, classes, handleLikeMessage, profile, lastMessage
                 read: true,
             })
             .then(() => {
-                console.log('read success')
+                //console.log('read success')
             })
             .catch(error => console.log(error))
 
@@ -98,7 +99,7 @@ const EachMessage = ({ message, classes, handleLikeMessage, profile, lastMessage
         if (screenWidth.matches) {
             holdTimeRef.current = setTimeout(() => {
                 setUnsendReport(true)
-            }, 3000)
+            }, 1500)
         }
     }
 
@@ -166,6 +167,19 @@ const EachMessage = ({ message, classes, handleLikeMessage, profile, lastMessage
         setTime(moment(message.timeStamp).calendar())
     }
 
+
+    // const clickStart = () =>{
+    //     console.log("click start")
+    // }
+
+    // const clickHold = () =>{
+    //     console.log('click held')
+    // }
+
+    // const clickStop = () =>{
+    //     console.log("click stop")
+    // }
+
     return (
         <div
             className='each-chat-message-container'
@@ -228,7 +242,7 @@ const EachMessage = ({ message, classes, handleLikeMessage, profile, lastMessage
                         ref={messageRef}
                         onPointerDown={handleMouseDown}
                         onPointerUp={handleMouseUp}
-
+                        onPointerMove={handleMouseUp}
                     >
                         <p>{message.message}</p>
                     </div>
@@ -265,6 +279,7 @@ const EachMessage = ({ message, classes, handleLikeMessage, profile, lastMessage
                         ref={messageRef}
                         onPointerDown={handleMouseDown}
                         onPointerUp={handleMouseUp}
+                        onPointerMove={handleMouseUp}
                         className='heart-text-container'
 
                     >
@@ -306,6 +321,7 @@ const EachMessage = ({ message, classes, handleLikeMessage, profile, lastMessage
                         ref={messageRef}
                         onPointerDown={handleMouseDown}
                         onPointerUp={handleMouseUp}
+                        onPointerMove={handleMouseUp}
                         onClick={() => handleOpenviewImageModal(message.message)}
 
                     >
@@ -347,7 +363,7 @@ const EachMessage = ({ message, classes, handleLikeMessage, profile, lastMessage
                         ref={messageRef}
                         onPointerDown={handleMouseDown}
                         onPointerUp={handleMouseUp}
-
+                        onPointerMove={handleMouseUp}
                     >
                         <ChatSharedPost
                             postId={message.message}

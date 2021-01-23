@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Form, withFormik } from 'formik'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
+import emailjs from 'emailjs-com'
 //import sendmail from 'sendmail'
 
 import PcSignUp from './pc/PcSignUp'
@@ -9,10 +10,11 @@ import MobileSignUp from './mobile/MobileSignUp'
 import { ValidationSchema } from './ValidationSchema'
 import { signUserUp } from '../../store/actions/AuthActions'
 import { handleOpenScamWarning } from '../../store/actions/AppActions'
+import GradientLoader from '../../components/loaders/gradient/GradientLoader'
 
 
 
-const SignUp = ({ setFieldValue, handleBlur, touched, errors, values, auth, authError, showScamWarning }) => {
+const SignUp = ({ setFieldValue, handleBlur, touched, errors, values, auth, authError, showScamWarning, signingUp }) => {
     const [verificationCode, setVerificationCode] = useState(null)
 
     const handleVerificationCode = (email) =>{
@@ -20,6 +22,20 @@ const SignUp = ({ setFieldValue, handleBlur, touched, errors, values, auth, auth
         setVerificationCode(sixDigitCodes)
 
         //send email to users {email} using email.js
+        const templatedId = "template_7f1dk1i"
+        const serviceId = "default_service"
+        const userId = "user_KHVompyz6Bjkqit10kCMV"
+
+        const values = {
+            email : email,
+            verificationCode : sixDigitCodes
+        }
+
+        emailjs.send( serviceId, templatedId, values, userId)
+        .then(res =>{
+            console.log(res)
+        })
+        .catch(error => console.log(error))
     }
 
     //console.log(authError)
@@ -33,6 +49,7 @@ const SignUp = ({ setFieldValue, handleBlur, touched, errors, values, auth, auth
 
     return (
         <Form>
+            {signingUp && <GradientLoader />}
             <div className='pc-signup' >
                 <PcSignUp
                     setFieldValue={setFieldValue}
@@ -42,6 +59,7 @@ const SignUp = ({ setFieldValue, handleBlur, touched, errors, values, auth, auth
                     values={values}
                     verificationCode={verificationCode}
                     handleVerificationCode={handleVerificationCode}
+                    authError={authError}
                 />
             </div>
 
@@ -54,6 +72,7 @@ const SignUp = ({ setFieldValue, handleBlur, touched, errors, values, auth, auth
                     values={values}
                     verificationCode={verificationCode}
                     handleVerificationCode={handleVerificationCode}
+                    authError={authError}
                 />
             </div>
         </Form>
@@ -83,7 +102,8 @@ const FormikSignUp = withFormik({
 const mapStateToProps = (state) =>{
     return{
         auth : state.firebase.auth,
-        authError : state.auth.authError
+        authError : state.auth.authError,
+        signingUp : state.auth.signingUp
     }
 }
 

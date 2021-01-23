@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { makeStyles } from '@material-ui/core/styles'
 import GridList from '@material-ui/core/GridList'
 import GridListTile from '@material-ui/core/GridListTile'
@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Explore = ({ setCurrentPage, posts, showScamWarning }) => {
+const Explore = ({ setCurrentPage, posts, showScamWarning, auth }) => {
     const [currentData, setCurrentData] = useState(18)
     const [loadMore, setLoadMore] = useState(false)
     const classes = useStyles();
@@ -64,7 +64,7 @@ const Explore = ({ setCurrentPage, posts, showScamWarning }) => {
 
 
 
-
+    if(!auth.uid) return <Redirect to='/' />
     return (
         <div className='explore-page-container'>
             <Link className='top-button-container' to='/explore/search'>
@@ -105,6 +105,7 @@ const mapStateToProps = (state) => {
     //console.log(state)
     return {
         posts: state.firestore.ordered.posts,
+        auth : state.firebase.auth,
     }
 }
 
