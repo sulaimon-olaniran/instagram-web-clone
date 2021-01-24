@@ -54,7 +54,9 @@ const Explore = ({ setCurrentPage, posts, showScamWarning, auth }) => {
     useEffect(() => {
         setCurrentPage('explore')
         showScamWarning()
+
         window.addEventListener('scroll', handleOnWindowScroll)
+
 
         return () => {
             window.removeEventListener('scroll', handleOnWindowScroll)
@@ -63,8 +65,17 @@ const Explore = ({ setCurrentPage, posts, showScamWarning, auth }) => {
     }, [setCurrentPage, handleOnWindowScroll, showScamWarning])
 
 
+    // const shuffleArray = (array) => {
+    //     return array.sort(() => Math.random() - 0.5);
+    // }
 
-    if(!auth.uid) return <Redirect to='/' />
+
+    //const shuffledPosts = posts && shuffleArray(posts)
+
+
+    if (posts === undefined) return <SpinnerLoader height='100vh' />
+
+    if (!auth.uid) return <Redirect to='/' />
     return (
         <div className='explore-page-container'>
             <Link className='top-button-container' to='/explore/search'>
@@ -76,18 +87,14 @@ const Explore = ({ setCurrentPage, posts, showScamWarning, auth }) => {
             <div className='explore-contents-container'>
                 <GridList cellHeight={120} className={classes.gridList} cols={3}>
                     {
-                        posts ? posts.slice(0, currentData).map((post, i) => {
-                            //console.log(i)gjj
+                        posts.slice(0, currentData).map(post => {
+
                             return (
                                 <GridListTile key={post.postId} >
                                     <PostOutline post={post} />
                                 </GridListTile>
                             )
                         })
-                            :
-                            <SpinnerLoader
-                                height='100vh'
-                            />
                     }
                 </GridList>
 
@@ -105,15 +112,15 @@ const mapStateToProps = (state) => {
     //console.log(state)
     return {
         posts: state.firestore.ordered.posts,
-        auth : state.firebase.auth,
+        auth: state.firebase.auth,
     }
 }
 
 
 
-const mapDispatchToProps = dispatch =>{
-    return{
-        showScamWarning : () => dispatch(handleOpenScamWarning())
+const mapDispatchToProps = dispatch => {
+    return {
+        showScamWarning: () => dispatch(handleOpenScamWarning())
     }
 }
 

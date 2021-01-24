@@ -37,23 +37,23 @@ export const createChat = (data) => {
     return (dispatch, getState) => {
         dispatch({ type: "CREATING_CHAT" })
 
-        interlocutors.map(id => {
-            return db.collection('users').doc(id).collection('chats')
-                .doc(chatId).set({
-                    chatId: chatId,
-                    interlocutors: interlocutors,
-                    createdAt: Date.now(),
-                    createdBy: createdBy,
-                    coUser: coUser
+        db.collection('users').doc(createdBy).collection('chats')
+            .doc(chatId).set({
+                chatId: chatId,
+                interlocutors: interlocutors,
+                createdAt: Date.now(),
+                createdBy: createdBy,
+                coUser: coUser,
+                unRead : false
 
-                }, { merge: true })
-                .then(() => {
-                    dispatch({ type: "CHAT_CREATED_SUCCESS" })
-                })
-                .catch(error => {
-                    dispatch({ type: "CHAT_CREATED_FAIL", error })
-                })
-        })
+            }, { merge: true })
+            .then(() => {
+                dispatch({ type: "CHAT_CREATED_SUCCESS" })
+            })
+            .catch(error => {
+                dispatch({ type: "CHAT_CREATED_FAIL", error })
+            })
+
 
     }
 }
@@ -81,7 +81,11 @@ export const deleteChat = (data) => {
     }
 }
 
-const handleSendMessage = (dispatch, data, id) =>{
+
+
+
+
+const handleSendMessage = (dispatch, data, id) => {
     const { sender, chatId, messageType, message, messageId } = data
 
     if (id !== sender) {
@@ -98,7 +102,7 @@ const handleSendMessage = (dispatch, data, id) =>{
                         messageType: messageType,
                         sender: sender,
                         seen: false,
-                        read : false,
+                        read: false,
                         likes: [],
                         messageId: messageId,
                     })
@@ -118,7 +122,7 @@ const handleSendMessage = (dispatch, data, id) =>{
                 messageType: messageType,
                 sender: sender,
                 seen: false,
-                read : false,
+                read: false,
                 likes: [],
                 messageId: messageId,
             })
@@ -145,7 +149,7 @@ export const sendMessage = (data) => {
                 .get()
                 .then(docSnap => {
                     if (docSnap.exists) {
-                       return handleSendMessage(dispatch, data, id)
+                        return handleSendMessage(dispatch, data, id)
                     }
                     else {
                         return db.collection('users').doc(id).collection('chats')
@@ -154,11 +158,12 @@ export const sendMessage = (data) => {
                                 interlocutors: interlocutors,
                                 createdAt: Date.now(),
                                 createdBy: sender,
-                                coUser: coUser
+                                coUser: coUser,
+                                unRead : true
 
                             }, { merge: true })
                             .then(() => {
-                               return handleSendMessage(dispatch, data, id)
+                                return handleSendMessage(dispatch, data, id)
                             })
                             .catch(error => {
                                 console.log(error)

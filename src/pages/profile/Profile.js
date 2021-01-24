@@ -20,7 +20,6 @@ import BlockReportRestrictDialog from './actions/brr-dialog/BRRDialog'
 const Profile = ({ match, auth, posts, profile, followUser, unFollowUser, handleViewStory, selectChatUser, openChatBoard, showScamWarning }) =>{
     const [fetchingData, setFetchingData] = useState(true)
     const [userProfile, setUserProfile] = useState({})
-    const [userPosts, setUserPosts] = useState([])
     const [unfollowDialog, setUnfollowDialog] = useState(false)
     const [blockDialog, setBlockDialog] = useState(false)
 
@@ -28,20 +27,13 @@ const Profile = ({ match, auth, posts, profile, followUser, unFollowUser, handle
 
     const getUserProfileData = useCallback(() => {
         const userId = match.params.id
-        const allPosts = []
+        
         db.collection('users').doc(userId)
             .onSnapshot(snapshot => {
                 setUserProfile(snapshot.data())
-                //console.log(snapshot.data())
-                posts && posts.forEach(post => {
-                    if (post.userId === userId) {
-                        allPosts.push(post)
-                    }
-                })
-                setUserPosts(allPosts)
                 setFetchingData(false)
             })
-    }, [match, posts])
+    }, [match])
 
 
 
@@ -89,10 +81,31 @@ const Profile = ({ match, auth, posts, profile, followUser, unFollowUser, handle
         setBlockDialog(false)
     }
 
+    const sortPostsBasedOnTime = (a, b) =>{
+        const comparisonA = a.time
+        const comparisonB = b.time
+
+        let comparisonsStatus = 0
+        if(comparisonA < comparisonB){
+            comparisonsStatus = 1
+        }
+        else{
+            comparisonsStatus = -1
+        }
+
+        return comparisonsStatus
+    }
+
+    const filterOutUserPosts = (data) =>{
+        return(
+            match.params.id === data.userId
+        ) 
+    }
+
 
 
     if(!auth.uid) return <Redirect to='/' />
-    if (fetchingData) return <LogoLoader />
+    if (fetchingData || posts === undefined ) return <LogoLoader />
     return(
         <React.Fragment>
 
@@ -112,7 +125,7 @@ const Profile = ({ match, auth, posts, profile, followUser, unFollowUser, handle
             <div className='mobile-profile'>
                 <MobileProfile 
                     userProfile={userProfile}
-                    userPosts={userPosts}
+                    userPosts={posts.filter(filterOutUserPosts).sort(sortPostsBasedOnTime)}
                     handleViewStory={handleViewStory}
                     handleFollowUser={handleFollowUser}
                     handleUnFollowUser={handleUnFollowUser}
@@ -126,7 +139,7 @@ const Profile = ({ match, auth, posts, profile, followUser, unFollowUser, handle
             <div className='pc-profile'>
                 <PcProfile
                     userProfile={userProfile}
-                    userPosts={userPosts}
+                    userPosts={posts.filter(filterOutUserPosts).sort(sortPostsBasedOnTime)}
                     handleViewStory={handleViewStory}
                     handleFollowUser={handleFollowUser}
                     handleUnFollowUser={handleUnFollowUser}

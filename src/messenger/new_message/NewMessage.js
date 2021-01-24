@@ -8,14 +8,14 @@ import { v4 as uuidv4 } from 'uuid'
 
 
 
-import { openChatBoard, selectUserToChatWith, sendMessage } from '../../store/actions/MessengerAction'
+import { openChatBoard, selectUserToChatWith, sendMessage, createChat } from '../../store/actions/MessengerAction'
 import { openSharedPostSnackbar } from '../../store/actions/PostsAction'
 import SuggestedChat from './suggested_chat/SuggestedChat'
 
 
 
 
-const NewMessageTheme = ({ close, users, openChatBoard, from, selectChatUser, profile, postId, sendMessage, openSnackBar }) => {
+const NewMessageTheme = ({ close, users, openChatBoard, from, selectChatUser, profile, postId, sendMessage, openSnackBar, createChat }) => {
     const [matchedUsers, setMatchedUsers] = useState([])
     const [searchInput, setSearchInput] = useState('')
     const [selectedUser, setSelectedUser] = useState(null)
@@ -62,11 +62,20 @@ const NewMessageTheme = ({ close, users, openChatBoard, from, selectChatUser, pr
 
     const handleGoToChatBoard = () => {
         const screenWidth = window.matchMedia('(min-width: 600px)')
+        const data = {
+            createdBy: profile.userId,
+            interlocutors: interlocutors,
+            chatId: chatId,
+            coUser : selectedUser.userId
+        }
+
         if (screenWidth.matches) {
+            createChat(data)
             selectChatUser(selectedUser)
             close()
         }
         else {
+            createChat(data)
             openChatBoard(selectedUser)
             close()
         }
@@ -192,6 +201,7 @@ const mapDispatchToProps = dispatch => () => {
         openChatBoard: user => dispatch(openChatBoard(user)),
         selectChatUser: user => dispatch(selectUserToChatWith(user)),
         sendMessage: data => dispatch(sendMessage(data)),
+        createChat: data => dispatch(createChat(data)),
         openSnackBar : () => dispatch(openSharedPostSnackbar())
     }
 }

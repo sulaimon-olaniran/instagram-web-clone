@@ -14,7 +14,7 @@ import SharePostDrawer, { SharePostDialog } from './share/SharePost'
 import MobileComments from '../../../pages/comments/mobile/MobileComments'
 import { db } from '../../../firebase/Firebase'
 import { followUser } from '../../../store/actions/ProfileActions'
-import {  likePost, unLikePost, savePost, unSavePost } from '../../../store/actions/PostsAction'
+import { likePost, unLikePost, savePost, unSavePost } from '../../../store/actions/PostsAction'
 import { handleViewStory, handleOpenProfileCard } from '../../../store/actions/AppActions'
 import FeedSkeleton from '../../skeletons/FeedSkeleton'
 import EachComment from '../../../pages/comments/mobile/each_comment/EachComment'
@@ -35,14 +35,14 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
     const [linkSnackBar, setLinkSnackBar] = useState(false)
     const [shareToDirectModal, setShareToDirectModal] = useState(false)
     const [shareToDirectDialog, setShareToDirectDialog] = useState(false)
-    
-    
 
-    const handleOpenComment = () =>{
+
+
+    const handleOpenComment = () => {
         setOpenComment(true)
     }
 
-    const handleCloseComment = () =>{
+    const handleCloseComment = () => {
         setOpenComment(false)
     }
 
@@ -59,100 +59,100 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
         if (screenWidth.matches) {
             setOpenShareDialog(true)
         }
-        else{
+        else {
             setOpenShareDrawer(true)
         }
     }
 
-    const handleCloseShare = () =>{
+    const handleCloseShare = () => {
         setOpenShareDrawer(false)
         setOpenShareDialog(false)
     }
 
-    const getPosterProfile = useCallback( () =>{
+    const getPosterProfile = useCallback(() => {
         db.collection('users').doc(post && post.userId)
-        .onSnapshot(snapshot =>{
-            setPosterProfile(snapshot.data())
-            setFetching(false)
-        })
-    }, [post])
-
-    const getPostComments = useCallback(() =>{
-        db.collection('posts').doc(post && post.postId)
-        .collection('comments').onSnapshot(snapshot =>{
-            const comments = []
-            snapshot.forEach( doc =>{
-                comments.push(doc.data())
+            .onSnapshot(snapshot => {
+                setPosterProfile(snapshot.data())
+                setFetching(false)
             })
-            setPostComments(comments)
-            //console.log(comments)
-        })
     }, [post])
-    
 
-    useEffect(() =>{
+    const getPostComments = useCallback(() => {
+        db.collection('posts').doc(post && post.postId)
+            .collection('comments').onSnapshot(snapshot => {
+                const comments = []
+                snapshot.forEach(doc => {
+                    comments.push(doc.data())
+                })
+                setPostComments(comments)
+                //console.log(comments)
+            })
+    }, [post])
+
+
+    useEffect(() => {
         getPosterProfile()
         getPostComments()
 
-    }, [ getPosterProfile, getPostComments ])
+    }, [getPosterProfile, getPostComments])
 
-    
-    const handleCloseSnackBar= () =>{
+
+    const handleCloseSnackBar = () => {
         setLinkSnackBar(false)
     }
 
 
 
-   
 
 
-    const handleFollowUser = () =>{
+
+    const handleFollowUser = () => {
         const data = {
-            accountId : posterProfile.userId,
-            userId : profile.userId
+            accountId: posterProfile.userId,
+            userId: profile.userId
         }
         followUser(data)
     }
 
-    const handleLikePost = () =>{
+    const handleLikePost = () => {
         const data = {
-            accountId : posterProfile.userId,
-            userId : profile.userId,
-            postId : post.postId,
-            posterId : post.userId,
+            accountId: posterProfile.userId,
+            userId: profile.userId,
+            postId: post.postId,
+            posterId: post.userId,
         }
 
         likePost(data)
     }
 
-    const handleUnLikePost = () =>{
-        const data ={
-            accountId : posterProfile.userId,
-            userId : profile.userId,
-            postId : post.postId,
-            posterId : post.userId,
+    const handleUnLikePost = () => {
+        const data = {
+            accountId: posterProfile.userId,
+            userId: profile.userId,
+            postId: post.postId,
+            posterId: post.userId,
         }
 
         unLikePost(data)
     }
 
-    const hanldeSavePost = () =>{
+    const hanldeSavePost = () => {
         const data = {
-            userId : profile.userId,
-            postId : post.postId
+            userId: profile.userId,
+            postId: post.postId
         }
         savePost(data)
     }
 
-    const handleUnSavePost = () =>{
+    const handleUnSavePost = () => {
         const data = {
-            userId : profile.userId,
-            postId : post.postId
+            userId: profile.userId,
+            postId: post.postId
         }
         unSavePost(data)
     }
 
-    const handleCopyPostLink = () =>{
+    const handleCopyPostLink = () => {
         const link = `http://os-instagram-clone/p/${post.postId}`
 
         navigator.clipboard.writeText(link)
@@ -160,15 +160,15 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
         handleCloseShare()
     }
 
-    const handleOpenProfilePopper = e =>{
+    const handleOpenProfilePopper = e => {
         const data = {
-            event : e.currentTarget,
-            profile : posterProfile
+            event: e.currentTarget,
+            profile: posterProfile
         }
         handleOpenProfileCard(data)
     }
 
-    
+
     const handleOpenSharePostToDirect = () => {
         const screenWidth = window.matchMedia('(min-width: 600px)')
         if (screenWidth.matches) {
@@ -179,35 +179,35 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
         }
     }
 
-    const handleCloseSharePostToDirect = () =>{
+    const handleCloseSharePostToDirect = () => {
         setShareToDirectDialog(false)
         setShareToDirectModal(false)
     }
 
-    if(fetching) return <FeedSkeleton  />
+    if (fetching) return <FeedSkeleton />
     return (
         <div className='each-post-feed-container'>
 
-            <MobileComments 
-              openCommentModal={openComment}
-              handleCloseModal={handleCloseComment}
-              post={post && post}
-              posterProfile={posterProfile && posterProfile}
-              postComments={postComments}
+            <MobileComments
+                openCommentModal={openComment}
+                handleCloseModal={handleCloseComment}
+                post={post && post}
+                posterProfile={posterProfile && posterProfile}
+                postComments={postComments}
             />
 
 
             <MoreOptions
                 openDialog={openDialog}
                 handleCloseDialog={handleCloseDialog}
-                posterId = {post && post.userId}
+                posterId={post && post.userId}
                 postId={post && post.postId}
                 openShare={handleOpenShare}
                 handleCopyPostLink={handleCopyPostLink}
             />
 
 
-            <SharePostDrawer 
+            <SharePostDrawer
                 open={openShareDrawer}
                 close={handleCloseShare}
                 link={`https://os-instagram-clone.netlify.app/p/${post.postId}`}
@@ -244,34 +244,38 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
 
                 <div className='user-container'>
                     {posterProfile && posterProfile.stories && !posterProfile.stories.length > 0 ?
-                    <Avatar
-                        onMouseEnter={handleOpenProfilePopper}
-                        //onMouseLeave={handleCloseProfileCard}
-                        src={posterProfile && posterProfile.profilePhoto}
-                    />
+                        <Avatar
+                            onMouseEnter={handleOpenProfilePopper}
+                            //onMouseLeave={handleCloseProfileCard}
+                            src={posterProfile && posterProfile.profilePhoto}
+                        />
                         :
-                    <StoryAvatar 
-                        onMouseEnter={handleOpenProfilePopper}
-                        //onMouseLeave={handleCloseProfileCard}
-                        src={posterProfile && posterProfile.profilePhoto}
-                        height='48px'
-                        width='48px'
-                        action={() => handleViewStory(posterProfile)}
-                    />}
+                        <StoryAvatar
+                            onMouseEnter={handleOpenProfilePopper}
+                            //onMouseLeave={handleCloseProfileCard}
+                            src={posterProfile && posterProfile.profilePhoto}
+                            height='48px'
+                            width='48px'
+                            action={() => handleViewStory(posterProfile)}
+                        />}
 
-                    <Link 
-                        onMouseEnter={handleOpenProfilePopper}
-                        //onMouseLeave={handleCloseProfileCard}
-                        to={`/profile/${posterProfile && posterProfile.userName}/${posterProfile && posterProfile.userId}`}
-                    >
-                        <p>
-                            {posterProfile && posterProfile.userName}
-                        </p>
-                    </Link>
+                    <div className='name-location-details-container'>
 
-                    { profile && !profile.following.includes(posterProfile && posterProfile.userId) 
-                    && profile.userId !== posterProfile.userId &&
-                        <Button 
+                        <Link
+                            onMouseEnter={handleOpenProfilePopper}
+                            //onMouseLeave={handleCloseProfileCard}
+                            to={`/profile/${posterProfile && posterProfile.userName}/${posterProfile && posterProfile.userId}`}
+                        >
+                            <p>
+                                {posterProfile && posterProfile.userName}
+                            </p>
+                        </Link>
+                        {post && post.location && <small>{post.location.address}</small>}
+                    </div>
+
+                    {profile && !profile.following.includes(posterProfile && posterProfile.userId)
+                        && profile.userId !== posterProfile.userId &&
+                        <Button
                             variant='contained'
                             color='primary'
                             size='small'
@@ -299,21 +303,21 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
             <div className='bottom-actions-container'>
 
                 <div className='left-sided'>
-                {profile && profile.likedPosts.includes(post && post.postId) ?
-                    <LikedIcon
-                        width='24px'
-                        height='24px'
-                        action={handleUnLikePost}
-                    />
-                    :
+                    {profile && profile.likedPosts.includes(post && post.postId) ?
+                        <LikedIcon
+                            width='24px'
+                            height='24px'
+                            action={handleUnLikePost}
+                        />
+                        :
 
-                    <UnLikedIcon
-                        width='24px'
-                        height='24px'
-                        action={handleLikePost}
-                    />
-                
-                }
+                        <UnLikedIcon
+                            width='24px'
+                            height='24px'
+                            action={handleLikePost}
+                        />
+
+                    }
                     <span className='mobile-comment-feeds-icon-container'>
                         <CommentIcon
                             width='24px'
@@ -322,7 +326,7 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
                         />
                     </span>
 
-                    <Link 
+                    <Link
                         to={`/p/${post.postId}`}
                         className='pc-comment-feeds-icon-container'
                     >
@@ -341,19 +345,19 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
 
                 </div>
 
-            {profile && profile.savedPosts.includes(post && post.postId) ?
-                <SavedIcon
-                    width='24px'
-                    height='24px'
-                    action={handleUnSavePost}
-                />
-                :
-                <UnSavedIcon
-                    width='24px'
-                    height='24px'
-                    action={hanldeSavePost}
-                />
-            }
+                {profile && profile.savedPosts.includes(post && post.postId) ?
+                    <SavedIcon
+                        width='24px'
+                        height='24px'
+                        action={handleUnSavePost}
+                    />
+                    :
+                    <UnSavedIcon
+                        width='24px'
+                        height='24px'
+                        action={hanldeSavePost}
+                    />
+                }
             </div>
 
 
@@ -368,8 +372,8 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
                 </div>
 
                 <div className='comments-container'>
-                    
-                    { postComments && postComments.length > 3 &&
+
+                    {postComments && postComments.length > 3 &&
                         <div className='comments-title'>
                             <p onClick={handleOpenComment}>View all {postComments && postComments.length} comments</p>
                         </div>
@@ -379,7 +383,7 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
                         postComments && postComments.length > 0 && postComments.slice(0, 3).map((comment, i) => {
                             return (
                                 <div key={i} className='each-comment-container'>
-                                    <EachComment 
+                                    <EachComment
                                         comment={comment}
                                         post={post}
                                         profile={profile}
@@ -399,24 +403,24 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
             </div>
 
             <div className='each-post-bottom-commnent-input'>
-                    <input
-                        placeholder='Add a comment'
-                    />
-                    <Button>
-                        Post
+                <input
+                    placeholder='Add a comment'
+                />
+                <Button>
+                    Post
                     </Button>
             </div>
 
-                <Snackbar
-                    open={linkSnackBar}
-                    message="Link Copied To Clipboard"
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left'
-                    }}
-                    onClose={handleCloseSnackBar}
-                    autoHideDuration={3000}
-                />
+            <Snackbar
+                open={linkSnackBar}
+                message="Link Copied To Clipboard"
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left'
+                }}
+                onClose={handleCloseSnackBar}
+                autoHideDuration={3000}
+            />
 
         </div>
     )
@@ -424,22 +428,22 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
 
 
 
-const mapStateToProps = (state) =>{
-    return{
-        profile : state.firebase.profile
+const mapStateToProps = (state) => {
+    return {
+        profile: state.firebase.profile
     }
 }
 
 
-const mapDisptachToProps = (dispatch) =>{
-    return{
-        followUser : data => dispatch(followUser(data)),
-        likePost : data => dispatch(likePost(data)),
-        unLikePost : data => dispatch(unLikePost(data)),
-        savePost : data => dispatch(savePost(data)),
-        unSavePost : data => dispatch(unSavePost(data)),
-        handleViewStory : data => dispatch(handleViewStory(data)),
-        handleOpenProfileCard : data => dispatch(handleOpenProfileCard(data)),
+const mapDisptachToProps = (dispatch) => {
+    return {
+        followUser: data => dispatch(followUser(data)),
+        likePost: data => dispatch(likePost(data)),
+        unLikePost: data => dispatch(unLikePost(data)),
+        savePost: data => dispatch(savePost(data)),
+        unSavePost: data => dispatch(unSavePost(data)),
+        handleViewStory: data => dispatch(handleViewStory(data)),
+        handleOpenProfileCard: data => dispatch(handleOpenProfileCard(data)),
         //handleCloseProfileCard : data => dispatch(handleCloseProfileCard(data)),
     }
 }

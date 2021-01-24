@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from 'react'
+import React from 'react'
 import { firestoreConnect } from 'react-redux-firebase'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
@@ -11,50 +11,25 @@ import { openChatBoard, selectUserToChatWith } from '../../store/actions/Messeng
 
 
 const ChatList = ({ userChats, users, profile, openChatBoard, selectChatUser }) =>{
-    //console.log(userChats)
-    const [usersDetail, setUsersDetail] = useState(null)
-
-    const handleUserChatsUserDetails = useCallback(() =>{
-        const details = []
-        const promises = users && users.map(user =>{
-            return userChats.map(chat =>{
-                return user.userId !== profile.userId && user.userId === chat.coUser ?
-                details.push(user) : null
-            })
-            
-        })
-
-        Promise.all([promises])
-        .then(() =>{
-            setUsersDetail(details)
-            
-        })
-    }, [ userChats, profile, users ])
-
-
-    useEffect(() =>{
-        handleUserChatsUserDetails()
-
-    }, [ handleUserChatsUserDetails ])
-
-    //console.log(usersDetail)
-
+    
 
     const handleOpenChatBoard = (user) =>{
         openChatBoard(user)
     }
 
+
     return(
         <div className='chat-lists-container'>
             {
-                usersDetail && usersDetail.map(user =>{
+                userChats && userChats.map(chat =>{
                     return(
                         <EachChat
-                            user={user}
-                            key={user.userId}
+                            chat={chat}
+                            key={chat.chatId}
                             handleOpenChatBoard={handleOpenChatBoard}
                             selectChatUser={selectChatUser}
                             profile={profile}
+                            users={users}
                         />
                     )
                 })

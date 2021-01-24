@@ -115,7 +115,7 @@ const ChatBoard = ({ selectedAccount, closeChatBoard, users, sendMessage, delete
         //setFetchingMessages(true)
         db.collection('users').doc(profile.userId)
             .collection('chats').doc(chatId).collection('messages')
-            .orderBy('timeStamp', 'asc').onSnapshot(snapshots => {
+            .orderBy('timeStamp', 'desc').onSnapshot(snapshots => {
                 const messages = []
                 snapshots.forEach(snapshot => {
                     messages.push(snapshot.data())
@@ -205,7 +205,14 @@ const ChatBoard = ({ selectedAccount, closeChatBoard, users, sendMessage, delete
 
 
     if (creatingChat || fetchingMessages) return <LogoLoader />
-    if (showDetails) return <ChatDetails handleHideDetails={handleHideDetails} user={selectedAccount} />
+    if (showDetails) return (
+        <ChatDetails 
+            handleHideDetails={handleHideDetails} 
+            user={selectedAccount}
+            profile={profile}
+            chatId={chatId}
+        />
+    )
 
     return (
         <div className='chat-board-container'>

@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const ChatDetails = ({ user, handleHideDetails }) => {
+const ChatDetails = ({ user, handleHideDetails, profile, chatId }) => {
     const [blockDialog, setBlockDialog] = useState(false)
     const [reportModal, setReportModal] = useState(false)
     const [reportDialog, setReportDialog] = useState(false)
@@ -100,6 +100,8 @@ const ChatDetails = ({ user, handleHideDetails }) => {
             <DeleteChatDialog
                 openDialog={deleteChatDialog}
                 handleCloseDialog={handleCloseDeleteChatDialog}
+                chatId={chatId}
+                profile={profile}
             />
 
             <div className='chat-details-nav-container'>

@@ -5,10 +5,14 @@
 
     .main-selected-post-container{
         width: 100%;
-        height: 40rem;
+        min-height: 40rem;
         background-color: white;
         border: 1px solid lightgray;
         display: flex;
+
+        .feed-image-file-container{
+            width: 65%;
+        }
 
 
         .main-post-details-container{
@@ -19,36 +23,55 @@
             position: relative;
             border-left: 1px solid lightgray;
 
-            .poster-profile-container{
-                height: 5rem;
-                width: 100%;
-                display: flex;
+            .pc-post-information-container{
                 padding: 0 15px;
-                justify-content: space-between;
-                align-items: center;
+                width: 100%;
+                height: 5rem;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
                 border-bottom: 1px solid lightgray;
 
-                .profile-information{
+                small{
+                    margin-left: 40px;
+                    font-size: 0.7rem;
+                    color: rgb(165, 165, 165);
+                }
+
+                .poster-profile-container{
+                    width: 100%;
                     display: flex;
-                    width: 90%;
-                    height: 100%;
+                    justify-content: space-between;
                     align-items: center;
-
-                    p{
-                        margin-left: 8px;
-                    }
-
-                    .span{
-                        color: black;
-                        margin: 0 8px;
-                    }
-
-                    button{
-                        margin: 0;
-                        padding: 0;
-                        text-transform: initial;
+    
+                    .profile-information{
+                        display: flex;
+                        width: 90%;
+                        height: 100%;
+                        align-items: center;
+    
+                        .post-name-info-container{
+                            margin-left: 8px;
+                            display: flex;
+    
+    
+                            .span{
+                                color: black;
+                                margin: 0 8px;
+                            }
+        
+                            button{
+                                margin: 0;
+                                padding: 0;
+                                text-transform: initial;
+                            }
+                            
+                        }
+    
+    
                     }
                 }
+
             }
 
 
@@ -58,7 +81,7 @@
                 width: 100%;
                 height: 25rem;
                 padding: 10px 15px;
-                overflow-y: scroll;
+                overflow-y: auto;
 
                 .post-details{
                     min-height: 3rem;

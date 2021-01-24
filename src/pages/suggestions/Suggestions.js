@@ -11,17 +11,6 @@ import Suggestion from './suggestion/Suggestion'
 
 
 const Suggestions = ({ as, auth, users, profile, history }) => {
-    //const [suggestedUsers, setSuggestedUsers] = useState([])
-
-    // useEffect(() => {
-    //     const suggested = []
-    //     users && users.map(user => {
-    //         return  profile && !profile.following.includes(user.userId) &&
-    //             profile.userId !== user.userId && suggested.push(user)
-    //     })
-
-    //     setSuggestedUsers(suggested)
-    // }, [profile, users])
 
     const filterOutUserWithStories = (data) =>{
         return(
@@ -29,8 +18,14 @@ const Suggestions = ({ as, auth, users, profile, history }) => {
         )
     }
 
+    const shuffleArray = (array) => {
+        return array.sort(() => Math.random() - 0.5);
+    }
+
 
     const suggestedUsers = users && users.filter(filterOutUserWithStories)
+
+    const shuffledSuggestedUsers = suggestedUsers && shuffleArray(suggestedUsers)
     
 
     const styleName = as === 'component' ? 'component' : 'page'
@@ -55,7 +50,7 @@ const Suggestions = ({ as, auth, users, profile, history }) => {
 
                 {as !== 'component' ? <div className='suggestions-list-container'>
                     {
-                        suggestedUsers.length > 0 && suggestedUsers.map((user, i) => {
+                        shuffledSuggestedUsers.length > 0 && shuffledSuggestedUsers.map((user, i) => {
                             return (
                                 <React.Fragment key={i}>
                                     <Suggestion user={user} profile={profile} />
@@ -68,7 +63,7 @@ const Suggestions = ({ as, auth, users, profile, history }) => {
                     :
                 <div className='suggestions-list-container'>
                     {
-                        suggestedUsers.length > 0 && suggestedUsers.slice(0, 10).map((user, i) => {
+                        shuffledSuggestedUsers.length > 0 && shuffledSuggestedUsers.slice(0, 10).map((user, i) => {
                             return (
                                 <React.Fragment key={i}>
                                     <Suggestion user={user} profile={profile} />

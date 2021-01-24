@@ -44,14 +44,14 @@ const useStyles = makeStyles((theme) => ({
         height: theme.spacing(10),
     },
 
-    cursorPointer :{
-        cursor : 'pointer',
+    cursorPointer: {
+        cursor: 'pointer',
     }
 }));
 
 
 
-const PcPost = ({ post, posterProfile, profile, posts, followUser, likePost, commentOnPost, 
+const PcPost = ({ post, posterProfile, profile, posts, followUser, likePost, commentOnPost,
     unLikePost, savePost, unSavePost, unFollowUser, handleViewStory, handleOpenProfileCard, handleCloseProfileCard }) => {
 
     const [moreUserPosts, setMoreUserPosts] = useState([])
@@ -67,26 +67,26 @@ const PcPost = ({ post, posterProfile, profile, posts, followUser, likePost, com
 
 
 
-    const getPostComments = useCallback(() =>{
+    const getPostComments = useCallback(() => {
         db.collection('posts').doc(post && post.postId)
-        .collection('comments').orderBy('time', 'desc')
-        .onSnapshot(snapshot =>{
-            const comments = []
-            snapshot.forEach(doc =>{
-                comments.push(doc.data())
+            .collection('comments').orderBy('time', 'desc')
+            .onSnapshot(snapshot => {
+                const comments = []
+                snapshot.forEach(doc => {
+                    comments.push(doc.data())
+                })
+                setPostComments(comments)
             })
-            setPostComments(comments)
-        })
 
     }, [post])
 
 
-    const getMoreUserPosts = useCallback(() =>{
+    const getMoreUserPosts = useCallback(() => {
         const allPosts = []
 
         posts && posts.forEach(currentPost => {
             if (post && posterProfile && currentPost.userId === posterProfile.userId
-                && currentPost.id !== post.postId){
+                && currentPost.id !== post.postId) {
 
                 allPosts.push(currentPost)
             }
@@ -108,122 +108,122 @@ const PcPost = ({ post, posterProfile, profile, posts, followUser, likePost, com
         setCommentText(e.target.value)
     }
 
-    const handleSubmitComment = () =>{
+    const handleSubmitComment = () => {
         //console.log(commentText)
         const data = {
-            comment : commentText,
-            accountId : posterProfile.userId,
-            userId : profile.userId,
-            postId : post.postId,
-            time : Date.now()
+            comment: commentText,
+            accountId: posterProfile.userId,
+            userId: profile.userId,
+            postId: post.postId,
+            time: Date.now()
         }
         commentOnPost(data)
         setCommentText('')
     }
 
-    const handleFollowUser = () =>{
+    const handleFollowUser = () => {
         const data = {
-            accountId : posterProfile.userId,
-            userId : profile.userId
+            accountId: posterProfile.userId,
+            userId: profile.userId
         }
         followUser(data)
     }
 
-    const handleUnfollowUser = () =>{
-        const data ={
-            userId : profile.userId,
-            accountId : post.userId
+    const handleUnfollowUser = () => {
+        const data = {
+            userId: profile.userId,
+            accountId: post.userId
         }
         unFollowUser(data)
     }
 
-    const handleLikePost = () =>{
+    const handleLikePost = () => {
         const data = {
-            accountId : posterProfile.userId,
-            userId : profile.userId,
-            postId : post.postId,
-            posterId : post.userId,
+            accountId: posterProfile.userId,
+            userId: profile.userId,
+            postId: post.postId,
+            posterId: post.userId,
         }
 
         likePost(data)
     }
 
-    const handleUnLikePost = () =>{
-        const data ={
-            accountId : posterProfile.userId,
-            userId : profile.userId,
-            postId : post.postId,
-            posterId : post.userId,
+    const handleUnLikePost = () => {
+        const data = {
+            accountId: posterProfile.userId,
+            userId: profile.userId,
+            postId: post.postId,
+            posterId: post.userId,
         }
 
         unLikePost(data)
     }
 
-    const hanldeSavePost = () =>{
+    const hanldeSavePost = () => {
         const data = {
-            userId : profile.userId,
-            postId : post.postId
+            userId: profile.userId,
+            postId: post.postId
         }
         savePost(data)
     }
 
 
 
-    const handleUnSavePost = () =>{
+    const handleUnSavePost = () => {
         const data = {
-            userId : profile.userId,
-            postId : post.postId
+            userId: profile.userId,
+            postId: post.postId
         }
         unSavePost(data)
     }
 
 
 
-    const handleOpenProfilePopper = e =>{
+    const handleOpenProfilePopper = e => {
         const data = {
-            event : e.currentTarget,
-            profile : posterProfile
+            event: e.currentTarget,
+            profile: posterProfile
         }
         handleOpenProfileCard(data)
     }
 
 
 
-    const focusOnCommentInput = () =>{
+    const focusOnCommentInput = () => {
         inputRef.current.focus()
     }
 
 
-    const handleOpenMoreOptionsDialog = () =>{
+    const handleOpenMoreOptionsDialog = () => {
         setMoreOptions(true)
     }
 
 
-    const handleOpenSharePostDialog = () =>{
+    const handleOpenSharePostDialog = () => {
         setSharePost(true)
     }
 
 
-    const handleCloseSharePostDialog = () =>{
+    const handleCloseSharePostDialog = () => {
         setSharePost(false)
     }
 
 
-    const handleCloseMoreOptionsDialog = () =>{
+    const handleCloseMoreOptionsDialog = () => {
         setMoreOptions(false)
     }
 
-    const handleOpenShareToDirect = () =>{
+    const handleOpenShareToDirect = () => {
         setShareToDirectDialog(true)
     }
 
 
-    const handleCloseShareToDirect = () =>{
+    const handleCloseShareToDirect = () => {
         setShareToDirectDialog(false)
     }
 
 
-    const handleCopyPostLink = () =>{
+    const handleCopyPostLink = () => {
         const link = `https://os-instagram-clone.netlify.app/p/${post.postId}`
 
         navigator.clipboard.writeText(link)
@@ -231,7 +231,7 @@ const PcPost = ({ post, posterProfile, profile, posts, followUser, likePost, com
     }
 
 
-    const handleCloseSnackBar = () =>{
+    const handleCloseSnackBar = () => {
         setLinkSnackBar(false)
     }
 
@@ -241,7 +241,7 @@ const PcPost = ({ post, posterProfile, profile, posts, followUser, likePost, com
             <MoreOptions
                 openDialog={moreOptions}
                 handleCloseDialog={handleCloseMoreOptionsDialog}
-                posterId = {post && post.userId}
+                posterId={post && post.userId}
                 postId={post && post.postId}
                 openShare={handleOpenSharePostDialog}
                 handleCopyPostLink={handleCopyPostLink}
@@ -274,47 +274,56 @@ const PcPost = ({ post, posterProfile, profile, posts, followUser, likePost, com
 
                 <div className='main-post-details-container'>
 
-                    <div className='poster-profile-container'>
+                    <div className='pc-post-information-container'>
+                        <div className='poster-profile-container'>
 
-                        <div className='profile-information'>
-                            <Avatar
-                                className={classes.small}
-                                src={posterProfile && posterProfile.profilePhoto}
+                            <div className='profile-information'>
+                                <Avatar
+                                    className={classes.small}
+                                    src={posterProfile && posterProfile.profilePhoto}
+                                />
+                                <div className='post-name-info-container'>
+                                    <Link
+                                        onMouseEnter={handleOpenProfilePopper}
+                                        to={`/profile/${posterProfile && posterProfile.userName}/${posterProfile && posterProfile.userId}`}
+                                    >
+                                        <p>{posterProfile && posterProfile.userName}</p>
+                                    </Link>
+
+                                    <span className='span'>•</span>
+
+                                    {post && profile && post.userId !== profile.userId &&
+                                        <React.Fragment>
+                                            {
+                                                post && profile && profile.following.includes(post.userId) ?
+                                                    <Button
+                                                        size='small'
+                                                        onClick={handleUnfollowUser}
+                                                    >
+                                                        Following
+                                                    </Button>
+                                                    :
+                                                    <Button
+                                                        color='primary'
+                                                        size='small'
+                                                        onClick={handleFollowUser}
+                                                    >
+                                                        Follow
+                                                    </Button>
+                                            }
+                                        </React.Fragment>
+                                    }
+                                </div>
+
+                            </div>
+
+                            <MoreHorizIcon fontSize='small'
+                                onClick={handleOpenMoreOptionsDialog}
+                                className={classes.cursorPointer}
                             />
-                            <Link
-                                onMouseEnter={handleOpenProfilePopper}
-                                to={`/profile/${posterProfile && posterProfile.userName}/${posterProfile && posterProfile.userId}`}
-                            >
-                                <p>{posterProfile && posterProfile.userName}</p>
-                            </Link>
-                            <span className='span'>•</span>
-
-
-                            {
-                            post && profile && post.userId !== profile.userId && profile.following.includes(post.userId) ?
-                                <Button
-                                    size='small'
-                                    onClick={handleUnfollowUser}
-                                >
-                                    Following
-                                </Button>
-                                    :
-                                <Button
-                                    color='primary'
-                                    size='small'
-                                    onClick={handleFollowUser}
-                                >
-                                    Follow
-                                </Button>
-                            }
 
                         </div>
-
-                        <MoreHorizIcon fontSize='small'
-                            onClick={handleOpenMoreOptionsDialog}
-                            className={classes.cursorPointer}
-                        />
-
+                        {post && post.location && <small>{post.location.address}</small>}
                     </div>
 
 
@@ -331,11 +340,11 @@ const PcPost = ({ post, posterProfile, profile, posts, followUser, likePost, com
                                     onMouseEnter={handleOpenProfilePopper}
                                     to={`/profile/${posterProfile && posterProfile.userName}/${posterProfile && posterProfile.userId}`}
                                 >
-                                    {posterProfile && posterProfile.userName} 
+                                    {posterProfile && posterProfile.userName}
                                 </Link>
                                 <span>{post && post.caption}</span>
                             </p>
-                            
+
 
                         </div>
 
@@ -343,11 +352,11 @@ const PcPost = ({ post, posterProfile, profile, posts, followUser, likePost, com
                             <small>{moment(post && post.time).fromNow()}</small>
                         </div>
 
-                        
+
 
                         {
-                            postComments && postComments.map(comment =>{
-                                return(
+                            postComments && postComments.map(comment => {
+                                return (
                                     <EachComment
                                         comment={comment}
                                         post={post}
@@ -404,7 +413,7 @@ const PcPost = ({ post, posterProfile, profile, posts, followUser, likePost, com
                                 <SavedIcon
                                     width='24px'
                                     height='24px'
-                                     action={handleUnSavePost}
+                                    action={handleUnSavePost}
                                 />
                                 :
                                 <UnSavedIcon
@@ -457,33 +466,33 @@ const PcPost = ({ post, posterProfile, profile, posts, followUser, likePost, com
 
 
             {moreUserPosts.length > 0 &&
-            <div className='other-posts-container'>
-                <p>More posts from <span>{posterProfile && posterProfile.userName}</span></p>
+                <div className='other-posts-container'>
+                    <p>More posts from <span>{posterProfile && posterProfile.userName}</span></p>
 
-                <div className='more-user-posts-container'>
-                    {moreUserPosts.length > 0 && moreUserPosts.slice(0, 6).map(post => {
-                        return (
-                            <EachMorePost
-                                key={post.postId}
-                                post={post}
-                            />
-                        )
-                    })}
+                    <div className='more-user-posts-container'>
+                        {moreUserPosts.length > 0 && moreUserPosts.slice(0, 6).map(post => {
+                            return (
+                                <EachMorePost
+                                    key={post.postId}
+                                    post={post}
+                                />
+                            )
+                        })}
+                    </div>
+
                 </div>
-
-            </div>
             }
 
-                <Snackbar
-                    open={linkSnackBar}
-                    message="Link Copied To Clipboard"
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left'
-                    }}
-                    onClose={handleCloseSnackBar}
-                    autoHideDuration={3000}
-                />
+            <Snackbar
+                open={linkSnackBar}
+                message="Link Copied To Clipboard"
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'left'
+                }}
+                onClose={handleCloseSnackBar}
+                autoHideDuration={3000}
+            />
         </div>
     )
 }
@@ -499,17 +508,17 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        commentOnPost : data => dispatch(commentOnPost(data)),
-        followUser : data => dispatch(followUser(data)),
-        unFollowUser : data => dispatch(unFollowUser(data)),
-        likePost : data => dispatch(likePost(data)),
-        unLikePost : data => dispatch(unLikePost(data)),
-        savePost : data => dispatch(savePost(data)),
-        unSavePost : data => dispatch(unSavePost(data)),
-        handleViewStory : data => dispatch(handleViewStory(data)),
-        handleOpenProfileCard : data => dispatch(handleOpenProfileCard(data)),
-        handleCloseProfileCard : data => dispatch(handleCloseProfileCard(data)),
-        deletePost : data => dispatch(deletePost(data)),
+        commentOnPost: data => dispatch(commentOnPost(data)),
+        followUser: data => dispatch(followUser(data)),
+        unFollowUser: data => dispatch(unFollowUser(data)),
+        likePost: data => dispatch(likePost(data)),
+        unLikePost: data => dispatch(unLikePost(data)),
+        savePost: data => dispatch(savePost(data)),
+        unSavePost: data => dispatch(unSavePost(data)),
+        handleViewStory: data => dispatch(handleViewStory(data)),
+        handleOpenProfileCard: data => dispatch(handleOpenProfileCard(data)),
+        handleCloseProfileCard: data => dispatch(handleCloseProfileCard(data)),
+        deletePost: data => dispatch(deletePost(data)),
     }
 }
 

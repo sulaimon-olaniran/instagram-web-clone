@@ -23,13 +23,25 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const EachChat = ({ user, handleOpenChatBoard, profile, selectChatUser }) => {
+const EachChat = ({ chat, handleOpenChatBoard, profile, users, selectChatUser }) => {
     const [chatMessages, setChatMessages] = useState(null)
     const [fetchingMessages, setFetchingMessages] = useState(null)
 
     //console.log(fetchingMessages)
 
     const classes = useStyles()
+
+    const filterOutChatUser = (data) =>{
+        if(chat.coUser === profile.userId){
+            return (data.userId === chat.createdBy)
+        }
+        else{
+            return (data.userId === chat.coUser)
+        }
+    }
+
+    const filterdUser = users && users.filter(filterOutChatUser)
+    const user = filterdUser && filterdUser[0]
 
     const interlocutors = [user && user.userId, profile && profile.userId]
     const chatId = interlocutors.sort().join(':')
@@ -69,7 +81,9 @@ const EachChat = ({ user, handleOpenChatBoard, profile, selectChatUser }) => {
         }
     }
 
-    if(fetchingMessages) return <ChatListSkeleton />
+    //console.log(user)
+
+    if(fetchingMessages || user === undefined) return <ChatListSkeleton />
     return (
         <div
             className='each-chat-container'

@@ -13,7 +13,18 @@ import { deleteChat } from '../../../../store/actions/MessengerAction'
 
 
 
-const DeleteChatDialog = ({ openDialog, handleCloseDialog, deleteChat }) =>{
+const DeleteChatDialog = ({ openDialog, handleCloseDialog, chatId, profile, deleteChat }) =>{
+
+    const handleDeleteChat = () =>{
+        const data = {
+            chatId : chatId,
+            userId : profile.userId
+        }
+
+        deleteChat(data)
+    }
+
+
     return(
         <Dialog
             aria-labelledby='simple-dialog-title'
@@ -28,6 +39,7 @@ const DeleteChatDialog = ({ openDialog, handleCloseDialog, deleteChat }) =>{
                     <div>
                         <Button
                             color='secondary'
+                            onClick={handleDeleteChat}
                         >
                             Delete
                         </Button>

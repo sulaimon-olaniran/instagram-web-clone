@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from 'react'
+import React, { useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { firestoreConnect } from 'react-redux-firebase'
@@ -14,45 +14,54 @@ import { handleOpenScamWarning } from '../../store/actions/AppActions'
 
 
 const UserAccount = ({ auth, posts, profile, setCurrentPage, showScamWarning }) =>{
-    const [userPosts, setUserPosts] = useState([])
-
-
-    const getUserPosts = useCallback(() =>{
-        const allPosts = []
-        posts && posts.forEach(post =>{
-            if(post.userId === auth.uid){
-                allPosts.push(post)
-            }
-        })
-
-        setUserPosts(allPosts)
-    }, [auth, posts])
-
-
+ 
     
     useEffect(() =>{
         setCurrentPage('')
         showScamWarning()
-        getUserPosts()
         
-    }, [ setCurrentPage, getUserPosts, showScamWarning])
+    }, [ setCurrentPage, showScamWarning])
+
+
+
+    const sortPostsBasedOnTime = (a, b) =>{
+        const comparisonA = a.time
+        const comparisonB = b.time
+
+        let comparisonsStatus = 0
+        if(comparisonA < comparisonB){
+            comparisonsStatus = 1
+        }
+        else{
+            comparisonsStatus = -1
+        }
+
+        return comparisonsStatus
+    }
+
+    const filterOutUserPosts = (data) =>{
+        return(
+            profile.userId === data.userId
+        ) 
+    }
+
 
 
 
     if(!auth.uid) return <Redirect to='/' />
-    if(profile.isLoaded === false) return <LogoLoader />
+    if(profile.isLoaded === false || posts === undefined) return <LogoLoader />
     return(
         <React.Fragment>
             <div className='mobile-user-account'>
                 <MobileUserAccount 
-                    userPosts={userPosts}
+                    userPosts={posts.filter(filterOutUserPosts).sort(sortPostsBasedOnTime)}
                     userData={profile && profile}
                 />
             </div>
 
             <div className='pc-user-account'>
                 <PcUserAccount
-                    userPosts={userPosts}
+                    userPosts={posts.filter(filterOutUserPosts).sort(sortPostsBasedOnTime)}
                     userData={profile && profile}
                 />
             </div>

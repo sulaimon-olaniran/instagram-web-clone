@@ -21,7 +21,8 @@ const Messenger = ({ auth, profile, showScamWarning }) => {
     const handleFetchAllUserChats = useCallback(() => {
 
         auth.uid && db.collection('users').doc(auth.uid).collection('chats')
-            .onSnapshot(snapShots => {
+        .orderBy('lastMsgTime', 'desc')
+        .onSnapshot(snapShots => {
                 const chats = []
                 snapShots.forEach(snapshot => {
                     chats.push(snapshot.data())
@@ -62,19 +63,37 @@ const Messenger = ({ auth, profile, showScamWarning }) => {
     }, [handleFetchAllUserChats, handleSetChatsToSeen, showScamWarning])
 
 
+    
+    // const sortChatsBasedOnTime = (a, b) =>{
+    //     const comparisonA = a.lastMsgTime
+    //     const comparisonB = b.lastMsgTime
 
+    //     let comparisonsStatus = 0
+    //     if(comparisonA < comparisonB){
+    //         comparisonsStatus = 1
+    //     }
+    //     else{
+    //         comparisonsStatus = -1
+    //     }
 
+    //     return comparisonsStatus
+    // }
+    
+   // console.log(userChats)
     if(!auth.uid) return <Redirect to='/' />
-    if (fetching) return <LogoLoader />
+    if (fetching || profile === undefined) return <LogoLoader />
     return (
         <div className='messenger-container'>
             <div className='mobile-messenger'>
-                <MobileMessenger userChats={userChats} fetching={fetching} />
+                <MobileMessenger 
+                    userChats={userChats} 
+                    fetching={fetching} 
+                />
             </div>
 
             <div className='pc-messenger'>
                 <PcMessenger
-                    userChats={userChats}
+                    userChats={userChats} 
                     profile={profile}
                 />
             </div>
