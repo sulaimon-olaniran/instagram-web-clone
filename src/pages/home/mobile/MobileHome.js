@@ -73,9 +73,9 @@ const MobileHome = ({ feedPosts, profile, handleViewStory, unReadMessages, story
 
 
     if (feedPosts !== null && feedPosts.length === 0) return (
-        <MobileWelcome 
-            MobileTopNavigation={MobileTopNavigation} 
-            unReadMessages={unReadMessages} 
+        <MobileWelcome
+            MobileTopNavigation={MobileTopNavigation}
+            unReadMessages={unReadMessages}
         />
     )
     return (
@@ -84,54 +84,57 @@ const MobileHome = ({ feedPosts, profile, handleViewStory, unReadMessages, story
             <MobileTopNavigation unReadMessages={unReadMessages} />
 
             <React.Fragment>
-                <div className='stories-container'>
-                    <HorizontalScroller>
+                {profile && (profile.stories.length > 0 || storyUsers.length) > 0 ?
+                    <div className='stories-container'>
+                        <HorizontalScroller>
 
-                        {profile && profile.stories && !profile.stories.length > 0 ?
-                            <CreateButton
-                                component={
-                                    <Badge
-                                        overlap="circle"
-                                        anchorOrigin={{
-                                            vertical: 'bottom',
-                                            horizontal: 'right',
-                                        }}
-                                        badgeContent={<AddCircleIcon color='primary' fontSize='small' />}
-                                    >
-                                        <Avatar
-                                            src={profile && profile.profilePhoto}
-                                            className={classes.large}
-                                        />
-                                    </Badge>
-                                }
-                            />
-                            :
-                            <div className='user-story-container'>
-                                <StoryAvatar
-                                    src={profile && profile.profilePhoto}
-                                    height='70px'
-                                    width='70px'
-                                    action={() => handleViewStory(profile)}
+                            {profile && profile.stories && !profile.stories.length > 0 ?
+                                <CreateButton
+                                    component={
+                                        <Badge
+                                            overlap="circle"
+                                            anchorOrigin={{
+                                                vertical: 'bottom',
+                                                horizontal: 'right',
+                                            }}
+                                            badgeContent={<AddCircleIcon color='primary' fontSize='small' />}
+                                        >
+                                            <Avatar
+                                                src={profile && profile.profilePhoto}
+                                                className={classes.large}
+                                            />
+                                        </Badge>
+                                    }
                                 />
-                                <small>Your Story</small>
-                            </div>
-                        }
+                                :
+                                <div className='user-story-container'>
+                                    <StoryAvatar
+                                        src={profile && profile.profilePhoto}
+                                        height='70px'
+                                        width='70px'
+                                        action={() => handleViewStory(profile)}
+                                    />
+                                    <small>Your Story</small>
+                                </div>
+                            }
 
-                        {storyUsers.length > 0 && storyUsers.map(user =>{
-                            return(
-                                <StoryAvatar
-                                    key={user.userId}
-                                    src={user.profilePhoto}
-                                    height='74px'
-                                    width='74px'
-                                    action={() => handleViewStory(user)}
-                                />
-                            )
-                        })}
+                            {storyUsers !== null && storyUsers.length > 0 && storyUsers.map(user => {
+                                return (
+                                    <StoryAvatar
+                                        key={user.userId}
+                                        src={user.profilePhoto}
+                                        height='74px'
+                                        width='74px'
+                                        action={() => handleViewStory(user)}
+                                    />
+                                )
+                            })}
 
 
-                    </HorizontalScroller>
-                </div>
+                        </HorizontalScroller>
+                    </div>
+                    : null
+                }
 
                 <div className='main-contents-container'>
                     <PostsFeed feedPosts={feedPosts} />

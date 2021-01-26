@@ -1,14 +1,16 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import './styles/Styles.scss'
 import FormikSignIn from './pages/signin/SignIn'
 import ResetPassword from './pages/rest_password/_ResetPassword'
 import { Switch, Route, BrowserRouter as Router } from 'react-router-dom'
 import { connect } from 'react-redux'
+import { isLoaded } from 'react-redux-firebase'
 import Snackbar from '@material-ui/core/Snackbar'
 
 
 
 import { db } from './firebase/Firebase'
+import LogoLoader from './components/loaders/LogoLoader'
 import FormikSignUp from './pages/signup/SignUp'
 import Home from './pages/home/Home'
 //import MobileComments from './pages/comments/mobile/MobileComments'
@@ -33,7 +35,7 @@ import Messenger from './messenger/Messenger'
 //import ChatBoard from './messenger/chat_board/ChatBoard'
 import MobileChatBoardModal from './messenger/mobile/mobile_chatboard/MobileChatBoardModal'
 import UploadModal from './components/upload/modal/UploadModal'
-//import ScamWarningsDialog from './components/warnings/scam_warning/ScamWarningsDialog'
+import ScamWarningsDialog from './components/warnings/scam_warning/ScamWarningsDialog'
 
 
 
@@ -42,12 +44,14 @@ function App({ auth, storyAdded, closeStorySnackBar, sharedPost, closeSharePostS
 
   const [unReadMessages, setUnreadMessages] = useState([])
   const [currentPage, setCurrentPage] = useState('')
-
+  
+  const mountedRef = useRef(true)
 
   const grabAllUserUnreadMessages = useCallback(() => {
     auth.isLoaded && !auth.isEmpty &&
       db.collection('users').doc(auth.uid).collection('chats')
         .onSnapshot(snapshot => {
+          if (!mountedRef.current) return null
           const unRead = []
           snapshot.forEach(doc => {
             const data = doc.data()
@@ -66,13 +70,17 @@ function App({ auth, storyAdded, closeStorySnackBar, sharedPost, closeSharePostS
   useEffect(() => {
     grabAllUserUnreadMessages()
 
+    return () => {
+      mountedRef.current = false
+  }
+
   }, [grabAllUserUnreadMessages])
 
   const homeComponent = auth.uid ? <Home setCurrentPage={setCurrentPage} unReadMessages={unReadMessages} /> : <FormikSignIn />
 
 
   //VIEW STORY AND COMMENTS NOT NEEDED AS LINKS ANYMORE
-
+  if(!isLoaded(auth)) return <LogoLoader />
   return (
     <Router>
       <div className="App">
@@ -137,7 +145,7 @@ function App({ auth, storyAdded, closeStorySnackBar, sharedPost, closeSharePostS
 
         <MobileChatBoardModal />
 
-        {/* <ScamWarningsDialog /> */}
+        <ScamWarningsDialog />
 
       </div>
     </Router>

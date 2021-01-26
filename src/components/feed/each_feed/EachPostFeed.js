@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz'
 import Avatar from '@material-ui/core/Avatar'
@@ -37,6 +37,8 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
     const [shareToDirectDialog, setShareToDirectDialog] = useState(false)
 
 
+    const mountedRef = useRef(true)
+
 
     const handleOpenComment = () => {
         setOpenComment(true)
@@ -72,6 +74,7 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
     const getPosterProfile = useCallback(() => {
         db.collection('users').doc(post && post.userId)
             .onSnapshot(snapshot => {
+                if (!mountedRef.current) return null
                 setPosterProfile(snapshot.data())
                 setFetching(false)
             })
@@ -80,6 +83,7 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
     const getPostComments = useCallback(() => {
         db.collection('posts').doc(post && post.postId)
             .collection('comments').onSnapshot(snapshot => {
+                if (!mountedRef.current) return null
                 const comments = []
                 snapshot.forEach(doc => {
                     comments.push(doc.data())
@@ -93,6 +97,10 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
     useEffect(() => {
         getPosterProfile()
         getPostComments()
+
+        return () => {
+            mountedRef.current = false
+        }
 
     }, [getPosterProfile, getPostComments])
 
@@ -184,6 +192,8 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
         setShareToDirectModal(false)
     }
 
+
+    if(mountedRef.current === false) return null
     if (fetching) return <FeedSkeleton />
     return (
         <div className='each-post-feed-container'>

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { firestoreConnect } from 'react-redux-firebase'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
@@ -45,11 +45,12 @@ const Home = ({ users, profile, posts, setCurrentPage, unReadMessages, showScamW
 
 
 
-    // useEffect(() => {
+    useEffect(() => {
 
-    //     console.log('hello world')
+        showScamWarning()
+        setCurrentPage()
 
-    // }, [])
+    }, [showScamWarning, setCurrentPage])
 
     if (posts === undefined || profile.isLoaded === false || users === undefined) return <LogoLoader />
     return (

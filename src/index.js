@@ -1,13 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import * as serviceWorker from './serviceWorker';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import './index.css'
+import App from './App'
+import * as serviceWorker from './serviceWorker'
 import { createStore, applyMiddleware, compose } from 'redux'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
-import { reduxFirestore, getFirestore } from 'redux-firestore'
-import { reactReduxFirebase, getFirebase } from 'react-redux-firebase'
+import {  getFirestore, createFirestoreInstance } from 'redux-firestore'
+import { getFirebase, ReactReduxFirebaseProvider } from 'react-redux-firebase'
 
 
 import RootReducer from './store/reducers/RootReducer'
@@ -15,23 +15,56 @@ import firebase from './firebase/Firebase'
 
 
 
-const store = createStore(
-  RootReducer,
-  compose(
-    applyMiddleware(thunk.withExtraArgument({ getFirebase, getFirestore })),
-    reduxFirestore(firebase),
-    reactReduxFirebase(firebase, { useFirestoreForProfile : true, userProfile : 'users', attachAuthIsReady: true })
-  )
-)
 
-store.firebaseAuthIsReady.then(() => {
+const rrfConfig = {
+  userProfile: 'users',
+  useFirestoreForProfile: true,
+  attachAuthIsReady: true,
+  // enableClaims: true // Get custom claims along with the profile
+}
+
+const middlewares = [
+  thunk.withExtraArgument(getFirebase, getFirestore)
+]
+
+
+const initialState = {}
+
+const store = createStore(
+  RootReducer, 
+  initialState, 
+  compose(
+  applyMiddleware(...middlewares),
+))
+
+const rrfProps = {
+  firebase,
+  config: rrfConfig,
+  dispatch: store.dispatch,
+  createFirestoreInstance 
+}
+
+
+
+// const store = createStore(
+//   RootReducer,
+//   compose(
+//     applyMiddleware(thunk.withExtraArgument({ getFirebase, getFirestore })),
+//     reduxFirestore(firebase),
+//     reactReduxFirebase(firebase, { useFirestoreForProfile: true, userProfile: 'users', attachAuthIsReady: true })
+//   )
+// )
+
+
   ReactDOM.render(
     <Provider store={store}>
-      <App />
+      <ReactReduxFirebaseProvider {...rrfProps}>
+        <App />
+      </ReactReduxFirebaseProvider>
     </Provider>,
     document.getElementById('root')
   );
-})
+
 
 
 

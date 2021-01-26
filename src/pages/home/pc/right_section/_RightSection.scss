@@ -29,7 +29,11 @@
         display: flex;
         width: 60%;
         min-height: 4rem;
-        justify-content: space-between;
+        align-items: center;
+
+        a{
+            margin-left: 20px;
+        }
     }
 
     .right-section-suggestions-container{
