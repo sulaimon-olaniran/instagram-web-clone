@@ -122,9 +122,9 @@ const FormikChangePassword = withFormik({
 
     handleSubmit(values, { props, setStatus, resetForm }) {
         //changingpassword
-        const { changePassword, profile } = props
+        const { changePassword, profile, changingPassword } = props
         if (values.oldPassword !== profile.password) {
-            setStatus({ error: 'The inputed old password is not correct' })
+            setStatus({ error: 'The old password you enterd is incorrect' })
         }
         else if (values.newPassword !== values.confirmPassword) {
             setStatus({ error: 'New password does not match confirm password' })
@@ -143,7 +143,7 @@ const FormikChangePassword = withFormik({
             setStatus({ error: null })
             
             changePassword(data)
-            !changePassword && resetForm()
+            !changingPassword && resetForm()
         }
     }
 })(ChangePassword)

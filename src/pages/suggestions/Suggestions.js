@@ -12,22 +12,28 @@ import Suggestion from './suggestion/Suggestion'
 
 const Suggestions = ({ as, auth, users, profile, history }) => {
 
-    const filterOutUserWithStories = (data) =>{
+
+
+    //function to filter out account users not followed by the logged in user
+    const filterOutSuggestedUsers = (data) =>{
         return(
            profile && !profile.following.includes(data.userId) && profile.userId !== data.userId
         )
     }
 
+
+    //function to shuffle the suggested account users 
     const shuffleArray = (array) => {
         return array.sort(() => Math.random() - 0.5);
     }
 
 
-    const suggestedUsers = users && users.filter(filterOutUserWithStories)
+    const suggestedUsers = users && users.filter(filterOutSuggestedUsers) //storing the filterd suggested users in constant
 
-    const shuffledSuggestedUsers = suggestedUsers && shuffleArray(suggestedUsers)
+    const shuffledSuggestedUsers = suggestedUsers && shuffleArray(suggestedUsers)//storing the shuffled suggested users
     
-
+    //this components works as a page on its own and subcomponent to other main page
+    //displays withing another page if "as" === component but displays as a page of its own is "as" === page
     const styleName = as === 'component' ? 'component' : 'page'
     
 

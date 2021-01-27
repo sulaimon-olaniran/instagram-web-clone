@@ -15,7 +15,7 @@ const CanvasDrawComponent = ({ canvasRef, activeCanvas, setActiveCanvas }) => {
     const [strokeStyle, setStrokeStyle] = useState('white')
     const [drawOrErase, setDrawOrErase] = useState('draw')
     const [strokeSize, setStrokeSize] = useState(50)
-    //const canvasRef = useRef(null)
+   
     const contextRef = useRef(null)
     const [isDrawing, setIsDrawing] = useState(false)
 

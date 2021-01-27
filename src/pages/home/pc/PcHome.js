@@ -5,8 +5,6 @@ import { connect } from 'react-redux'
 
 
 
-//import TopPcNav from '../../../components/navbar/top_nav/TopPcNav'
-//import Stories from '../../../components/stories/Stories'
 import RightSection from './right_section/RightSection'
 import Suggestions from '../../suggestions/Suggestions'
 import { handleCloseProfileCard, handleViewStory } from '../../../store/actions/AppActions'
@@ -16,8 +14,6 @@ import LogoLoader from '../../../components/loaders/LogoLoader'
 
 
 const PcHome = ({ feedPosts, profile, handleViewStory, storyUsers }) => {
-
-
 
     if (feedPosts !== null && feedPosts.length === 0) return (
         <div className='pc-home-suggestions-container'>
@@ -58,6 +54,7 @@ const PcHome = ({ feedPosts, profile, handleViewStory, storyUsers }) => {
                             })}
                         </HorizontalScroller>
                     </div>
+
                     : null
                 }
 

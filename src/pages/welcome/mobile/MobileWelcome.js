@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import { firestoreConnect } from 'react-redux-firebase'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
@@ -10,24 +10,24 @@ import SuggestionsCarousel from '../../../components/sugestions_carousel/Suggest
 
 
 const MobileWelcome = ({ users, profile, MobileTopNavigation, unReadMessages }) =>{
-    const [suggestedUsers, setSuggestedUsers] = useState([])
-    
-    const { following, userId } = profile && profile
+   
+    const filterOutSuggestedUsers = (data) =>{
+        return(
+           profile && !profile.following.includes(data.userId) && profile.userId !== data.userId
+        )
+    }
 
-    useEffect(() =>{
-        const usersArray = []
-        users && users.forEach(user =>{
-            if( user.userId !== userId && userId && following && !following.includes(user.userId)){
-                usersArray.push(user)
-                //console.log(usersArray)
-            }
-        })
-
-        setSuggestedUsers(usersArray)
-    }, [users, following, userId])
+    const shuffleArray = (array) => {
+        return array.sort(() => Math.random() - 0.5);
+    }
 
 
-    //console.log(suggestedUsers)
+    const suggestedUsers = users && users.filter(filterOutSuggestedUsers) 
+
+    const shuffledSuggestedUsers = suggestedUsers && shuffleArray(suggestedUsers)
+
+
+
 
     return(
         <div className='mobile-welcome-page-container'>
@@ -39,7 +39,7 @@ const MobileWelcome = ({ users, profile, MobileTopNavigation, unReadMessages }) 
             </p>
             
             <SuggestionsCarousel 
-                users={suggestedUsers}
+                users={shuffledSuggestedUsers}
             />
 
         </div>
@@ -48,7 +48,7 @@ const MobileWelcome = ({ users, profile, MobileTopNavigation, unReadMessages }) 
 
 
 const mapStateToProps = (state) => {
-    //console.log(state.firestore)
+    
     return {
         users: state.firestore.ordered.users,
         profile: state.firebase.profile

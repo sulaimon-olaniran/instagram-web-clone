@@ -15,9 +15,8 @@ import ActivitySkeleton from '../../../components/skeletons/activity/ActivitySke
 
 
 const EachActivity = ({ activity, profile, followUser, unFollowUser, handleViewStory }) => {
-    const [notifier, setNotifier] = useState({})
+    const [notifier, setNotifier] = useState({})//get the account that triggered the notification
     const [post, setPost] = useState({}) //get the post from which activity occured
-    //console.log(activity)
     const [fetching, setFetching] = useState(true)
 
     const getNotifierAccount = useCallback(() => {
@@ -30,6 +29,7 @@ const EachActivity = ({ activity, profile, followUser, unFollowUser, handleViewS
             .get().then(doc =>{
                 setPost(doc.data())
             })
+            
         })
         .then(() =>{
             setFetching(false)
@@ -39,6 +39,7 @@ const EachActivity = ({ activity, profile, followUser, unFollowUser, handleViewS
 
     useEffect(() => {
         getNotifierAccount()
+        
     }, [getNotifierAccount])
 
     const handleFollowUser = () =>{

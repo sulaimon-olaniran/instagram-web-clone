@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 
@@ -12,27 +12,30 @@ import Suggestions from '../suggestions/Suggestions'
 const MobileAccountActivity = ({ profile, setCurrentPage, auth }) =>{
     const [activities, setActivities] = useState([])
 
+    const mountedRef = useRef(true)
 
     const grabAllUserNotifications = useCallback(() =>{
       
-        auth.isLoaded && !auth.isEmpty && db.collection('users').doc('9G6R635DzajdJA0ht6Ng')
+        auth.isLoaded && !auth.isEmpty && db.collection('users').doc(auth.uid)
         .collection('notifications').orderBy('time', 'desc')
         .onSnapshot(snapshot =>{
+            if (!mountedRef.current) return null
             const notifications = []
             snapshot.forEach(doc =>{
                 notifications.push(doc.data())
             })
 
             setActivities(notifications)
+            //function setting unseen notification(s) to seen
             notifications.map(notification =>{
-                return db.collection('users').doc('9G6R635DzajdJA0ht6Ng')
+                return db.collection('users').doc(auth.uid)
                 .collection('notifications').doc(notification.notificationId)
                 .update({
                     seen : true
                 })
             })
         })
-    }, [ auth])
+    }, [auth])
 
 
 
@@ -40,6 +43,11 @@ const MobileAccountActivity = ({ profile, setCurrentPage, auth }) =>{
     useEffect(() =>{
         grabAllUserNotifications()
         setCurrentPage('activity')
+        
+        return () => {
+            mountedRef.current = false
+        }   
+
 
     }, [ grabAllUserNotifications, setCurrentPage ])
 

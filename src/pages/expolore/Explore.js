@@ -65,13 +65,6 @@ const Explore = ({ setCurrentPage, posts, showScamWarning, auth }) => {
     }, [setCurrentPage, handleOnWindowScroll, showScamWarning])
 
 
-    // const shuffleArray = (array) => {
-    //     return array.sort(() => Math.random() - 0.5);
-    // }
-
-
-    //const shuffledPosts = posts && shuffleArray(posts)
-
 
     if (posts === undefined) return <SpinnerLoader height='100vh' />
 
@@ -109,7 +102,7 @@ const Explore = ({ setCurrentPage, posts, showScamWarning, auth }) => {
 
 
 const mapStateToProps = (state) => {
-    //console.log(state)
+    
     return {
         posts: state.firestore.ordered.posts,
         auth: state.firebase.auth,

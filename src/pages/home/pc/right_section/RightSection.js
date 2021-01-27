@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import Avatar from '@material-ui/core/Avatar'
 import { firestoreConnect } from 'react-redux-firebase'
@@ -33,21 +33,26 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-
+//this is the component shown on the right hand side of the pc view of the app containing suggested users..
 const RightSection = ({ users, profile, handleOpenProfileCard, followUser }) =>{
     const classes = useStyles()
-    const [suggestedUsers, setSuggestedUsers] = useState([])
 
-    useEffect(() => {
-        const suggested = []
-        
-        users && users.forEach(user => {
-            profile.isLoaded && !profile.isEmpty && !profile.following.includes(user.userId) &&
-            profile.userId !== user.userId && suggested.push(user)
-        })
 
-        setSuggestedUsers(suggested)
-    }, [profile, users])
+    const shuffleArray = (array) => {
+        return array.sort(() => Math.random() - 0.5);
+    }
+
+
+    const filterOutSuggestedUsers = (data) =>{
+        return(
+           profile && !profile.following.includes(data.userId) && profile.userId !== data.userId
+        )
+    }
+
+    const suggestedUsers = users && users.filter(filterOutSuggestedUsers)
+
+    const shuffledSuggestedUsers = suggestedUsers && shuffleArray(suggestedUsers)
+
 
 
     const handleOpenProfilePopper = (e, user) =>{
@@ -94,7 +99,7 @@ const RightSection = ({ users, profile, handleOpenProfileCard, followUser }) =>{
 
                 <div className='main-suggestions-container'>
                     {
-                        suggestedUsers.length > 0 && suggestedUsers.slice(0, 5).map((user) => {
+                        shuffledSuggestedUsers && shuffledSuggestedUsers.slice(0, 5).map((user) => {
                             return(
                                 <div 
                                     className='each-right-section-suggestion'

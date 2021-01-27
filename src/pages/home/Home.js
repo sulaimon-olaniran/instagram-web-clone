@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import { firestoreConnect } from 'react-redux-firebase'
 import { connect } from 'react-redux'
 import { compose } from 'redux'
-//import { db } from '../../firebase/Firebase'
 
 
 import MobileHome from './mobile/MobileHome'
@@ -14,6 +13,8 @@ import { handleOpenScamWarning } from '../../store/actions/AppActions'
 
 const Home = ({ users, profile, posts, setCurrentPage, unReadMessages, showScamWarning }) => {
 
+
+    //a sort function to sort posts from an account the logged in user follows from most recent post to the latest one
     const sortPostsBasedOnTime = (a, b) =>{
         const comparisonA = a.time
         const comparisonB = b.time
@@ -30,13 +31,15 @@ const Home = ({ users, profile, posts, setCurrentPage, unReadMessages, showScamW
     }
 
 
+
+    //function that filters out posts of accounts followed by the logged in user from all posts
     const filterOutFeedPosts = (data) =>{
         return(
             profile.following.includes(data.userId) || profile.userId === data.userId
         ) 
     }
 
-
+    //function that filters out users with stories from users the logged in account follows
     const filterOutUserWithStories = (data) =>{
         return(
             profile.following.includes(data.userId) && data.stories.length > 0
@@ -47,10 +50,11 @@ const Home = ({ users, profile, posts, setCurrentPage, unReadMessages, showScamW
 
     useEffect(() => {
 
-        showScamWarning()
-        setCurrentPage()
+        showScamWarning()//popup warning once this home component mounts
+        setCurrentPage()//to set active page to homepage
 
     }, [showScamWarning, setCurrentPage])
+
 
     if (posts === undefined || profile.isLoaded === false || users === undefined) return <LogoLoader />
     return (
@@ -77,7 +81,7 @@ const Home = ({ users, profile, posts, setCurrentPage, unReadMessages, showScamW
 
 
 const mapStateToProps = (state) => {
-   //console.log(state)
+   
     return {
         users: state.firestore.ordered.users,
         posts: state.firestore.ordered.posts,

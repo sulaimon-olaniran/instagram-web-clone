@@ -43,10 +43,11 @@ const PcUserAccount = ({ userData, userPosts }) =>{
 
     return(
         <div className='pc-user-account-container'>
+            {settingsDialog &&
             <SettingsDialog
                 openDialog={settingsDialog}
                 handleCloseDialog={handleCloseSettingsDialog}
-            />
+            />}
 
 
             <div className='user-account-information-container'>

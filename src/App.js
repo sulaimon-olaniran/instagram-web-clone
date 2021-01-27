@@ -13,14 +13,11 @@ import { db } from './firebase/Firebase'
 import LogoLoader from './components/loaders/LogoLoader'
 import FormikSignUp from './pages/signup/SignUp'
 import Home from './pages/home/Home'
-//import MobileComments from './pages/comments/mobile/MobileComments'
 import BottomNav from './components/navbar/BottomNav'
 import Explore from './pages/expolore/Explore'
 import Suggestions from './pages/suggestions/Suggestions'
 import ViewStory from './pages/story/ViewStory'
-//import MobilePost from './pages/post/mobile/MobilePost'
 import FormikChangePassword from './pages/change_password/ChangePassoword'
-//import GradientLoader from './components/loaders/gradient/GradientLoader'
 import { closeStorySnackBar } from './store/actions/StoryAction'
 import { closeSharedPostSnackbar, closeCreatePostModal } from './store/actions/PostsAction'
 import Profile from './pages/profile/Profile'
@@ -32,7 +29,6 @@ import TopPcNav from './components/navbar/top_nav/TopPcNav'
 import PcEditProfile from './pages/user_account/pc/edit_profile/PcEditProfile'
 import MobileSearch from './pages/mobile_search/MobileSearch'
 import Messenger from './messenger/Messenger'
-//import ChatBoard from './messenger/chat_board/ChatBoard'
 import MobileChatBoardModal from './messenger/mobile/mobile_chatboard/MobileChatBoardModal'
 import UploadModal from './components/upload/modal/UploadModal'
 import ScamWarningsDialog from './components/warnings/scam_warning/ScamWarningsDialog'
@@ -47,6 +43,8 @@ function App({ auth, storyAdded, closeStorySnackBar, sharedPost, closeSharePostS
   
   const mountedRef = useRef(true)
 
+
+  //get the number of chat with unread message(s)
   const grabAllUserUnreadMessages = useCallback(() => {
     auth.isLoaded && !auth.isEmpty &&
       db.collection('users').doc(auth.uid).collection('chats')
@@ -72,7 +70,7 @@ function App({ auth, storyAdded, closeStorySnackBar, sharedPost, closeSharePostS
 
     return () => {
       mountedRef.current = false
-  }
+    }
 
   }, [grabAllUserUnreadMessages])
 

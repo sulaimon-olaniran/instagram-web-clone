@@ -78,7 +78,6 @@ const StoryBody = ({ handleCloseModal, filePreviewUrl, fileUrl, addStory, adding
             const centerShiftX = (imageRef.current.width - canvasImage.width * ratio) / 2
             const centerShiftY = (imageRef.current.height - canvasImage.height * ratio) / 2
 
-            //canvasContext.clearRect(0, 0, imageRef.current.width, imageRef.current.height)
 
             canvasContext.drawImage(canvasImage, 0, 0, canvasImage.width, canvasImage.height,
             centerShiftX, centerShiftY, canvasImage.width * ratio, canvasImage.height * ratio)
@@ -95,9 +94,11 @@ const StoryBody = ({ handleCloseModal, filePreviewUrl, fileUrl, addStory, adding
 
     }, [ filePreviewUrl ])
 
+
+    //draws all cavas include image canvas, icon canvas and drawing canvas all to one canvas
     const prepareImageUrl = () =>{
         const mainCanvasContext = mainCanvasRef.current.getContext('2d')
-        //const canvasContext = drawingRef.current.getContext('2d')
+       
 
         mainCanvasRef.current.width = imageRef.current.width
         mainCanvasRef.current.height = imageRef.current.height
@@ -114,7 +115,6 @@ const StoryBody = ({ handleCloseModal, filePreviewUrl, fileUrl, addStory, adding
         prepareImageUrl()
 
         const image = mainCanvasRef.current.toDataURL()
-        //image.crossOrigin="anonymous"
         download.href = image
     }
 
@@ -124,12 +124,12 @@ const StoryBody = ({ handleCloseModal, filePreviewUrl, fileUrl, addStory, adding
         const file = new File([blob], `${fileUrl.name}`, { type: blob.type })
         imageFileRef.current = file
     }
-   // console.log(profile)
+   
     const handleAddStoryToDatabase = () =>{
         prepareImageUrl()
 
         const url = mainCanvasRef.current.toDataURL()
-        //console.log(url)
+       
         convertUrlToFileObject(url)
         .then(() => {
             const data = {
@@ -137,8 +137,7 @@ const StoryBody = ({ handleCloseModal, filePreviewUrl, fileUrl, addStory, adding
                 file: imageFileRef.current
             }
             addStory(data)
-            // console.log(imageFileRef.current)
-            // console.log(fileUrl)
+            
         })
 
     }
@@ -210,7 +209,7 @@ const StoryBody = ({ handleCloseModal, filePreviewUrl, fileUrl, addStory, adding
 }
 
 const mapStateToProps = state =>{
-    //console.log(state)
+    
     return{
         addingStory : state.story.addingStory,
         fileUrl : state.story.fileUrl,

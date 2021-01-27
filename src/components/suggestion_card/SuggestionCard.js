@@ -8,7 +8,7 @@ import { compose } from 'redux'
 import { firestoreConnect } from 'react-redux-firebase'
 
 
-//import { db } from '../../firebase/Firebase'
+
 import { followUser, unFollowUser } from '../../store/actions/ProfileActions'
 
 
@@ -147,5 +147,3 @@ export default compose(
   firestoreConnect(() => ['posts'])
 )(SuggestionCard)
 
-
-//xport default connect(mapStateToProps, mapDispatchToProps)(SuggestionCard)
