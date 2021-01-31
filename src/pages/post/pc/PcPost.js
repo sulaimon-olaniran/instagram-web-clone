@@ -241,8 +241,7 @@ const PcPost = ({ post, posterProfile, profile, posts, followUser, likePost, com
             <MoreOptions
                 openDialog={moreOptions}
                 handleCloseDialog={handleCloseMoreOptionsDialog}
-                posterId={post && post.userId}
-                postId={post && post.postId}
+                post={post && post}
                 openShare={handleOpenSharePostDialog}
                 handleCopyPostLink={handleCopyPostLink}
                 from='pc-post'

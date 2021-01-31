@@ -81,7 +81,7 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
     }, [post])
 
     const getPostComments = useCallback(() => {
-        post && db.collection('posts').doc(post.id)
+        post && db.collection('posts').doc(post.postId)
             .collection('comments').onSnapshot(snapshot => {
                 if (!mountedRef.current) return null
                 const comments = []
@@ -241,7 +241,7 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
                 openDialog={shareToDirectDialog}
                 handleCloseDialog={handleCloseSharePostToDirect}
                 from='post'
-                postId={post.postId}
+                postId={post && post.postId}
                 post={post && post}
                 profile={profile && profile}
             />
