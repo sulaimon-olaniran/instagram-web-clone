@@ -81,12 +81,12 @@ const ChatBoard = ({ selectedAccount, closeChatBoard, users, sendMessage, delete
             setImageBlob(URL.createObjectURL(e.target.files[0]))
 
             setSendingImage(true)
-
-            const uploadTask = storage.ref(`chat_images/${imageFile.name}`)
+            const fileName = imageFile.name.concat(uuidv4())
+            const uploadTask = storage.ref(`chat_images/${fileName}`)
 
             uploadTask.put(imageFile)
                 .then(() => {
-                    return storage.ref('chat_images').child(imageFile.name).getDownloadURL()
+                    return storage.ref('chat_images').child(fileName).getDownloadURL()
                 })
                 .then(url => {
                     const data = {
@@ -99,8 +99,8 @@ const ChatBoard = ({ selectedAccount, closeChatBoard, users, sendMessage, delete
                         coUser : selectedAccount.userId
                     }
                     //send message as image.........
-                    setSendingImage(false)
                     sendMessage(data)
+                    setSendingImage(false)
                 })
                 .catch(error => {
                     console.log(error)
@@ -112,10 +112,10 @@ const ChatBoard = ({ selectedAccount, closeChatBoard, users, sendMessage, delete
 
 
     const handleFetchChatMessages = useCallback(() => {
-        //setFetchingMessages(true)
+   
         db.collection('users').doc(profile.userId)
             .collection('chats').doc(chatId).collection('messages')
-            .orderBy('timeStamp', 'desc').onSnapshot(snapshots => {
+            .orderBy('timeStamp', 'asc').onSnapshot(snapshots => {
                 const messages = []
                 snapshots.forEach(snapshot => {
                     messages.push(snapshot.data())
@@ -184,7 +184,7 @@ const ChatBoard = ({ selectedAccount, closeChatBoard, users, sendMessage, delete
             userId: profile.userId
         }
         likeMessage(data)
-        //console.log(message)
+      
     }
 
 
@@ -201,7 +201,7 @@ const ChatBoard = ({ selectedAccount, closeChatBoard, users, sendMessage, delete
     }
 
 
-    //console.log(chatMessages)
+
 
 
     if (creatingChat || fetchingMessages) return <LogoLoader />

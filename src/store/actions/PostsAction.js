@@ -1,5 +1,5 @@
 import firebase, { storage, db } from '../../firebase/Firebase'
-
+import { v4 as uuidv4 } from 'uuid'
 
 
 
@@ -18,36 +18,34 @@ export const closeCreatePostModal = () =>{
 }
 
 export const createPost = (post, data) => {
-    return (dispatch, getState, { getFirebase, getFirestore }) => {
+    return (dispatch, getState) => {
         dispatch({ type : 'CREATING_POST'})
         const { file, userId} = data
-        const firestore = getFirestore()
-        //const firebase = getFirebase()
-        const uploadTask = storage.ref(`post_images/${file.name}`)
+        const fileName = file.name.concat(uuidv4())
+        
+        const uploadTask = storage.ref(`post_images/${fileName}`)
         //first upload the post image to firebase storage
-        uploadTask.put(file)
+        return uploadTask.put(file)
             .then(() => {
                 //get the file url from firebase storage after being uploaded
-                return storage.ref('post_images').child(file.name).getDownloadURL()
+                return storage.ref('post_images').child(fileName).getDownloadURL()
                 .then(url =>{
                     //creating a firestore data containing post details and uploaded image url
-                    return firestore.collection('posts').add({
+                    const docId = uuidv4()
+                    return db.collection('posts').doc(docId).set({
                         ...post,
                         userId : userId,
-                        fileUrl : url
-                    })
-                    //in order to add the document id to the newly created document for future use to track post
-                    .then(docRef => {
-                       return firestore.collection('posts').doc(docRef.id).set({
-                            postId: docRef.id
-                        }, { merge: true })
+                        fileUrl : url,
+                        fileName : fileName,
+                        postId : docId,
+                        time : Date.now()
                     })
                 })
                 
             })
             .then(() => {
                 //finally dispatching action after all async calls are done
-                dispatch({ type: 'CREATE_POST_SUCCESS', post })
+                return dispatch({ type: 'CREATE_POST_SUCCESS', post })
             })
             .catch(error => {
                 dispatch({ type: 'CREATE_POST_ERROR', error })
@@ -56,10 +54,18 @@ export const createPost = (post, data) => {
 }
 
 
-export const deletePost =(postId) =>{
+export const deletePost =(data) =>{
     return (dispatch, getState) =>{
+        
+        const {postId, fileName} = data
+        const storageRef = storage.ref(`post_images/${fileName}`)
+
         db.collection('posts').doc(postId)
         .delete()
+        .then(() =>{
+            return storageRef.delete()
+
+        })
         .then(() =>{
             dispatch({type :  'POST_DELETED_SUCCESSFULLY'})
         })

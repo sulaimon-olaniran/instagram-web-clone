@@ -108,6 +108,12 @@
         .chat-board-nav-container{
             position: absolute;
             height: 4rem;
+
+            .left-side-nav-section{
+                .mobile-icon{
+                    display: none;
+                }
+            }
         }
 
         .chat-board-input-container{

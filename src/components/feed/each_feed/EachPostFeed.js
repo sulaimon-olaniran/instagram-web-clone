@@ -35,7 +35,7 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
     const [linkSnackBar, setLinkSnackBar] = useState(false)
     const [shareToDirectModal, setShareToDirectModal] = useState(false)
     const [shareToDirectDialog, setShareToDirectDialog] = useState(false)
-
+    //console.log(post)
 
     const mountedRef = useRef(true)
 
@@ -72,7 +72,7 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
     }
 
     const getPosterProfile = useCallback(() => {
-        db.collection('users').doc(post && post.userId)
+        post && db.collection('users').doc(post && post.userId)
             .onSnapshot(snapshot => {
                 if (!mountedRef.current) return null
                 setPosterProfile(snapshot.data())
@@ -81,7 +81,7 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
     }, [post])
 
     const getPostComments = useCallback(() => {
-        db.collection('posts').doc(post && post.postId)
+        post && db.collection('posts').doc(post.id)
             .collection('comments').onSnapshot(snapshot => {
                 if (!mountedRef.current) return null
                 const comments = []
@@ -89,7 +89,6 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
                     comments.push(doc.data())
                 })
                 setPostComments(comments)
-                //console.log(comments)
             })
     }, [post])
 
@@ -193,7 +192,6 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
     }
 
 
-    if(mountedRef.current === false) return null
     if (fetching) return <FeedSkeleton />
     return (
         <div className='each-post-feed-container'>
@@ -210,8 +208,7 @@ const EachPostFeed = ({ post, profile, followUser, likePost, unLikePost, savePos
             <MoreOptions
                 openDialog={openDialog}
                 handleCloseDialog={handleCloseDialog}
-                posterId={post && post.userId}
-                postId={post && post.postId}
+                post={post && post}
                 openShare={handleOpenShare}
                 handleCopyPostLink={handleCopyPostLink}
             />

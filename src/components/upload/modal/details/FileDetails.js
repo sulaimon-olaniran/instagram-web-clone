@@ -42,9 +42,7 @@ const FileDetails = ({ filePreviewUrl, fileUrl, goToPreviousStep, createPost, us
         "caption" : caption,
         "location" : locationDetails,
         "style" : imageStyle,
-        "comments" : [],
         "likes" : [],
-        "time" : Date.now()
     }
 
     const handleCreatePost = () =>{

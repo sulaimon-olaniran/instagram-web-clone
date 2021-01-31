@@ -11,14 +11,22 @@ import ReportModal, { ReportDialog } from '../../../../pages/profile/actions/brr
 
 
 
-const MoreOptions = ({ openDialog, handleCloseDialog, handleCopyPostLink, openShare, posterId, profile, postId, deletePost, unFollowUser, from }) => {
+const MoreOptions = ({ openDialog, handleCloseDialog, handleCopyPostLink, openShare, post, profile, deletePost, unFollowUser, from }) => {
     const [reportModal, setReportModal] = useState(false)
     const [reportDialog, setReportDialog] = useState(false)
+
+    const {postId} = post
+
+    const posterId = post.userId
 
     const { userId } = profile
 
     const handleDeletePost = () =>{
-        deletePost(postId)
+        const data ={
+            postId : postId,
+            fileName : post.fileName
+        }
+        deletePost(data)
     }
 
     const handleSharePost = () =>{

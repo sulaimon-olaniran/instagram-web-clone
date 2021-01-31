@@ -11,6 +11,10 @@
         border-bottom: 1px solid lightgray;
         padding: 20px;
 
+        .MuiSvgIcon-root{
+            cursor: pointer;
+        }
+
         .pc-icon{
             display: none;
         }

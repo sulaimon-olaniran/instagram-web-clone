@@ -4,7 +4,6 @@ import EachPostFeed from './each_feed/EachPostFeed'
 
 
 const PostsFeed = ({ feedPosts }) =>{
-    
 
     return(
         <div className='posts-feed-container'>

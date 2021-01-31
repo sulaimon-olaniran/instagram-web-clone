@@ -21,7 +21,7 @@ const ReportConfirmation = ({ closeReport, user, report }) => {
 
                     <p>
                         Our team will review the account and if it violates our
-                        <span className="link-span">Community Guidelines</span>  or  <span className="link-span">Terms of Use</span>, we'll remove it
+                        <span className="link-span"> Community Guidelines</span>  or  <span className="link-span">Terms of Use</span>, we'll remove it
                     </p>
                 </React.Fragment>
 

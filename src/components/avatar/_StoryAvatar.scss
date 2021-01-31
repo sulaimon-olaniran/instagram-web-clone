@@ -16,14 +16,15 @@
     border-radius: 50%;
     margin-right: 10px;
     
-    .story-image-container{
+    .MuiAvatar-root{
         width: 95%;
         height: 95%;
         border-radius: 50%;
         background-color: white;
         display: flex;
         align-items: center;
-        justify-content: center;
+		justify-content: center;
+		
 
         img{
             width: 92%;
