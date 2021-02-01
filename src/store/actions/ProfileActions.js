@@ -12,7 +12,8 @@ export const followUser = (data) =>{
             following : firebase.firestore.FieldValue.arrayUnion(data.accountId)
         })
         .then(() =>{
-          return  followUserNotification({
+          return  data.accountId === data.userId ?
+            followUserNotification({
                 time : Date.now(),
                 userId : data.userId,
                 accountId : data.accountId,
@@ -22,6 +23,7 @@ export const followUser = (data) =>{
                 const data = res.data
                 dispatch({ type : 'NOTIFICATION_SENT', data})
             })
+            :null
         })
         .then(() =>{
             dispatch({ type : 'FOLLOWED_SUCCESSFULLY'})

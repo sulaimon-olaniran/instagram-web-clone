@@ -17,6 +17,9 @@ export const closeCreatePostModal = () =>{
     }
 }
 
+
+
+
 export const createPost = (post, data) => {
     return (dispatch, getState) => {
         dispatch({ type : 'CREATING_POST'})
@@ -52,6 +55,9 @@ export const createPost = (post, data) => {
             })
     }
 }
+
+
+
 
 
 export const deletePost =(data) =>{
@@ -93,14 +99,16 @@ export const likePost = (data) =>{
                 })
             })
             .then(() =>{
-                return  likedPostNotification({
-                time : Date.now(),
-                userId : data.userId,
-                accountId : data.accountId,
-                postId : data.postId,
-                notification : 'Liked your post',
+                return data.accountId === data.userId ? 
+                    likedPostNotification({
+                    time : Date.now(),
+                    userId : data.userId,
+                    accountId : data.accountId,
+                    postId : data.postId,
+                    notification : 'Liked your post',
+                })
+                : null
             })
-        })
         .then(() =>{
             dispatch({type : 'LIKED_POST_SUCCESSFUL'})
         })
@@ -193,7 +201,8 @@ export const commentOnPost = (data) =>{
                 commentId : docRef.id
             })
             .then(() =>{
-                return  commentOnPostNotification({
+                return  data.accountId === data.userId ?
+                commentOnPostNotification({
                     time : data.time,
                     userId : data.userId,
                     accountId : data.accountId,
@@ -202,6 +211,7 @@ export const commentOnPost = (data) =>{
                     commentId : docRef.id,
                     comment : data.comment
                 })
+                :null
             })
         })
         .then(() =>{
@@ -249,7 +259,8 @@ export const likePostComment = (data) =>{
                 likes : firebase.firestore.FieldValue.arrayUnion(data.userId)
             })
             .then(() =>{
-                return likedPostCommentNotification({
+                return data.accountId === data.userId ?
+                likedPostCommentNotification({
                     time : Date.now(),
                     userId : data.userId,
                     accountId : data.accountId,
@@ -258,6 +269,7 @@ export const likePostComment = (data) =>{
                     commentId : data.commentId,
                     comment : data.comment
                 })
+                :null
             })
         })
         .then(() =>{

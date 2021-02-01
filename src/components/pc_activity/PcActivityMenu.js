@@ -18,7 +18,7 @@ const PcActivityMenu = ({ anchorEl, handleClose, auth, profile }) => {
     const grabAllUserNotifications = useCallback(() => {
 
         auth.isLoaded && !auth.isEmpty && 
-        db.collection('users').doc('9G6R635DzajdJA0ht6Ng')
+        db.collection('users').doc(auth.uid)
             .collection('notifications').orderBy('time', 'desc')
             .onSnapshot(snapshot => {
                 const notifications = []

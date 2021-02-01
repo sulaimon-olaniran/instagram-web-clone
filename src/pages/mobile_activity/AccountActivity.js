@@ -6,11 +6,13 @@ import { connect } from 'react-redux'
 import { db } from '../../firebase/Firebase'
 import EachActivity from './each_activity/EachActivity'
 import Suggestions from '../suggestions/Suggestions'
+import LogoLoader from '../../components/loaders/LogoLoader'
 
 
 
 const MobileAccountActivity = ({ profile, setCurrentPage, auth }) =>{
     const [activities, setActivities] = useState([])
+    const [fetching, setFetching] = useState(true)
 
     const mountedRef = useRef(true)
 
@@ -23,6 +25,7 @@ const MobileAccountActivity = ({ profile, setCurrentPage, auth }) =>{
             const notifications = []
             snapshot.forEach(doc =>{
                 notifications.push(doc.data())
+                setFetching(false)
             })
 
             setActivities(notifications)
@@ -53,6 +56,7 @@ const MobileAccountActivity = ({ profile, setCurrentPage, auth }) =>{
 
     //console.log(activities)
     if(!auth.uid) return <Redirect to='/' />
+    if(fetching || !profile.isLoaded) return <LogoLoader />
     return(
         <div className="mobile-activity-container">
             <div className='mobile-activity-nav-container'>

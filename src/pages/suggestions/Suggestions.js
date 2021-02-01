@@ -8,6 +8,7 @@ import { firestoreConnect } from 'react-redux-firebase'
 
 
 import Suggestion from './suggestion/Suggestion'
+import LogoLoader from '../../components/loaders/LogoLoader'
 
 
 const Suggestions = ({ as, auth, users, profile, history }) => {
@@ -17,7 +18,8 @@ const Suggestions = ({ as, auth, users, profile, history }) => {
     //function to filter out account users not followed by the logged in user
     const filterOutSuggestedUsers = (data) =>{
         return(
-           profile && !profile.following.includes(data.userId) && profile.userId !== data.userId
+           profile && profile.isLoaded && !profile.isEmpty && 
+           !profile.following.includes(data.userId) && profile.userId !== data.userId
         )
     }
 
@@ -38,7 +40,7 @@ const Suggestions = ({ as, auth, users, profile, history }) => {
     
 
     if (!auth.uid) return <Redirect to='/' />
-
+    if((as === 'page' && !shuffledSuggestedUsers) || !users || !profile.isLoaded) return <LogoLoader />
     return (
         <div className={`suggestions-container ${styleName}`} >
             {as !== 'component' &&
